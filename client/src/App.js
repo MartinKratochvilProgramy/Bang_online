@@ -1,50 +1,49 @@
 import "./App.css";
 import io from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
+import RoomInput from "./components/RoomInput";
+import Users from "./components/Users";
 
 const socket = io.connect("http://localhost:3001");
 
+// SRC: https://github.com/machadop1407/socket-io-react-example
+
 function App() {
   //Room State
-  const [room, setRoom] = useState("");
+  const [roomInput, setRoomInput] = useState("");
+  const [currentRoom, setCurrentRoom] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [username, setUsername] = useState("");
+  const usernameRef = useRef();
 
-  // Messages States
-  const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
+  socket.on("rooms", (rooms) => {
+    setRooms(rooms);
+  })
 
-  const joinRoom = () => {
-    if (room !== "") {
-      socket.emit("join_room", room);
-    }
+  const joinRoom = (e) => {
+    const room = e.target.id;
+    console.log("joining: ", room);
+    socket.emit("join_room", {room, username});
+    setCurrentRoom(room);
   };
 
-  const sendMessage = () => {
-    socket.emit("send_message", { message, room });
-  };
+  const disconnect = () => {
+    
+  }
 
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMessageReceived(data.message);
-    });
-  }, [socket]);
+  socket.on("show_users", (data) => {
+    setUsers(data.users);
+    console.log(data.users);
+  })
+
   return (
     <div className="App">
-      <input
-        placeholder="Room Number..."
-        onChange={(event) => {
-          setRoom(event.target.value);
-        }}
-      />
-      <button onClick={joinRoom}> Join Room</button>
-      <input
-        placeholder="Message..."
-        onChange={(event) => {
-          setMessage(event.target.value);
-        }}
-      />
-      <button onClick={sendMessage}> Send Message</button>
-      <h1> Message:</h1>
-      {messageReceived}
+      {!currentRoom ? 
+        <RoomInput usernameRef={usernameRef} setUsername={setUsername} username={username} rooms={rooms} joinRoom={joinRoom} />
+      :
+        <Users users={users} disconnect={disconnect} />
+      }
     </div>
   );
 }
