@@ -15,14 +15,14 @@ export default function RoomInput({ usernameRef, setUsername, username, rooms, j
         </div>
         <br/>
         Rooms:
-        {rooms.map(room => {
+        {Object.keys(rooms).map(room => {
             return (
             <button 
-                key={room.roomId}
-                id={room.roomId}
+                key={room}
+                id={room}
                 onClick={joinRoom}
             >
-                {room.roomId}
+                {room}
             </button>
             )
         })}

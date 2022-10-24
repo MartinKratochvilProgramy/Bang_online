@@ -13,33 +13,30 @@ const io = new Server(server, {
 const PORT = 3001;
 app.use(cors());
 
-let rooms = [
-  {roomId: "1", users: []},
-  {roomId: "2", users: []}
-];
+let rooms = {
+  jedna: [],
+  dva: []
+}
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
   socket.emit("rooms", rooms);
 
   socket.on("join_room", (data) => {
-    socket.join(data.room);
+    socket.join(data.currentRoom);
+    const roomName = data.currentRoom;
+    const username = data.username;
 
-    const currentRoom = rooms.map(room => {
-      if (room.roomId === data.room) {
-        room.users.push(data.username);
-      }
-    });
+    rooms[roomName].push(username);
+    console.log(rooms[roomName]);
 
-    console.log(currentRoom);
-
-    io.to(data.room).emit("show_users", rooms[0]);
+    socket.to(data.currentRoom).emit("show_users", rooms[roomName]);
   });
 
-  // socket.on("send_message", (data) => {
-  //   socket.to(data.currentRoom).emit("receive_message", data);
-  // });
+  socket.on("leave_room", data => {
+    const roomName = data.currentRoom;
+    rooms[roomName].splice(rooms[roomName].indexOf(data.username), 1);
+    io.to(roomName).emit("show_users", rooms[roomName]);
+  })
 });
 
 server.listen(PORT, () => {

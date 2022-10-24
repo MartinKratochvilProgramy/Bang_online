@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default function Users({ users }) {
+export default function Room({ users, roomName, leaveRoom }) {
+console.log(roomName);
   return (
     <div>
-        <button type="">Disconnect</button>
+        <h1>{roomName}</h1>
+        <button onClick={leaveRoom} >Disconnect</button>
         {users.map(user => {
             return (
                 <div key={user}>
