@@ -32,12 +32,19 @@ io.on("connection", (socket) => {
     io.to(data.currentRoom).emit("show_users", rooms[roomName]);
   });
 
+  socket.on("disconnect", () => {
+    console.log("disc", socket.id);
+  })
+
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
     rooms[roomName].splice(rooms[roomName].indexOf(data.username), 1);
     io.to(roomName).emit("show_users", rooms[roomName]);
+  });
 
-    console.log("leave: ", roomName);
+  socket.on("create_room", roomName => {
+    rooms[roomName] = [];
+    socket.emit("rooms", rooms);
   })
 });
 

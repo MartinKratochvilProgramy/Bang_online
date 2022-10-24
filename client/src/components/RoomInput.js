@@ -1,18 +1,27 @@
 import React from 'react'
 
-export default function RoomInput({ usernameRef, setUsername, username, rooms, joinRoom }) {
+export default function RoomInput({ usernameRef, newRoomRef, setUsername, createRoom, username, rooms, joinRoom }) {
   return (
     <div>
+        <h2>Set username</h2>
         <input
             placeholder="Username..."
             ref={usernameRef}
         />
         <button onClick={() => {setUsername(usernameRef.current.value)}}>Set username</button>
         <br/>
-        Username:
-        <div>
-            {username}
-        </div>
+        Username: {username}
+        <h2>
+            Create new room
+        </h2>
+        <input
+            placeholder="Room name..."
+            ref={newRoomRef}
+        />
+        <button onClick={() => {createRoom(newRoomRef.current.value)}}>Create room</button>
+        <h2>
+            Join existing room
+        </h2>
         <br/>
         Rooms:
         {Object.keys(rooms).map(room => {

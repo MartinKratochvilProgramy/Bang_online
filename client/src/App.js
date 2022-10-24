@@ -15,16 +15,15 @@ function App() {
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const usernameRef = useRef();
+  const newRoomRef = useRef();
 
   useEffect(() => {
     socket.on("rooms", (rooms) => {
       setRooms(rooms);
-      console.log("rooms");
     })
 
     socket.on("show_users", (data) => {
       setUsers(data);
-      console.log("show_users");
     })
   }, [])
   
@@ -36,6 +35,10 @@ function App() {
     setCurrentRoom(room);
   };
 
+  const createRoom = (roomName) => {
+    socket.emit("create_room", roomName);
+  }
+
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
     setCurrentRoom(null);
@@ -45,7 +48,7 @@ function App() {
   return (
     <div className="App">
       {!currentRoom ? 
-        <RoomInput usernameRef={usernameRef} setUsername={setUsername} username={username} rooms={rooms} joinRoom={joinRoom} />
+        <RoomInput usernameRef={usernameRef} newRoomRef={newRoomRef} setUsername={setUsername} createRoom={createRoom} username={username} rooms={rooms} joinRoom={joinRoom} />
       :
         <Room users={users} roomName={currentRoom} leaveRoom={leaveRoom} />
       }
