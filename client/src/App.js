@@ -9,7 +9,6 @@ const socket = io.connect("http://localhost:3001");
 // SRC: https://github.com/machadop1407/socket-io-react-example
 
 function App() {
-  //Room State
   const [currentRoom, setCurrentRoom] = useState(null);
   const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -26,8 +25,6 @@ function App() {
       setUsers(data);
     })
   }, [])
-  
-
 
   const joinRoom = (e) => {
     const room = e.target.id;
@@ -44,11 +41,17 @@ function App() {
     setCurrentRoom(null);
   }
 
-
   return (
     <div className="App">
       {!currentRoom ? 
-        <RoomInput usernameRef={usernameRef} newRoomRef={newRoomRef} setUsername={setUsername} createRoom={createRoom} username={username} rooms={rooms} joinRoom={joinRoom} />
+        <RoomInput 
+          usernameRef={usernameRef} 
+          newRoomRef={newRoomRef} 
+          setUsername={setUsername} 
+          createRoom={createRoom} 
+          username={username} 
+          rooms={rooms} 
+          joinRoom={joinRoom} />
       :
         <Room users={users} roomName={currentRoom} leaveRoom={leaveRoom} />
       }
