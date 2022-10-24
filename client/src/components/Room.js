@@ -7,8 +7,8 @@ export default function Room({ users, roomName, leaveRoom }) {
         <button onClick={leaveRoom} >Disconnect</button>
         {users.map(user => {
             return (
-                <div key={user}>
-                    {user}
+                <div key={user.id}>
+                    {user.username}
                 </div>
             )
         })}

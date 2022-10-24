@@ -24,16 +24,27 @@ io.on("connection", (socket) => {
   socket.on("join_room", (data) => {
     socket.join(data.currentRoom);
     const roomName = data.currentRoom;
-    const username = data.username;
+    const newUser = {
+      username: data.username,
+      id: socket.id
+    };
 
-    rooms[roomName].push(username);
-    console.log("join: ", rooms[roomName]);
+    rooms[roomName].push(newUser);
 
     io.to(data.currentRoom).emit("show_users", rooms[roomName]);
   });
 
   socket.on("disconnect", () => {
-    console.log("disc", socket.id);
+    // user disconnected by closing the browser
+    for (var room in rooms) {
+      for (let i = 0; i < rooms[room].length; i++) {
+        if(rooms[room][i].id === socket.id) {
+          rooms[room].splice(i, 1);
+          io.to(room).emit("show_users", rooms[room]);
+          return;
+        }
+      }
+    }
   })
 
   socket.on("leave_room", data => {
