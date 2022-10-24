@@ -1,6 +1,6 @@
 import "./App.css";
 import io from "socket.io-client";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import RoomInput from "./components/RoomInput";
 import Room from "./components/Room";
 
@@ -16,9 +16,19 @@ function App() {
   const [username, setUsername] = useState("");
   const usernameRef = useRef();
 
-  socket.on("rooms", (rooms) => {
-    setRooms(rooms);
-  })
+  useEffect(() => {
+    socket.on("rooms", (rooms) => {
+      setRooms(rooms);
+      console.log("rooms");
+    })
+
+    socket.on("show_users", (data) => {
+      setUsers(data);
+      console.log("show_users");
+    })
+  }, [])
+  
+
 
   const joinRoom = (e) => {
     const room = e.target.id;
@@ -31,10 +41,6 @@ function App() {
     setCurrentRoom(null);
   }
 
-  socket.on("show_users", (data) => {
-    setUsers(data);
-    console.log(data);
-  })
 
   return (
     <div className="App">

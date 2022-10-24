@@ -27,15 +27,17 @@ io.on("connection", (socket) => {
     const username = data.username;
 
     rooms[roomName].push(username);
-    console.log(rooms[roomName]);
+    console.log("join: ", rooms[roomName]);
 
-    socket.to(data.currentRoom).emit("show_users", rooms[roomName]);
+    io.to(data.currentRoom).emit("show_users", rooms[roomName]);
   });
 
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
     rooms[roomName].splice(rooms[roomName].indexOf(data.username), 1);
     io.to(roomName).emit("show_users", rooms[roomName]);
+
+    console.log("leave: ", roomName);
   })
 });
 
