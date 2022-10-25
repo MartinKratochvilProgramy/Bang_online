@@ -1,4 +1,4 @@
-export class Game {
+class Game {
     constructor(numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
         this.deck = [1, 2, 3, 4, 5, 6, 7]
@@ -55,3 +55,4 @@ export class Game {
     }
 }
 
+module.exports = Game;

@@ -29,6 +29,10 @@ function App() {
     socket.on("get_messages", (messages) => {
       setMessages(messages);
     })
+
+    socket.on("get_deck", (deck) => {
+      console.log(deck);
+    })
   }, [])
 
   const joinRoom = (e) => {
@@ -50,6 +54,10 @@ function App() {
     socket.emit("send_message", {currentRoom, username, message})
   }
 
+  const getDeck = () => {
+    socket.emit("get_deck", currentRoom);
+  }
+
   return (
     <div className="App">
       {!currentRoom ? 
@@ -67,7 +75,8 @@ function App() {
           messages={messages} 
           roomName={currentRoom} 
           leaveRoom={leaveRoom} 
-          sendMessage={sendMessage} />
+          sendMessage={sendMessage}
+          getDeck={getDeck} />
       }
     </div>
   );

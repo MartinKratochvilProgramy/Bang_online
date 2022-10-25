@@ -5,6 +5,8 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
+const Game = require('./game.js')
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -17,7 +19,8 @@ app.use(cors());
 let rooms = {
   "room": {
     players: [],
-    messages: []
+    messages: [],
+    game: new Game()
   }
 }
 
@@ -73,6 +76,10 @@ io.on("connection", (socket) => {
       id: uuid.v4()
     })
     io.to(roomName).emit("get_messages", rooms[roomName].messages);
+  })
+
+  socket.on("get_deck", (roomName) => {
+    io.to(roomName).emit("get_deck", rooms[roomName].game.getDeck())
   })
 });
 

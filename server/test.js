@@ -1,4 +1,4 @@
-import {Game} from "./game.js";
+const Game = require('./game.js')
 
 const obj = new Game(4);
 obj.shuffleDeck();
