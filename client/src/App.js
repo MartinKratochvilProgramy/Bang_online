@@ -31,7 +31,8 @@ function App() {
     })
 
     socket.on("get_deck", (deck) => {
-      console.log(deck);
+      console.log("got deck");
+          console.log(deck);
     })
   }, [])
 
@@ -55,7 +56,7 @@ function App() {
   }
 
   const getDeck = () => {
-    socket.emit("get_deck", currentRoom);
+    socket.emit("get_deck_req", currentRoom);
   }
 
   return (

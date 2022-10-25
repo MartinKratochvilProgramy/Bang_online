@@ -1,23 +1,10 @@
 const Game = require('./game.js')
 
-const obj = new Game(4);
-obj.shuffleDeck();
+const game = new Game(1);
 
-console.log(obj.getDeck());
-console.log(obj.getPlayers());
+console.log(game.getDeck());
+game.startGame();
 
-obj.draw();
-obj.draw();
-obj.draw();
-obj.draw();
-obj.draw();
-obj.draw();
-obj.draw();
-obj.draw();
-console.log(obj.getDeck());
-console.log(obj.getPlayers());
+console.log(game.getPlayers());
 
-const hands = obj.getNumOfCardsInEachHand()
-for(var key in hands) {
-    console.log(hands[key].handSize);
-}
+game.useCard("0", 1);

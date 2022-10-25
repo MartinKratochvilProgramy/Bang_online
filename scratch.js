@@ -1,6 +1,6 @@
-const obj = {
-    "jedna": 1,
-    "dva": 2
-}
+const arr = [1, 2, 1]
 
-console.log(Object.keys(obj));
+const index = arr.indexOf(1);
+arr.splice(index, 1);
+
+console.log(arr);
