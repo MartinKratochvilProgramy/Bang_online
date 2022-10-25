@@ -1,10 +1,10 @@
 const Game = require('./game.js')
 
-const game = new Game(1);
+const game = new Game(["Sbeve", "Sjoe"]);
 
-console.log(game.getDeck());
 game.startGame();
 
-console.log(game.getPlayers());
-
-game.useCard("0", 1);
+game.draw(2);
+game.useCard("0", 1)
+game.endTurn();
+game.draw(2);

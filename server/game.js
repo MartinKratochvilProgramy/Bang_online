@@ -1,14 +1,15 @@
 class Game {
-    constructor(numOfPlayers) {
-        this.numOfPlayers = numOfPlayers;
-        this.deck = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15];
+    constructor(playerNames) {
+        this.numOfPlayers = playerNames.length;
+        this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
 
         // init players
-        for (let i = 0; i < numOfPlayers; i++) {
+        for (let i = 0; i < this.numOfPlayers; i++) {
             this.players[i] = {
+                name: playerNames[i],
                 hand: [],
                 table: [],
                 role: null,
@@ -19,17 +20,18 @@ class Game {
         }
     }
 
-    draw(playerId, numToDraw) {
+    draw(numToDraw, playerId = this.playerRoundId) {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         if (this.deck.length <= 0) {
             console.log("DECK EMPTY!");
-            return;
+            this.putStackIntoDeck();
         }
         for (let i = 0; i < numToDraw; i++) {
             this.players[playerId].hand.push(this.deck[0]);
             this.deck.shift();
         }
+        console.log(`Player ${this.players[playerId].name} drew ${numToDraw} cards`);
     }
 
     useCard(playerId, cardName) {
@@ -44,6 +46,8 @@ class Game {
         this.players[playerId].hand.splice(cardIndex, 1);
         // place card on deck
         this.stack.push(cardName);
+
+        console.log(`Player ${this.players[playerId].name} used ${cardName}`);
     }
 
     shuffleDeck() {
@@ -60,20 +64,36 @@ class Game {
           [this.deck[currentIndex], this.deck[randomIndex]] = [
             this.deck[randomIndex], this.deck[currentIndex]];
         }
+
+        console.log("Deck shuffled");
     }
 
     putStackIntoDeck() {
         this.deck = this.stack;
         this.shuffleDeck();
         this.stack = []
+
+        console.log("Stack shuffled into decks");
     }
 
     startGame() {
-        //this.shuffleDeck(); // TODO: uncomment
         // each player draws startingHandSize cards
+        //this.shuffleDeck(); // TODO: uncomment
         for (let i = 0; i < this.numOfPlayers; i++) {
-            this.draw(i, this.players[i].character.startingHandSize);
+            this.draw(this.players[i].character.startingHandSize, i);
         }
+
+        console.log("Game started!");
+    }
+
+    endTurn() {
+        // move playerRoundId forward
+        this.playerRoundId += 1;
+        if (this.playerRoundId >= this.numOfPlayers) {
+            this.playerRoundId = 0;
+        }
+
+        console.log("End of turn");
     }
 
     getNumOfCardsInEachHand() {
