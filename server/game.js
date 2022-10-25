@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames) {
         this.numOfPlayers = playerNames.length;
-        this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
@@ -70,10 +70,11 @@ class Game {
 
     putStackIntoDeck() {
         this.deck = this.stack;
-        this.shuffleDeck();
         this.stack = []
-
-        console.log("Stack shuffled into decks");
+     
+        console.log("Stack shuffled into deck");
+     
+        this.shuffleDeck();
     }
 
     startGame() {
