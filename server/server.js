@@ -15,14 +15,14 @@ const PORT = 3001;
 app.use(cors());
 
 let rooms = {
-  "room": []
-}
-let messages = {
-  "room": []
+  "room": {
+    players: [],
+    messages: []
+  }
 }
 
 io.on("connection", (socket) => {
-  socket.emit("rooms", rooms);
+  socket.emit("rooms", Object.keys(rooms));
 
   socket.on("join_room", (data) => {
     socket.join(data.currentRoom);
@@ -31,19 +31,19 @@ io.on("connection", (socket) => {
       username: data.username,
       id: socket.id
     };
-    rooms[roomName].push(newUser);
+    rooms[roomName].players.push(newUser);
 
-    io.to(data.currentRoom).emit("get_room", rooms[roomName]);
-    io.to(data.currentRoom).emit("get_messages", messages[roomName]);
+    io.to(data.currentRoom).emit("get_players", rooms[roomName].players);
+    io.to(data.currentRoom).emit("get_messages", rooms[roomName].messages);
   });
 
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
     for (var room in rooms) {
       for (let i = 0; i < rooms[room].length; i++) {
-        if(rooms[room][i].id === socket.id) {
-          rooms[room].splice(i, 1);
-          io.to(room).emit("get_room", rooms[room]);
+        if(rooms[room].players[i].id === socket.id) {
+          rooms[room].players.splice(i, 1);
+          io.to(room).emit("get_players", rooms[room].players);
           return;
         }
       }
@@ -52,26 +52,30 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
-    rooms[roomName].splice(rooms[roomName].indexOf(data.username), 1);
-    io.to(roomName).emit("get_room", rooms[roomName]);
+    rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
+    io.to(roomName).emit("get_players", rooms[roomName].players);
   });
 
   socket.on("create_room", roomName => {
-    rooms[roomName] = [];
-    messages[roomName] = [];
-    io.emit("rooms", rooms);
+    rooms[roomName] = {
+      players: [],
+      messages: []
+    };
+
+    io.emit("rooms", Object.keys(rooms));
   })
 
   socket.on("send_message", data => {
-    messages[data.currentRoom].push({
+    const roomName = data.currentRoom;
+    rooms[roomName].messages.push({
       username: data.username,
       message: data.message,
       id: uuid.v4()
     })
-    io.to(data.currentRoom).emit("get_messages", messages[data.currentRoom]);
+    io.to(roomName).emit("get_messages", rooms[roomName].messages);
   })
 });
 
 server.listen(PORT, () => {
-  console.log("SERVER IS RUNNING");
+  console.log("listening @ ", PORT);
 });

@@ -22,7 +22,7 @@ function App() {
       setRooms(rooms);
     })
 
-    socket.on("get_room", (users) => {
+    socket.on("get_players", (users) => {
       setUsers(users);
     })
 

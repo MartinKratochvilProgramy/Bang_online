@@ -24,7 +24,7 @@ export default function RoomInput({ usernameRef, newRoomRef, setUsername, create
         </h2>
         <br/>
         Rooms:
-        {Object.keys(rooms).map(room => {
+        {rooms.map(room => {
             return (
             <button 
                 key={room}
