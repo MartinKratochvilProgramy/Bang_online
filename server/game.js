@@ -1,7 +1,7 @@
 class Game {
-    constructor(playerNames) {
+    constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        this.deck = deck;
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
@@ -14,7 +14,7 @@ class Game {
                 table: [],
                 role: null,
                 character: {
-                    startingHandSize: 4
+                    startingHandSize: 1
                 }
             }
         }
@@ -31,21 +31,25 @@ class Game {
             this.players[playerId].hand.push(this.deck[0]);
             this.deck.shift();
         }
-        console.log(`Player ${this.players[playerId].name} drew ${numToDraw} cards`);
+        if (numToDraw === 1) {
+            console.log(`Player ${this.players[playerId].name} drew ${numToDraw} card`);
+        } else {
+            console.log(`Player ${this.players[playerId].name} drew ${numToDraw} cards`);
+        }
     }
 
-    useCard(playerId, cardName) {
+    useCard(cardName, playerId = this.playerRoundId) {
         // remove card from playerId hand and place it to the end of stack
-        if(!this.players[playerId].hand.includes(cardName)) {
+        if(!this.players[playerId].hand.some(card => card.name === cardName)) {
             // if card not in hand, return
-            console.log("not in hand");
+            console.log(`Card ${cardName} not in hand!`);
             return;
         };
         // remove card from hand
-        const cardIndex = this.players[playerId].hand.indexOf(cardName);
-        this.players[playerId].hand.splice(cardIndex, 1);
+        const cardIndex = this.players[playerId].hand.findIndex(card => card.name === cardName);
+        const card = this.players[playerId].hand.splice(cardIndex, 1);
         // place card on deck
-        this.stack.push(cardName);
+        this.stack.push(card);
 
         console.log(`Player ${this.players[playerId].name} used ${cardName}`);
     }

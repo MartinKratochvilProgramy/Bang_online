@@ -20,7 +20,7 @@ let rooms = {
   "room": {
     players: [],
     messages: [],
-    game: new Game()
+    //game: new Game()
   }
 }
 

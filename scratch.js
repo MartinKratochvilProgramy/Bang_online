@@ -1,6 +1,9 @@
-const arr = [1, 2, 1]
+const arr = [
+    {key: "value"},
+    {key: "value2"}
+]
 
-const index = arr.indexOf(1);
-arr.splice(index, 1);
-
-console.log(arr);
+const index = arr.findIndex(item => item.key ==="value");
+const value = arr.splice(index, 1);
+console.log(index);
+console.log(value);
