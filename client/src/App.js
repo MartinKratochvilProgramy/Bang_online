@@ -11,6 +11,7 @@ const socket = io.connect("http://localhost:3001");
 function App() {
   const [currentRoom, setCurrentRoom] = useState(null);
   const [users, setUsers] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const usernameRef = useRef();
@@ -21,8 +22,9 @@ function App() {
       setRooms(rooms);
     })
 
-    socket.on("show_users", (data) => {
-      setUsers(data);
+    socket.on("get_room", (data) => {
+      setUsers(data.users);
+      setMessages(data.messages);
     })
   }, [])
 
@@ -41,6 +43,10 @@ function App() {
     setCurrentRoom(null);
   }
 
+  const sendMessage = (message) => {
+    socket.emit("send_message", {currentRoom, username, message})
+  }
+
   return (
     <div className="App">
       {!currentRoom ? 
@@ -53,7 +59,12 @@ function App() {
           rooms={rooms} 
           joinRoom={joinRoom} />
       :
-        <Room users={users} roomName={currentRoom} leaveRoom={leaveRoom} />
+        <Room 
+          users={users} 
+          messages={messages} 
+          roomName={currentRoom} 
+          leaveRoom={leaveRoom} 
+          sendMessage={sendMessage} />
       }
     </div>
   );
