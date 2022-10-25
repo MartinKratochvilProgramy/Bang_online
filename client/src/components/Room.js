@@ -19,18 +19,20 @@ export default function Room({ users, messages, roomName, leaveRoom, sendMessage
         <h2>Messages</h2>
         <form onSubmit={(e) =>{
           e.preventDefault();
+          setMessageInput("");
           sendMessage(messageInput);
         }}>
           <label>
             Send message:
             <input 
               placeholder="Submit"
+              autoFocus
               onChange={(e) => setMessageInput(e.target.value)} 
               value={messageInput} />
             <button type="submit">Send</button>
           </label>
         </form>
-        
+
         {messages.map(message => {
             return (
                 <div key={message.id}>

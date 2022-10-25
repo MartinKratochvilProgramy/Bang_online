@@ -22,9 +22,12 @@ function App() {
       setRooms(rooms);
     })
 
-    socket.on("get_room", (data) => {
-      setUsers(data.users);
-      setMessages(data.messages);
+    socket.on("get_room", (users) => {
+      setUsers(users);
+    })
+
+    socket.on("get_messages", (messages) => {
+      setMessages(messages);
     })
   }, [])
 

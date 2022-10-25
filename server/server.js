@@ -15,17 +15,10 @@ const PORT = 3001;
 app.use(cors());
 
 let rooms = {
-  room: {
-    users: [{
-        username: "sbeve",
-        id: "id"
-    }],
-    messages: [{
-        username: "sbeve",
-        message: "message content",
-        id: uuid.v4()
-    }]
+  "room": []
 }
+let messages = {
+  "room": []
 }
 
 io.on("connection", (socket) => {
@@ -38,18 +31,18 @@ io.on("connection", (socket) => {
       username: data.username,
       id: socket.id
     };
-    rooms[roomName].users.push(newUser);
-    console.log(rooms[roomName]);
+    rooms[roomName].push(newUser);
 
     io.to(data.currentRoom).emit("get_room", rooms[roomName]);
+    io.to(data.currentRoom).emit("get_messages", messages[roomName]);
   });
 
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
     for (var room in rooms) {
       for (let i = 0; i < rooms[room].length; i++) {
-        if(rooms[room].users[i].id === socket.id) {
-          rooms[room].users.splice(i, 1);
+        if(rooms[room][i].id === socket.id) {
+          rooms[room].splice(i, 1);
           io.to(room).emit("get_room", rooms[room]);
           return;
         }
@@ -59,25 +52,23 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
-    rooms[roomName].users.splice(rooms[roomName].users.indexOf(data.username), 1);
+    rooms[roomName].splice(rooms[roomName].indexOf(data.username), 1);
     io.to(roomName).emit("get_room", rooms[roomName]);
   });
 
   socket.on("create_room", roomName => {
-    rooms[roomName] = {
-      users: [],
-      messages: []
-    };
+    rooms[roomName] = [];
+    messages[roomName] = [];
     io.emit("rooms", rooms);
   })
 
   socket.on("send_message", data => {
-    rooms[data.currentRoom].messages.push({
+    messages[data.currentRoom].push({
       username: data.username,
       message: data.message,
       id: uuid.v4()
     })
-    io.to(data.currentRoom).emit("get_room", rooms[data.currentRoom]);
+    io.to(data.currentRoom).emit("get_messages", messages[data.currentRoom]);
   })
 });
 
