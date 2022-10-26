@@ -1,9 +1,6 @@
-const arr = [
-    {key: "value"},
-    {key: "value2"}
-]
+const players = {
+    "0": {name: "Sbeve"},
+    "1": {name: "Joe"}
+}
 
-const index = arr.findIndex(item => item.key ==="value");
-const value = arr.splice(index, 1);
-console.log(index);
-console.log(value);
+console.log(Object.keys(players).find(key => players[key].name === "Joe"));

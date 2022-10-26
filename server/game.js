@@ -5,6 +5,7 @@ class Game {
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
+        this.actionExpected = null;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -14,7 +15,7 @@ class Game {
                 table: [],
                 role: null,
                 character: {
-                    startingHandSize: 1
+                    startingHandSize: 2
                 }
             }
         }
@@ -38,20 +39,57 @@ class Game {
         }
     }
 
-    useCard(cardName, playerId = this.playerRoundId) {
+    useCard(cardName, playerId = this.playerRoundId, target=null) {
         // remove card from playerId hand and place it to the end of stack
+
+        // not your turn and no actions req
+        if (playerId !== this.playerRoundId && this.actionExpected == null) {
+            console.log("Not your turn!")
+            return;
+        }
+        
+        // check if you can play
+        if (this.actionExpected) {
+            // correct player?
+            if (this.actionExpected.player !== this.players[playerId].name) {
+                console.log("Not your turn!");
+                return;
+            }
+            // correct card?
+            if (this.actionExpected.cardName !== cardName) {
+                console.log("Not the right card!");
+                return;
+            }
+        }
+
+        // if card not in hand, return
         if(!this.players[playerId].hand.some(card => card.name === cardName)) {
-            // if card not in hand, return
             console.log(`Card ${cardName} not in hand!`);
             return;
         };
         // remove card from hand
         const cardIndex = this.players[playerId].hand.findIndex(card => card.name === cardName);
-        const card = this.players[playerId].hand.splice(cardIndex, 1);
+        const card = this.players[playerId].hand.splice(cardIndex, 1)[0];
         // place card on deck
         this.stack.push(card);
 
-        console.log(`Player ${this.players[playerId].name} used ${cardName}`);
+        console.log(`Player ${this.players[playerId].name} used ${cardName}`, target ? `on ${target}` : "");
+    }
+
+    useBang(target, playerId = this.playerRoundId) {
+        this.useCard("Bang!", playerId, target);
+
+        this.actionExpected = {
+            player: target,
+            cardName: "Mancato!"
+        }
+    }
+
+    useMancato(playerName) {
+        const playerId = Object.keys(this.players).find(key => this.players[key].name === playerName);
+        this.useCard("Mancato!", playerId);
+
+        this.actionExpected = null;
     }
 
     shuffleDeck() {
@@ -107,6 +145,10 @@ class Game {
             state[i] = {handSize: this.players[i].hand.length}
         }
         return state;
+    }
+
+    getPlayerTurn() {
+        console.log("Player turn : ", this.players[this.playerRoundId].name)
     }
 
     getDeck() {

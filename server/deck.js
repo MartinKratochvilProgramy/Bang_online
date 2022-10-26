@@ -6,7 +6,19 @@ const deck = [
     type: "spades"
     },
     {
+    name: "Mancato!",
+    rimColor: "yellow",
+    digit: 2,
+    type: "spades"
+    },   
+    {
     name: "Bang!",
+    rimColor: "yellow",
+    digit: 2,
+    type: "spades"
+    },   
+    {
+    name: "Mancato!",
     rimColor: "yellow",
     digit: 2,
     type: "spades"
