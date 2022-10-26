@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-export default function Game({ socket, username, roomName }) {
-  useEffect(() => {
-    socket.on("game_started", data => {
-      console.log(data);
-      // socket.emit("get_my_hand", {username, roomName});
-    })
+export default function Game({ myHand, allHands }) {
 
-    // socket.on("my_hand", hand => {
-    //   console.log("my hand: ", hand);
-    // })
-  
-  }, [socket]);
-  
   
   return (
     <div>
-
-      GAME
+      <h1>Game</h1>
+      <h2>Cards in hand:</h2>
+      {allHands.map(player => {
+        return (
+          <div key={player.name}>
+            {player.name} {player.numberOfCards}
+          </div>
+        )
+      })}
+      {myHand.map(card => {
+        return (
+          <button key={card.digit + card.type}>
+            {card.name} <br /> {card.digit} {card.type}
+          </button>
+        )
+      })}
 
     </div>
   )

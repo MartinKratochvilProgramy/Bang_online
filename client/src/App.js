@@ -16,6 +16,10 @@ function App() {
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
+
+  const [myHand, setMyHand] = useState([]);
+  const [allHands, setAllHands] = useState([]);
+
   const usernameRef = useRef();
   const newRoomRef = useRef();
 
@@ -32,14 +36,20 @@ function App() {
       setMessages(messages);
     })
 
-
+    // GAME LOGIC
     socket.on("game_started", data => {
+      setGameStarted(true);
       if (currentRoom !== null) {
+        console.log("emit game start");
         socket.emit("get_my_hand", {username, currentRoom});
       }
+      console.log("all hands: ", data);
+      setAllHands(data);
     })
+
     socket.on("my_hand", hand => {
-      console.log("my hand: ", hand);
+      console.log("my hand: ", hand); // TODO: this runs multiple times??? 
+      setMyHand(hand);
     })
   }, [username, currentRoom])
 
@@ -55,6 +65,7 @@ function App() {
 
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
+    setGameStarted(false);
     setCurrentRoom(null);
   }
 
@@ -68,7 +79,7 @@ function App() {
       return user.username
     })
     socket.emit("start_game", {players, currentRoom})
-    setGameStarted(true);
+    
   }
 
   return (
@@ -93,7 +104,16 @@ function App() {
           gameStarted={gameStarted}
           />
       }
-      {gameStarted ? <Game socket={socket} username={username} roomName={currentRoom}  /> : null}
+      {gameStarted ? 
+        <Game 
+          socket={socket} 
+          username={username} 
+          roomName={currentRoom}
+          myHand={myHand}
+          allHands={allHands}  />
+      :
+       null
+      }
     </div>
   );
 }

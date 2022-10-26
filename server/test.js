@@ -21,13 +21,13 @@ game.useBang("Sbeve");
 game.useMancato("Sbeve");
 
 // game.getHands();
+console.log("Stack: ", game.stack);
 
 game.putStackIntoDeck();
 game.draw(4);
 game.useBang("Sbeve");
+game.useMancato("Sbeve");
 
 // game.getHands();
 
 
-
-console.log("Stack: ", game.stack);

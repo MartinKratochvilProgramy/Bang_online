@@ -79,6 +79,7 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("get_messages", rooms[roomName].messages);
   })
 
+  // ********** GAME LOGIC **********
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
     
@@ -89,7 +90,7 @@ io.on("connection", (socket) => {
 
   socket.on("get_my_hand", data => {
     const roomName = data.currentRoom;
-    socket.to(roomName).emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
+    socket.emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
   })
 });
 

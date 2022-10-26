@@ -34,6 +34,18 @@ const deck = [
     rimColor: "yellow",
     digit: 6,
     type: "spades"
+    },   
+    {
+    name: "Bang!",
+    rimColor: "yellow",
+    digit: 7,
+    type: "spades"
+    },
+    {
+    name: "Bang!",
+    rimColor: "yellow",
+    digit: 8,
+    type: "spades"
     }   
 ]
 
