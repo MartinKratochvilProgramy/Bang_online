@@ -92,6 +92,10 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
     socket.emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
   })
+
+  socket.on("play_bang", (data) => {
+    console.log("Played Bang! from ", data.username, " to ", data.target);
+  })
 });
 
 server.listen(PORT, () => {

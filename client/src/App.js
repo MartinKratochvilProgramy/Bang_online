@@ -83,10 +83,6 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
-  function useBang() {
-    
-  }
-
   return (
     <div className="App">
       {!currentRoom ? 
@@ -115,6 +111,8 @@ function App() {
           allHands={allHands}
           selectPlayerTarget={selectPlayerTarget}
           setSelectPlayerTarget={setSelectPlayerTarget}
+          username={username}
+          socket={socket}
         />
       :
        null
