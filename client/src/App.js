@@ -32,11 +32,16 @@ function App() {
       setMessages(messages);
     })
 
-    socket.on("get_deck", (deck) => {
-      console.log("got deck");
-          console.log(deck);
+
+    socket.on("game_started", data => {
+      if (currentRoom !== null) {
+        socket.emit("get_my_hand", {username, currentRoom});
+      }
     })
-  }, [])
+    socket.on("my_hand", hand => {
+      console.log("my hand: ", hand);
+    })
+  }, [username, currentRoom])
 
   const joinRoom = (e) => {
     const room = e.target.id;
@@ -88,7 +93,7 @@ function App() {
           gameStarted={gameStarted}
           />
       }
-      {gameStarted ? <Game socket={socket} /> : null}
+      {gameStarted ? <Game socket={socket} username={username} roomName={currentRoom}  /> : null}
     </div>
   );
 }

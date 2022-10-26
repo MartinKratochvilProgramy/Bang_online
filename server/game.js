@@ -147,15 +147,20 @@ class Game {
     }
 
     getNumOfCardsInEachHand() {
-        let state = {}
-        for (let i = 0; i < this.numOfPlayers; i++) {
-            state[i] = {handSize: this.players[i].hand.length}
+        let state = []
+        for (var player of Object.keys(this.players)) {
+            state.push({
+                name: player,
+                numberOfCards: this.players[player].hand.length})
         }
+        // for (let i = 0; i < this.numOfPlayers; i++) {
+        //     state[i] = {handSize: this.players[i].hand.length}
+        // }
         return state;
     }
 
     getPlayerHand(playerName) {
-        console.log(this.players[playerName].hand);
+        return (this.players[playerName].hand);
     }
 
     getHands() {

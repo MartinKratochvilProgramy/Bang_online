@@ -84,7 +84,12 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game = new Game(data.players, deck);
     rooms[roomName].game.startGame();
-    io.to(roomName).emit("game_started", rooms[roomName].game.players);
+    io.to(roomName).emit("game_started", rooms[roomName].game.getNumOfCardsInEachHand());
+  });
+
+  socket.on("get_my_hand", data => {
+    const roomName = data.currentRoom;
+    socket.to(roomName).emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
   })
 });
 
