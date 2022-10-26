@@ -42,7 +42,7 @@ class Game {
     useCard(cardName, playerId = this.playerRoundId, target=null) {
         // remove card from playerId hand and place it to the end of stack
 
-        // not your turn and no actions req
+        // not your turn and no actionsExpected
         if (playerId !== this.playerRoundId && this.actionExpected == null) {
             console.log("Not your turn!")
             return;

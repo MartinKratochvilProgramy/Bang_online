@@ -14,25 +14,25 @@ const deck = [
     {
     name: "Bang!",
     rimColor: "yellow",
-    digit: 2,
+    digit: 3,
     type: "spades"
     },   
     {
     name: "Mancato!",
     rimColor: "yellow",
-    digit: 2,
+    digit: 4,
     type: "spades"
     },   
     {
     name: "Bang!",
     rimColor: "yellow",
-    digit: 3,
+    digit: 5,
     type: "spades"
     },
     {
     name: "Bang!",
     rimColor: "yellow",
-    digit: 4,
+    digit: 6,
     type: "spades"
     }   
 ]
