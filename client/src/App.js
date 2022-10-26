@@ -20,6 +20,8 @@ function App() {
   const [myHand, setMyHand] = useState([]);
   const [allHands, setAllHands] = useState([]);
 
+  const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
+
   const usernameRef = useRef();
   const newRoomRef = useRef();
 
@@ -79,6 +81,9 @@ function App() {
       return user.username
     })
     socket.emit("start_game", {players, currentRoom})
+  }
+
+  function useBang() {
     
   }
 
@@ -106,11 +111,11 @@ function App() {
       }
       {gameStarted ? 
         <Game 
-          socket={socket} 
-          username={username} 
-          roomName={currentRoom}
           myHand={myHand}
-          allHands={allHands}  />
+          allHands={allHands}
+          selectPlayerTarget={selectPlayerTarget}
+          setSelectPlayerTarget={setSelectPlayerTarget}
+        />
       :
        null
       }
