@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import RoomInput from "./components/RoomInput";
 import Room from "./components/Room";
+import Game from "./components/Game";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -14,6 +15,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
+  const [gameStarted, setGameStarted] = useState(false);
   const usernameRef = useRef();
   const newRoomRef = useRef();
 
@@ -55,8 +57,13 @@ function App() {
     socket.emit("send_message", {currentRoom, username, message})
   }
 
-  const getDeck = () => {
-    socket.emit("get_deck_req", currentRoom);
+  function startGame() {
+    // TODO: check if players >= 4
+    const players = users.map((user) => {
+      return user.username
+    })
+    socket.emit("start_game", {players, currentRoom})
+    setGameStarted(true);
   }
 
   return (
@@ -77,8 +84,11 @@ function App() {
           roomName={currentRoom} 
           leaveRoom={leaveRoom} 
           sendMessage={sendMessage}
-          getDeck={getDeck} />
+          startGame={startGame}
+          gameStarted={gameStarted}
+          />
       }
+      {gameStarted ? <Game socket={socket} /> : null}
     </div>
   );
 }

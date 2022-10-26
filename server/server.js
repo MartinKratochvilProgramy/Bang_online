@@ -5,7 +5,8 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
-const Game = require('./game.js')
+const Game = require('./game.js');
+const deck = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
@@ -20,7 +21,7 @@ let rooms = {
   "room": {
     players: [],
     messages: [],
-    //game: new Game()
+    game: null
   }
 }
 
@@ -78,8 +79,12 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("get_messages", rooms[roomName].messages);
   })
 
-  socket.on("get_deck", (roomName) => {
-    io.to(roomName).emit("get_deck", rooms[roomName].game.getDeck())
+  socket.on("start_game", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game = new Game(data.players, deck);
+    rooms[roomName].game.startGame();
+    io.to(roomName).emit("game_started", rooms[roomName].game.players);
   })
 });
 

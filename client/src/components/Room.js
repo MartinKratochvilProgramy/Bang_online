@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Room({ users, messages, roomName, leaveRoom, sendMessage, getDeck }) {
+export default function Room({ users, messages, roomName, leaveRoom, sendMessage, startGame, gameStarted }) {
   const [messageInput, setMessageInput] = useState("");
 
   return (
@@ -40,7 +40,11 @@ export default function Room({ users, messages, roomName, leaveRoom, sendMessage
                 </div>
             )
         })}
-        <button onClick={() => getDeck()}>Read deck</button>
+        {!gameStarted ? 
+          <button onClick={() => startGame()}>Start game</button>
+        :
+        null
+        }
     </div>
   )
 }
