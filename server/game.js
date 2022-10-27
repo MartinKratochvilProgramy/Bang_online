@@ -70,12 +70,6 @@ class Game {
             return;
         }
 
-        // if card not in hand, return
-        // if(!this.players[playerName].hand.some(card => card.name === cardName)) {
-        //     console.log(`Card ${cardName} not in hand!`);
-        //     return;
-        // };
-
         // remove card from hand
         const cardIndex = this.players[playerName].hand.findIndex(card => card.name === cardName);
         const cardToDiscard = this.players[playerName].hand.splice(cardIndex, 1)[0];
