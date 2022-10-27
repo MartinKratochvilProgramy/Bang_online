@@ -129,6 +129,10 @@ io.on("connection", (socket) => {
     const currentPlayer = rooms[currentRoom].game.getCurrentPlayer(); // get current player
     io.to(currentRoom).emit("current_player", currentPlayer);
   })
+
+  socket.on("request_players_in_range", (data) => {
+    socket.emit("players_in_range", rooms[data.currentRoom].game.getPlayersInRange(data.username, data.range))
+  })
 });
 
 server.listen(PORT, () => {

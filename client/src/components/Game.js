@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Bang from './cards/Bang';
 import Mancato from './cards/Mancato';
 
-export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
+export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
+  const [playersInRange, setPlayersInRange] = useState([]);
   
   useEffect(() => {
     // disable next turn button if health decision req on other players
@@ -18,6 +19,18 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
     }
   
   }, [playersLosingHealth])
+
+  socket.on("players_in_range", players => {
+    setPlayersInRange(players);
+    // let newAllPlayersInfo = [];
+    // for (let i = 0; i < allPlayersInfo.length; i++) {
+    //   if (allPlayersInfo[i].name in players) {
+    //     newAllPlayersInfo.push(allPlayersInfo[i])
+    //     newAllPlayersInfo[i].style = {color: "red"};
+    //   }
+    // }
+    // setAllPlayersInfo(newAllPlayersInfo);
+  })
   
 
   let playerStyles;
@@ -52,11 +65,20 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
       <h2>Other players:</h2>
       {allPlayersInfo.map(player => {
         if (player.name === username) return(null); // don't display my hand size
-        return (
-          <div key={player.name} style={playerStyles}>
-              Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} {selectPlayerTarget ? <button onClick={() => confirmTarget(player.name)}>Select</button> : null}
-          </div>
-        )
+        if (selectPlayerTarget && playersInRange.includes(player.name)) {
+          console.log("true");
+          return (
+            <div key={player.name} style={{color: "red"}}>
+                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmTarget(player.name)}>Select</button>
+            </div>
+          )
+        } else {
+          return (
+            <div key={player.name} style={{color: "black"}}>
+                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} 
+            </div>
+          )
+        }
       })}
 
       <h2>Stack</h2>
@@ -79,12 +101,15 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
         if (card.name === "Bang!") {
           return (
             <Bang 
+              socket={socket}
               cardDigit={card.digit} 
               cardType={card.type} 
               key={card.digit + card.type}
               setSelectPlayerTarget={setSelectPlayerTarget}
+              currentRoom={currentRoom}
               setActiveCard={setActiveCard}
-              isPlayable={card.isPlayable} />
+              isPlayable={card.isPlayable}
+              username={username} />
               )
         } else {
           return (

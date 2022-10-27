@@ -140,6 +140,7 @@ function App() {
         <Game 
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
+          setAllPlayersInfo={setAllPlayersInfo}
           selectPlayerTarget={selectPlayerTarget}
           setSelectPlayerTarget={setSelectPlayerTarget}
           username={username}

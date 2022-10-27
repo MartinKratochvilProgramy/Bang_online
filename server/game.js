@@ -16,7 +16,7 @@ class Game {
                 isLosingHealth: false,
                 character: {
                     role: null,
-                    startingHandSize: 3,
+                    startingHandSize: 1,
                     health: 2
                 }
             }
@@ -248,6 +248,22 @@ class Game {
             })
         }
         return state;
+    }
+
+    getPlayersInRange(playerName, range) {
+        // returns array of players closer than range to playerName
+        const arr = Object.keys(this.players) // array of player names;
+
+        const playerIndex = arr.indexOf(playerName) + arr.length;
+        const concatArray = arr.concat(arr.concat(arr));
+        let result = [];
+
+        for (let i = 0; i < concatArray.length; i++) {
+            if (Math.abs(i - playerIndex) <= range && i !== playerIndex) {
+                result.push(concatArray[i]);
+            }
+        }
+        return result;
     }
 
     getCurrentPlayer() {
