@@ -19,6 +19,7 @@ function App() {
 
   const [myHand, setMyHand] = useState([]);
   const [allHands, setAllHands] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState("");
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
 
@@ -53,6 +54,13 @@ function App() {
       console.log("my hand: ", hand); // TODO: this runs multiple times??? 
       setMyHand(hand);
     })
+
+    socket.on("update_hands", () => {
+      if (username === "") return;
+      if (currentRoom === null) return;
+      socket.emit("get_my_hand", {username, currentRoom});
+    })
+
   }, [username, currentRoom])
 
   const joinRoom = (e) => {
@@ -113,6 +121,9 @@ function App() {
           setSelectPlayerTarget={setSelectPlayerTarget}
           username={username}
           socket={socket}
+          currentRoom={currentRoom}
+          currentPlayer={currentPlayer}
+          setCurrentPlayer={setCurrentPlayer}
         />
       :
        null

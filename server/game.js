@@ -33,6 +33,9 @@ class Game {
             this.putStackIntoDeck();
         }
         for (let i = 0; i < numToDraw; i++) {
+            // if no cards in deck, put stack into deck
+            if (this.deck.length === 0) this.putStackIntoDeck();
+
             const card = this.deck[0];
             if (playerTurn && card.name !== "Mancato!") card.isPlayable = true;
             this.players[playerName].hand.push(card);
@@ -159,12 +162,10 @@ class Game {
             this.draw(this.players[player].character.startingHandSize, player);
         }
 
-        // for (let i = 0; i < this.numOfPlayers; i++) {
-        //     this.draw(this.players[i].character.startingHandSize, i);
-        // }
-        console.log();
+
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
         this.setAllPlayable(firstPlayerName);
+        this.setNotPlayable("Mancato!", firstPlayerName);
 
         console.log("Game started!");
     }
@@ -182,7 +183,7 @@ class Game {
         this.setAllNotPlayable(previousPlayerName);
         this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
 
-        console.log("End of turn");
+        console.log("End of turn, next player: ", currentPlayerName);
     }
 
     getNumOfCardsInEachHand() {
@@ -196,6 +197,10 @@ class Game {
         //     state[i] = {handSize: this.players[i].hand.length}
         // }
         return state;
+    }
+
+    getCurrentPlayer() {
+        return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
     }
 
     getPlayerHand(playerName) {

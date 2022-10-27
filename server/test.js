@@ -15,7 +15,16 @@ console.log("-----------");
 // SBEVE TURN
 game.useBang("Joe") ;
 game.useMancato("Joe");
+console.log("Deck size: ", game.deck.length);
+console.log("Stack size: ", game.stack.length);
 game.endTurn();
+game.endTurn();
+game.endTurn();
+game.endTurn();
+game.endTurn();
+game.endTurn();
+console.log("Deck size: ", game.deck.length);
+console.log("Stack size: ", game.stack.length);
 
 // JOE TURN
 game.useBang("Sbeve");
@@ -24,10 +33,9 @@ game.useMancato("Sbeve");
 console.log("Stack: ", game.stack);
 
 game.putStackIntoDeck();
-game.draw(4);
-console.log("JOE HAND: ", game.getPlayerHand("Joe"));
+console.log("Deck: ", game.deck);
+game.draw(1);
 game.useBang("Sbeve");
-console.log("SBEVE HAND: ", game.getPlayerHand("Sbeve"));
 game.useMancato("Sbeve");
 
 // game.getHands();
