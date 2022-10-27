@@ -16,7 +16,7 @@ class Game {
                 isLosingHealth: false,
                 character: {
                     role: null,
-                    startingHandSize: 1,
+                    startingHandSize: 3,
                     health: 2
                 }
             }
@@ -75,7 +75,7 @@ class Game {
         const cardToDiscard = this.players[playerName].hand.splice(cardIndex, 1)[0];
         cardToDiscard.isPlayable = false;
         // place card on deck
-        this.stack.push(cardToDiscard);
+        this.stack.unshift(cardToDiscard);
 
         console.log(`Player ${playerName} used ${cardName}`, target ? `on ${target}` : "");
     }
@@ -99,6 +99,8 @@ class Game {
         this.setNotPlayable("Mancato!", this.playerPlaceHolder);
 
         this.setIsLosingHealth(false, playerName);
+
+        console.log("stack: ", this.stack);
     }
 
     loseHealth(playerName) {
@@ -266,6 +268,10 @@ class Game {
 
     getPlayerTurn() {
         console.log("Player turn : ", this.players[this.playerRoundId].name)
+    }
+
+    getTopStackCard() {
+        return this.stack[0]
     }
 
     getDeck() {

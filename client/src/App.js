@@ -21,6 +21,7 @@ function App() {
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
+  const [topStackCard, setTopStackCard] = useState({});
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
 
@@ -51,6 +52,14 @@ function App() {
       setAllPlayersInfo(data);
     })
 
+    socket.on("current_player", playerName => {
+      console.log("Get my hand...");
+      if (username === "") return;
+      if (currentRoom === null) return;
+      setCurrentPlayer(playerName);
+      socket.emit("get_my_hand", {username, currentRoom});
+    })
+
     socket.on("my_hand", hand => {
       console.log("my hand: ", hand); // TODO: this runs multiple times??? 
       setMyHand(hand);
@@ -68,6 +77,11 @@ function App() {
 
     socket.on("update_all_players_info", (players) => {
       setAllPlayersInfo(players);
+    })
+
+    socket.on("update_top_stack_card", (card) => {
+      console.log("Update top stack", card);
+      setTopStackCard(card);
     })
 
   }, [username, currentRoom])
@@ -132,8 +146,8 @@ function App() {
           socket={socket}
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
-          setCurrentPlayer={setCurrentPlayer}
           playersLosingHealth={playersLosingHealth}
+          topStackCard={topStackCard}
         />
       :
        null

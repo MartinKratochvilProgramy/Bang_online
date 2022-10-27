@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Bang from './cards/Bang';
 import Mancato from './cards/Mancato';
 
-export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, setCurrentPlayer, playersLosingHealth }) { 
+export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
+  
+  const [nextTurn, setNextTurn] = useState(true);
   
   useEffect(() => {
-    socket.on("current_player", playerName => {
-      console.log("Get my hand...");
-      setCurrentPlayer(playerName);
-      socket.emit("get_my_hand", {username, currentRoom});
-    })
+    // disable next turn button if health decision req on other players
+    setNextTurn(true);
+    for (const player of playersLosingHealth) {
+      if (player.isLosingHealth) {
+        setNextTurn(false);
+        break;
+      }
+    }
   
-  }, [socket, setCurrentPlayer, username, currentRoom])
+  }, [playersLosingHealth])
   
 
   let playerStyles;
@@ -54,6 +59,11 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
         )
       })}
 
+      <h2>Stack</h2>
+        <button> 
+            {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
+        </button>  
+
       <h2>My hand</h2>
       <p>Player name: {username}</p>
       {allPlayersInfo.map(player => {
@@ -88,11 +98,11 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
       })}
 
       <br />
-      {currentPlayer === username ? <button onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn) ? <button onClick={endTurn}>End turn</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (
-            <button onClick={loseHealth}>Lose health</button>
+            <button key={username} onClick={loseHealth}>Lose health</button>
           )
         }
         return (null)
