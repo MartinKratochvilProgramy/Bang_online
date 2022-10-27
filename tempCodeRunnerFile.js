@@ -1,1 +1,0 @@
-console.log(Object.keys(players).find(key => players[key].id === 1));
