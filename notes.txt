@@ -15,3 +15,10 @@ endTurn()
 -> setAllPlayable(B)
 
 use isPlayable state to display UI and check if socket functions are allowed
+
+
+
+
+playBang() -> isLosingHealth: true
+playMancato -> isLosingHealth: false
+loseHealth -> isLosingHealth: false

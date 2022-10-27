@@ -85,7 +85,7 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game = new Game(data.players, deck);
     rooms[roomName].game.startGame();
-    io.to(roomName).emit("game_started", rooms[roomName].game.getNumOfCardsInEachHand());
+    io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
     
     const currentPlayer = rooms[roomName].game.getCurrentPlayer();
     io.to(roomName).emit("current_player", currentPlayer);
@@ -102,13 +102,24 @@ io.on("connection", (socket) => {
     rooms[roomName].game.useBang(data.target);
     // update hands
     io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
   })
 
   socket.on("play_mancato", (data) => {
     const roomName = data.currentRoom;
     // play Bang!
     rooms[roomName].game.useMancato(data.username);
-    // update hands
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    io.to(roomName).emit("update_hands");
+  })
+
+  socket.on("lose_health", (data) => {
+    const roomName = data.currentRoom;
+    // lose health
+    rooms[roomName].game.loseHealth(data.username);
+    // update players {name, numberOfCards, health}
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_hands");
   })
 

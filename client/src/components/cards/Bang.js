@@ -3,7 +3,9 @@ import React from 'react'
 export default function Bang({ cardDigit, cardType, setSelectPlayerTarget, isPlayable }) {
 
     function playBang() {
+      if (isPlayable) {
         setSelectPlayerTarget(true);
+      }
     }
 
     let styles;

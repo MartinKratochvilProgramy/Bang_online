@@ -5,6 +5,7 @@ class Game {
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
+        this.playerPlaceHolder = null;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -12,9 +13,11 @@ class Game {
                 id: i,
                 hand: [],
                 table: [],
-                role: null,
+                isLosingHealth: false,
                 character: {
-                    startingHandSize: 2
+                    role: null,
+                    startingHandSize: 1,
+                    health: 2
                 }
             }
         }
@@ -87,12 +90,26 @@ class Game {
         this.discard("Bang!", playerName, target);
 
         this.setPlayable("Mancato!", target);
+        this.setAllNotPlayable(playerName);
+        this.playerPlaceHolder = playerName;
+        
+        this.setIsLosingHealth(true, target);
     }
 
     useMancato(playerName) {
         // const playerId = this.players[playerName].id;
         this.discard("Mancato!", playerName);
 
+        this.setNotPlayable("Mancato!", playerName);
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+
+        this.setIsLosingHealth(false, playerName);
+    }
+
+    loseHealth(playerName) {
+        this.players[playerName].character.health -= 1;
+        this.players[playerName].isLosingHealth = false;
         this.setNotPlayable("Mancato!", playerName);
     }
 
@@ -155,6 +172,10 @@ class Game {
         this.shuffleDeck();
     }
 
+    setIsLosingHealth(bool, player) {
+        this.players[player].isLosingHealth = bool;
+    }
+
     startGame() {
         // each player draws startingHandSize cards
         //this.shuffleDeck(); // TODO: uncomment
@@ -182,20 +203,56 @@ class Game {
 
         this.setAllNotPlayable(previousPlayerName);
         this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+        this.setNotPlayable("Mancato!", currentPlayerName);
 
         console.log("End of turn, next player: ", currentPlayerName);
     }
 
+    getAllPlayersInfo() {
+        // returns array [{name, numberOfCards, health}]
+        let state = [];
+        for (var player of Object.keys(this.players)) {
+            state.push({
+                name: player,
+                numberOfCards: this.players[player].hand.length,
+                health: this.players[player].character.health
+            })
+        }
+        return state;
+    }
+
     getNumOfCardsInEachHand() {
-        let state = []
+        // returns array [{name, numberOfCards}]
+        let state = [];
         for (var player of Object.keys(this.players)) {
             state.push({
                 name: player,
                 numberOfCards: this.players[player].hand.length})
         }
-        // for (let i = 0; i < this.numOfPlayers; i++) {
-        //     state[i] = {handSize: this.players[i].hand.length}
-        // }
+        return state;
+    }
+
+    healthOfEachPlayer() {
+        // returns array [{name, numberOfCards}]
+        // TODO: this is not being used
+        let state = [];
+        for (var player of Object.keys(this.players)) {
+            state.push({
+                name: player,
+                healt: this.players[player].character.health})
+        }
+        return state;
+    }
+
+    getPlayersLosingHealth() {
+        // return array [{name, isLosingHealth}]
+        let state = [];
+        for (var player of Object.keys(this.players)) {
+            state.push({
+                name: player,
+                isLosingHealth: this.players[player].isLosingHealth
+            })
+        }
         return state;
     }
 

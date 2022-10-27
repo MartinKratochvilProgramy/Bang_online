@@ -18,7 +18,8 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
 
   const [myHand, setMyHand] = useState([]);
-  const [allHands, setAllHands] = useState([]);
+  const [allPlayersInfo, setAllPlayersInfo] = useState([]);
+  const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
@@ -47,7 +48,7 @@ function App() {
         socket.emit("get_my_hand", {username, currentRoom});
       }
       console.log("all hands: ", data);
-      setAllHands(data);
+      setAllPlayersInfo(data);
     })
 
     socket.on("my_hand", hand => {
@@ -59,6 +60,14 @@ function App() {
       if (username === "") return;
       if (currentRoom === null) return;
       socket.emit("get_my_hand", {username, currentRoom});
+    })
+
+    socket.on("update_players_losing_health", (players) => {
+      setPlayersLosingHealth(players);
+    })
+
+    socket.on("update_all_players_info", (players) => {
+      setAllPlayersInfo(players);
     })
 
   }, [username, currentRoom])
@@ -116,7 +125,7 @@ function App() {
       {gameStarted ? 
         <Game 
           myHand={myHand}
-          allHands={allHands}
+          allPlayersInfo={allPlayersInfo}
           selectPlayerTarget={selectPlayerTarget}
           setSelectPlayerTarget={setSelectPlayerTarget}
           username={username}
@@ -124,6 +133,7 @@ function App() {
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
           setCurrentPlayer={setCurrentPlayer}
+          playersLosingHealth={playersLosingHealth}
         />
       :
        null
