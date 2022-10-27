@@ -37,7 +37,8 @@ export default function Game({ myHand, allHands, selectPlayerTarget, setSelectPl
               cardDigit={card.digit} 
               cardType={card.type} 
               key={card.digit + card.type}
-              setSelectPlayerTarget={setSelectPlayerTarget} />
+              setSelectPlayerTarget={setSelectPlayerTarget}
+              isPlayable={card.isPlayable} />
           )
         } else {
           return (
