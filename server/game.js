@@ -16,7 +16,7 @@ class Game {
                 isLosingHealth: false,
                 character: {
                     role: null,
-                    startingHandSize: 1,
+                    startingHandSize: 3,
                     health: 2
                 }
             }

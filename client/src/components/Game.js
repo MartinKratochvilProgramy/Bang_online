@@ -22,14 +22,6 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
-    // let newAllPlayersInfo = [];
-    // for (let i = 0; i < allPlayersInfo.length; i++) {
-    //   if (allPlayersInfo[i].name in players) {
-    //     newAllPlayersInfo.push(allPlayersInfo[i])
-    //     newAllPlayersInfo[i].style = {color: "red"};
-    //   }
-    // }
-    // setAllPlayersInfo(newAllPlayersInfo);
   })
   
 
