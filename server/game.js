@@ -5,7 +5,6 @@ class Game {
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
-        this.actionExpected = null;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -24,16 +23,23 @@ class Game {
     draw(numToDraw, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
-
+        
+        const currentTurnPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId);
+        let playerTurn = false;
+        if (currentTurnPlayerName === playerName) playerTurn = true;
 
         if (this.deck.length <= 0) {
             console.log("DECK EMPTY!");
             this.putStackIntoDeck();
         }
         for (let i = 0; i < numToDraw; i++) {
-            this.players[playerName].hand.push(this.deck[0]);
+            const card = this.deck[0];
+            if (playerTurn && card.name !== "Mancato!") card.isPlayable = true;
+            this.players[playerName].hand.push(card);
             this.deck.shift();
         }
+
+
         if (numToDraw === 1) {
             console.log(`Player ${playerName} drew ${numToDraw} card`);
         } else {
@@ -41,58 +47,50 @@ class Game {
         }
     }
 
-    useCard(cardName, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), target=null) {
+    discard(cardName, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), target=null) {
         // remove card from playerId hand and place it to the end of stack
         const playerId = this.players[playerName].id;
 
-        // not your turn and no actionsExpected
-        if (playerId !== this.playerRoundId && this.actionExpected == null) {
-            console.log("Not your turn!")
-            return;
+        // find if card in player hand and isPlayable = true
+        let foundCard = false;
+        for (var card of this.players[playerName].hand) {
+            if (card.name === cardName && card.isPlayable) {
+                foundCard = true;
+                break;
+            }
         }
-        
-        // check if you can play
-        if (this.actionExpected) {
-            // correct player?
-            if (this.actionExpected.player !== playerName) {
-                console.log("Not your turn!");
-                return;
-            }
-            // correct card?
-            if (this.actionExpected.cardName !== cardName) {
-                console.log("Not the right card!");
-                return;
-            }
+        if (!foundCard) {
+            console.log(`Card ${cardName} not in hand!`);
+            return;
         }
 
         // if card not in hand, return
-        if(!this.players[playerName].hand.some(card => card.name === cardName)) {
-            console.log(`Card ${cardName} not in hand!`);
-            return;
-        };
+        // if(!this.players[playerName].hand.some(card => card.name === cardName)) {
+        //     console.log(`Card ${cardName} not in hand!`);
+        //     return;
+        // };
+
         // remove card from hand
         const cardIndex = this.players[playerName].hand.findIndex(card => card.name === cardName);
-        const card = this.players[playerName].hand.splice(cardIndex, 1)[0];
+        const cardToDiscard = this.players[playerName].hand.splice(cardIndex, 1)[0];
+        cardToDiscard.isPlayable = false;
         // place card on deck
-        this.stack.push(card);
+        this.stack.push(cardToDiscard);
 
         console.log(`Player ${playerName} used ${cardName}`, target ? `on ${target}` : "");
     }
 
     useBang(target, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
-        this.useCard("Bang!", playerName, target);
+        this.discard("Bang!", playerName, target);
 
-        this.actionExpected = {
-            player: target,
-            cardName: "Mancato!"
-        }
+        this.setPlayable("Mancato!", target);
     }
 
     useMancato(playerName) {
         // const playerId = this.players[playerName].id;
-        this.useCard("Mancato!", playerName);
+        this.discard("Mancato!", playerName);
 
-        this.actionExpected = null;
+        this.setNotPlayable("Mancato!", playerName);
     }
 
     shuffleDeck() {
@@ -111,6 +109,38 @@ class Game {
         }
 
         console.log("Deck shuffled");
+    }
+
+    setPlayable(cardName, playerName) {
+        // sets cardName in playerName hand to isPlayable = true
+        for (var card of this.players[playerName].hand) {
+            if (card.name === cardName) {
+                card.isPlayable = true;
+            }
+        }
+    }
+
+    setNotPlayable(cardName, playerName) {
+        // sets cardName in playerName hand to isPlayable = false
+        for (var card of this.players[playerName].hand) {
+            if (card.name === cardName) {
+                card.isPlayable = false;
+            }
+        }
+    }
+
+    setAllPlayable(playerName) {
+        // sets all cards in playerName hand to isPlayable = true
+        for (var card of this.players[playerName].hand) {
+            card.isPlayable = true;
+        }
+    }
+
+    setAllNotPlayable(playerName) {
+        // sets cards in playerName hand to isPlayable = false
+        for (var card of this.players[playerName].hand) {
+            card.isPlayable = false;
+        }
     }
 
     putStackIntoDeck() {
@@ -132,16 +162,25 @@ class Game {
         // for (let i = 0; i < this.numOfPlayers; i++) {
         //     this.draw(this.players[i].character.startingHandSize, i);
         // }
+        console.log();
+        const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
+        this.setAllPlayable(firstPlayerName);
 
         console.log("Game started!");
     }
 
     endTurn() {
+        //find who was previous player
+        const previousPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
         // move playerRoundId forward
         this.playerRoundId += 1;
         if (this.playerRoundId >= this.numOfPlayers) {
             this.playerRoundId = 0;
         }
+        const currentPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+
+        this.setAllNotPlayable(previousPlayerName);
+        this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
 
         console.log("End of turn");
     }

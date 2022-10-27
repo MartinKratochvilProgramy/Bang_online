@@ -1,0 +1,17 @@
+add isPlayable: bool to card object
+
+create funsctions that set isPlayable true/false for card typep for layer
+-> setPlayable(cardName, playerName)
+-> setNotPlayable(cardName, playerName)
+-> setAllPlayable(playerName)
+-> setAllNotPlayable(playerName)
+
+then on actions use said funsctions
+-> Bang! A to B => setPlayable(Mancato!, B)
+-> B plays Mancato! -> setAllNotPlayable(Mancato!, B)
+
+endTurn() 
+-> setAllNotPlayable(A)
+-> setAllPlayable(B)
+
+use isPlayable state to display UI and check if socket functions are allowed
