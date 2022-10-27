@@ -99,8 +99,6 @@ class Game {
         this.setNotPlayable("Mancato!", this.playerPlaceHolder);
 
         this.setIsLosingHealth(false, playerName);
-
-        console.log("stack: ", this.stack);
     }
 
     loseHealth(playerName) {

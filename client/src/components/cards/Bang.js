@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Bang({ socket, cardDigit, cardType, setActiveCard, setSelectPlayerTarget, isPlayable }) {
+export default function Bang({ cardDigit, cardType, setActiveCard, setSelectPlayerTarget, isPlayable }) {
 
     function handleClick() {
-      setActiveCard({cardDigit, cardType});
+      setActiveCard({name: "Bang!", cardDigit, cardType});
       if (isPlayable) {
         setSelectPlayerTarget(true);
       }

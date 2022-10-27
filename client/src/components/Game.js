@@ -27,12 +27,13 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
     playerStyles = {color: "black"};
   }
 
-  function playBang(target) {
-    console.log("target: ", target);
+  function confirmTarget(target) {
     setSelectPlayerTarget(false);
     const cardDigit = activeCard.cardDigit;
     const cardType = activeCard.cardType;
-    socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
+    if (activeCard.name === "Bang!") {
+      socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
+    }
   }
 
   function loseHealth() {
@@ -53,7 +54,7 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
         if (player.name === username) return(null); // don't display my hand size
         return (
           <div key={player.name} style={playerStyles}>
-              Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} {selectPlayerTarget ? <button onClick={() => playBang(player.name)}>Select</button> : null}
+              Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} {selectPlayerTarget ? <button onClick={() => confirmTarget(player.name)}>Select</button> : null}
           </div>
         )
       })}
@@ -92,7 +93,6 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
               socket={socket}
               cardDigit={card.digit} 
               cardType={card.type} 
-              setActiveCard={setActiveCard}
               username={username}
               currentRoom={currentRoom}
               isPlayable={card.isPlayable} />

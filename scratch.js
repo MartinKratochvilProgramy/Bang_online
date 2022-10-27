@@ -1,14 +1,17 @@
-const players = [
-    {name: "Joe", id: 1},
-    {name: "Joe", id: 2}
-]
+const players = {
+    "Sbeve": {name: "Joe", id: 1},
+    "Joe": {name: "Joe", id: 2},
+    "Marvin": {name: "Joe", id: 2},
+    "Samuel": {name: "Joe", id: 2},
+    "Table": {name: "Joe", id: 2},
+}
 
-console.log(players.findIndex(item => (item.name === "Joe" && item.id === 2)));
 // console.log(Object.keys(players));
 
 // for (var key of Object.keys(players)) console.log(key);
 
-// console.log(Object.keys(players));
+console.log(Object.keys(players));
+console.log(players.indexOf());
 // console.log(Object.keys(players).find(key => players[key].id === 1));
 // console.log(Object.keys(players).find(key => key === "Joe"));
 
