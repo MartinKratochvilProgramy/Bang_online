@@ -35,7 +35,7 @@ const deck = [
     isPlayable: false
     },
     {
-    name: "Bang!",
+    name: "Mancato!",
     rimColor: "yellow",
     digit: 6,
     type: "spades",
@@ -49,7 +49,7 @@ const deck = [
     isPlayable: false
     },
     {
-    name: "Bang!",
+    name: "Mancato!",
     rimColor: "yellow",
     digit: 8,
     type: "spades",
