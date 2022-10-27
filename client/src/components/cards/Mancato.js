@@ -1,16 +1,19 @@
 import React from 'react'
 
-export default function Mancato({ cardDigit, cardType, playMancato, isPlayable }) {
+export default function Mancato({ socket, cardDigit, cardType, isPlayable, username, currentRoom }) {
 
     let styles;
     if (isPlayable) {
       styles = {color: "red"}
     } 
-    // disallow
-    if (!isPlayable) playMancato = null;
+    
+    function handleClick() {
+      if (!isPlayable) return;
+      socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
+    }
 
   return (
-    <button onClick={playMancato} style={styles}>
+    <button onClick={handleClick} style={styles}>
         Mancato! <br /> {cardDigit} {cardType}
     </button>
   )

@@ -98,7 +98,7 @@ io.on("connection", (socket) => {
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;
     // play Bang!
-    rooms[roomName].game.useBang(data.target);
+    rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType);
     // update hands
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
@@ -108,7 +108,7 @@ io.on("connection", (socket) => {
   socket.on("play_mancato", (data) => {
     const roomName = data.currentRoom;
     // play Mancato!
-    rooms[roomName].game.useMancato(data.username);
+    rooms[roomName].game.useMancato(data.username, data.cardDigit, data.cardType);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());

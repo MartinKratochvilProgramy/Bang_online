@@ -5,6 +5,7 @@ import Mancato from './cards/Mancato';
 export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
+  const [activeCard, setActiveCard] = useState({});
   
   useEffect(() => {
     // disable next turn button if health decision req on other players
@@ -29,11 +30,9 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
   function playBang(target) {
     console.log("target: ", target);
     setSelectPlayerTarget(false);
-    socket.emit("play_bang", {username, target, currentRoom});
-  }
-
-  function playMancato() {
-    socket.emit("play_mancato", {username, currentRoom});
+    const cardDigit = activeCard.cardDigit;
+    const cardType = activeCard.cardType;
+    socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
   }
 
   function loseHealth() {
@@ -83,15 +82,19 @@ export default function Game({ myHand, allPlayersInfo, selectPlayerTarget, setSe
               cardType={card.type} 
               key={card.digit + card.type}
               setSelectPlayerTarget={setSelectPlayerTarget}
+              setActiveCard={setActiveCard}
               isPlayable={card.isPlayable} />
-          )
+              )
         } else {
           return (
-            <Mancato 
+            <Mancato
+              key={card.digit + card.type}
+              socket={socket}
               cardDigit={card.digit} 
               cardType={card.type} 
-              key={card.digit + card.type}
-              playMancato={playMancato}
+              setActiveCard={setActiveCard}
+              username={username}
+              currentRoom={currentRoom}
               isPlayable={card.isPlayable} />
           )
         }

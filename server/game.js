@@ -53,7 +53,7 @@ class Game {
         }
     }
 
-    discard(cardName, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), target=null) {
+    discard(cardName, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), target=null) {
         // remove card from playerId hand and place it to the end of stack
         const playerId = this.players[playerName].id;
 
@@ -71,17 +71,17 @@ class Game {
         }
 
         // remove card from hand
-        const cardIndex = this.players[playerName].hand.findIndex(card => card.name === cardName);
+        const cardIndex = this.players[playerName].hand.findIndex(card => (card.name === cardName && card.digit === cardDigit && card.type === cardType));
         const cardToDiscard = this.players[playerName].hand.splice(cardIndex, 1)[0];
         cardToDiscard.isPlayable = false;
         // place card on deck
-        this.stack.unshift(cardToDiscard);
+        this.stack.push(cardToDiscard);
 
         console.log(`Player ${playerName} used ${cardName}`, target ? `on ${target}` : "");
     }
 
-    useBang(target, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
-        this.discard("Bang!", playerName, target);
+    useBang(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        this.discard("Bang!", cardDigit, cardType, playerName);
 
         this.setPlayable("Mancato!", target);
         this.setAllNotPlayable(playerName);
@@ -90,9 +90,9 @@ class Game {
         this.setIsLosingHealth(true, target);
     }
 
-    useMancato(playerName) {
-        // const playerId = this.players[playerName].id;
-        this.discard("Mancato!", playerName);
+    useMancato(playerName, cardDigit, cardType) {
+        console.log("Playing mancato: ", playerName, cardDigit, cardType);
+        this.discard("Mancato!", cardDigit, cardType, playerName);
 
         this.setNotPlayable("Mancato!", playerName);
         this.setAllPlayable(this.playerPlaceHolder);
@@ -271,7 +271,7 @@ class Game {
     }
 
     getTopStackCard() {
-        return this.stack[0]
+        return this.stack[this.stack.length - 1];
     }
 
     getDeck() {
