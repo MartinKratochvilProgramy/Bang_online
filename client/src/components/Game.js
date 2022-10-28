@@ -90,9 +90,9 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
             </div>
             {player.table.map(card => {
               return (
-                <div key={card.digit + card.type}>
-                  {card.name}
-                </div>
+                <button key={card.digit + card.type}>
+                  {card.name} <br /> {card.digit} {card.type}
+                </button>
               )
             })}
           </div>
@@ -100,33 +100,47 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       })}
 
       <h2>Stack</h2>
+      {topStackCard ? 
         <button> 
             {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
         </button>  
+      :
+        null      
+      }
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display my stats
         return (
-          <div key={player.name}>
-             Health: {player.health}
-          </div>
+          <>
+            <div key={player.name}>
+              Health: {player.health}
+            </div>
+            <div key={player.name}>
+              Table: <br />
+              {player.table.map(card => {
+                return (
+                  <button key={card.digit + card.type}>
+                    {card.name} <br /> {card.digit} {card.type}
+                  </button>
+                )
+              })}
+            </div>
+          
+          </>
         )
       })}
       
+      <p>Hand:</p>
       {myHand.map(card => {
         return(
           <Card 
               socket={socket}
-              cardDigit={card.digit} 
-              cardType={card.type} 
-              cardName={card.name}
-              key={card.digit + card.type}
+              card={card}
               setSelectPlayerTarget={setSelectPlayerTarget}
               currentRoom={currentRoom}
               setActiveCard={setActiveCard}
-              isPlayable={card.isPlayable}
               username={username} />
         )
       })}

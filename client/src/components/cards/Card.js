@@ -1,6 +1,12 @@
 import React from 'react'
 
-export default function Card({ socket, cardDigit, cardType, cardName, setActiveCard, setSelectPlayerTarget, currentRoom, isPlayable, username }) {
+export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, currentRoom, username }) {
+
+    // TODO: this is not necessary
+    const isPlayable = card.isPlayable
+    const cardName = card.name;
+    const cardDigit = card.digit;
+    const cardType = card.type;
 
     function handleClick() {
         if (!isPlayable) return;
@@ -22,20 +28,24 @@ export default function Card({ socket, cardDigit, cardType, cardName, setActiveC
         } else if (cardName === "Wells Fargo") {
           socket.emit("play_wellsfargo", {username, currentRoom, cardDigit, cardType});
 
+
         } else if (cardName === "Duel") {
-          setActiveCard({name: "Duel", cardDigit, cardType});
+          setActiveCard({name: cardName, cardDigit, cardType});
           setSelectPlayerTarget(true);
           socket.emit("request_players_in_range", {range: "max", currentRoom, username});
 
         } else if (cardName === "Cat Ballou") {
-          setActiveCard({name: "Cat Ballou", cardDigit, cardType});
+          setActiveCard({name: cardName, cardDigit, cardType});
           setSelectPlayerTarget(true);
           socket.emit("request_players_in_range", {range: "max", currentRoom, username});
 
         } else if (cardName === "Panico") {
-          setActiveCard({name: "Panico", cardDigit, cardType});
+          setActiveCard({name: cardName, cardDigit, cardType});
           setSelectPlayerTarget(true);
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
+        
+        } else if (cardName === "Apaloosa" || cardName === "Mustang") {
+          socket.emit("place_blue_card_on_table", {username, currentRoom, card});
         }
     }
 

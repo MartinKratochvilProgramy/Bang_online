@@ -3,12 +3,12 @@ const deck = require('./deck.js')
 
 const game = new Game(["Sbeve", "Joe"], deck);
 
-game.startGame();
+// game.startGame();
 // console.log(game.getPlayerHand("Sbeve"));
 // console.log(game.getPlayerHand("Joe"));
 console.log("-----------");
 
-console.log(game.getAllPlayersInfo());
+console.log(game.placeBlueCardOnTable());
 
 
 // // SBEVE TURN

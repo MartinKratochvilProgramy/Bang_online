@@ -1,35 +1,35 @@
 const table = [
     {
         name: "Barel",
-        type: "misc",
+        class: "misc",
         actionReqOnStart: false,
     },
 
     {
         name: "Apaloose",
-        type: "horse",
+        class: "horse",
         actionReqOnStart: false,
     },
     {
         name: "Mustang",
-        type: "horse",
+        class: "horse",
         actionReqOnStart: false,
     },
 
     {
         name: "Dynamite",
-        type: "misc",
+        class: "misc",
         actionReqOnStart: true,
     },
     {
         name: "Prigione",
-        type: "misc",
+        class: "misc",
         actionReqOnStart: true,
     },
 
     {
         name: "Vulcanic",
-        type: "gun",
+        class: "gun",
         actionReqOnStart: false,
     },
     ...

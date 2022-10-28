@@ -14,22 +14,7 @@ class Game {
             this.players[playerNames[i]] = {
                 id: i,
                 hand: [],
-                table: [
-                    {
-                        name: "Apaloosa",
-                        rimColor: "blue",
-                        digit: 69,
-                        type: "horse",
-                        actionReqOnStart: false,
-                    },
-                    {
-                        name: "Apaloosa",
-                        rimColor: "blue",
-                        digit: 69,
-                        type: "horse",
-                        actionReqOnStart: false,
-                    },
-                ],
+                table: [],
                 isLosingHealth: false,
                 character: new function () {
                     return(
@@ -170,6 +155,17 @@ class Game {
         currentPlayerHand.push(randomCard);
     }
 
+    placeBlueCardOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        
+        // remove card from hand
+        const cardIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
+        this.players[playerName].hand.splice(cardIndex, 1)[0];
+        console.log(`Player ${playerName} placed ${card.name} on table`);
+        
+        // place card on table
+        this.players[playerName].table.push(card)
+    }
+
     useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
         this.discard("Beer", cardDigit, cardType);
         console.log(`Player ${playerName} used Beer`);
@@ -202,10 +198,6 @@ class Game {
 
         this.duelActive = true;
         this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
-        
-    }
-
-    placeBlueCardOnTable() {
         
     }
 
