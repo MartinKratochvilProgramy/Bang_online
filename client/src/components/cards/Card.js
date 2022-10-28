@@ -6,15 +6,20 @@ export default function Card({ socket, cardDigit, cardType, cardName, setActiveC
         if (!isPlayable) return;
         
         if (cardName === "Bang!") {
-            setActiveCard({name: "Bang!", cardDigit, cardType});
-            if (isPlayable) {
-                setSelectPlayerTarget(true);
-                socket.emit("request_players_in_range", {range: 1, currentRoom, username});
-            }
+          setActiveCard({name: "Bang!", cardDigit, cardType});
+          setSelectPlayerTarget(true);
+          socket.emit("request_players_in_range", {range: 1, currentRoom, username});
 
         } else if (cardName === "Mancato!") {
-            socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
-        }
+          socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
+
+        } else if (cardName === "Beer") {
+          socket.emit("play_beer", {username, currentRoom, cardDigit, cardType});
+
+        } else if (cardName === "Cat Ballou") {
+          setActiveCard({name: "Cat Ballou", cardDigit, cardType});
+          setSelectPlayerTarget(true);
+          socket.emit("request_players_in_range", {range: 1, currentRoom, username});        }
     }
 
     let styles;

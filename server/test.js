@@ -4,18 +4,16 @@ const deck = require('./deck.js')
 const game = new Game(["Sbeve", "Joe"], deck);
 
 game.startGame();
-console.log(game.getPlayerHand("Sbeve"));
-console.log(game.getPlayerHand("Joe"));
+// console.log(game.getPlayerHand("Sbeve"));
+// console.log(game.getPlayerHand("Joe"));
 console.log("-----------");
 
-console.log(game.getAllPlayersInfo());
-console.log(game.players);
+console.log(game.getPlayerHand("Joe"));
+game.useCatBallou("Joe", 9, "spades")
+console.log(game.getPlayerHand("Joe"));
 
-// for (var player in game.players) {
-//     console.log(player, ": ", game.players[player].hand);
-// }
 
-// SBEVE TURN
+// // SBEVE TURN
 // game.useBang("Joe") ;
 // game.useMancato("Joe");
 // console.log("Deck size: ", game.deck.length);
@@ -33,10 +31,10 @@ console.log(game.players);
 // game.useBang("Sbeve");
 // game.useMancato("Sbeve");
 
-// console.log("Stack: ", game.stack);
+// // console.log("Stack: ", game.stack);
 
 // game.putStackIntoDeck();
-// console.log("Deck: ", game.deck);
+// // console.log("Deck: ", game.deck);
 // game.draw(1);
 // game.useBang("Sbeve");
 // game.useMancato("Sbeve");

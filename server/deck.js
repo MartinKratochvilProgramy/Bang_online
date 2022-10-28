@@ -1,6 +1,6 @@
 const deck = [
     {
-    name: "Beer",
+    name: "Cat Ballou",
     rimColor: "yellow",
     digit: 9,
     type: "spades",
@@ -21,7 +21,7 @@ const deck = [
     isPlayable: false
     },   
     {
-    name: "Bang!",
+    name: "Beer",
     rimColor: "yellow",
     digit: 3,
     type: "spades",
@@ -42,7 +42,7 @@ const deck = [
     isPlayable: false
     },
     {
-    name: "Mancato!",
+    name: "Beer",
     rimColor: "yellow",
     digit: 6,
     type: "spades",

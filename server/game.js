@@ -14,11 +14,14 @@ class Game {
                 hand: [],
                 table: [],
                 isLosingHealth: false,
-                character: {
-                    role: null,
-                    startingHandSize: 3,
-                    maxHealth: 2,
-                    health: 2
+                character: new function () {
+                    return(
+                        this.role = null,
+                        this.startingHandSize = 3,
+                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.health = this.maxHealth
+
+                    )
                 }
             }
         }
@@ -59,17 +62,17 @@ class Game {
         const playerId = this.players[playerName].id;
 
         // find if card in player hand and isPlayable = true
-        let foundCard = false;
-        for (var card of this.players[playerName].hand) {
-            if (card.name === cardName && card.isPlayable) {
-                foundCard = true;
-                break;
-            }
-        }
-        if (!foundCard) {
-            console.log(`Card ${cardName} not in hand!`);
-            return;
-        }
+        // let foundCard = false;
+        // for (var card of this.players[playerName].hand) {
+        //     if (card.name === cardName && card.isPlayable) {
+        //         foundCard = true;
+        //         break;
+        //     }
+        // }
+        // if (!foundCard) {
+        //     console.log(`Card ${cardName} not in hand!`);
+        //     return;
+        // }
 
         // remove card from hand
         const cardIndex = this.players[playerName].hand.findIndex(card => (card.name === cardName && card.digit === cardDigit && card.type === cardType));
@@ -78,11 +81,11 @@ class Game {
         // place card on deck
         this.stack.push(cardToDiscard);
 
-        console.log(`Player ${playerName} used ${cardName}`, target ? `on ${target}` : "");
     }
 
     useBang(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
         this.discard("Bang!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Bang! on ${target}`);
 
         this.setPlayable("Mancato!", target);
         this.setAllNotPlayable(playerName);
@@ -91,8 +94,21 @@ class Game {
         this.setIsLosingHealth(true, target);
     }
 
+    useCatBallou(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        // TODO: this only works on cards in hand, not table
+        this.discard("Cat Ballou", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Cat Ballou`);
+
+        // get random card from target hand
+        const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
+
+        this.discard(randomCard.name, randomCard.digit, randomCard.type, target);
+        console.log(`Player ${target} discarded ${randomCard.name}`);
+    }
+
     useMancato(playerName, cardDigit, cardType) {
         this.discard("Mancato!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Mancato!`);
 
         this.setNotPlayable("Mancato!", playerName);
         this.setAllPlayable(this.playerPlaceHolder);
@@ -103,8 +119,9 @@ class Game {
 
     useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
         this.discard("Beer", cardDigit, cardType);
+        console.log(`Player ${playerName} used Beer`);
 
-        this.players[playerName].character.healt
+        this.players[playerName].character.health += 1;
     }
 
     loseHealth(playerName) {
@@ -187,6 +204,7 @@ class Game {
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
         this.setAllPlayable(firstPlayerName);
         this.setNotPlayable("Mancato!", firstPlayerName);
+        this.setNotPlayable("Beer", firstPlayerName);
 
         console.log("Game started!");
     }
@@ -202,7 +220,11 @@ class Game {
         const currentPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
 
         this.setAllNotPlayable(previousPlayerName);
+
         this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+        if (this.health < this.maxHealth) {
+             this.setPlayable(currentPlayerName, "Beer") // let player play beer if not max HP
+        }
         this.setNotPlayable("Mancato!", currentPlayerName);
 
         console.log("End of turn, next player: ", currentPlayerName);

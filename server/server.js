@@ -116,6 +116,26 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
   })
 
+  socket.on("play_beer", (data) => {
+    const roomName = data.currentRoom;
+    // play Mancato!
+    rooms[roomName].game.useBeer(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
+  socket.on("play_cat_ballou", (data) => {
+    const roomName = data.currentRoom;
+    // play Cat Ballou
+    rooms[roomName].game.useCatBallou(data.target, data.cardDigit, data.cardType);
+    // update hands
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
   socket.on("lose_health", (data) => {
     const roomName = data.currentRoom;
     // lose health

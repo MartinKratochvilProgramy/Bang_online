@@ -35,8 +35,14 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
     setSelectPlayerTarget(false);
     const cardDigit = activeCard.cardDigit;
     const cardType = activeCard.cardType;
+    
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
+      setActiveCard({});
+
+    } else if (activeCard.name === "Cat Ballou") {
+      socket.emit("play_cat_ballou", {username, target, currentRoom, cardDigit, cardType });
+      setActiveCard({});
     }
   }
 
