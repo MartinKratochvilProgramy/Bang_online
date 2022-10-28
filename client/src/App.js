@@ -23,8 +23,6 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
 
-  const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
-
   const usernameRef = useRef();
   const newRoomRef = useRef();
 
@@ -143,8 +141,6 @@ function App() {
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
           setAllPlayersInfo={setAllPlayersInfo}
-          selectPlayerTarget={selectPlayerTarget}
-          setSelectPlayerTarget={setSelectPlayerTarget}
           username={username}
           socket={socket}
           currentRoom={currentRoom}

@@ -136,12 +136,22 @@ class Game {
     }
 
     usePanico(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
-        // TODO: this only works on cards in hand, not table
         this.discard("Panico", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Panico`);
-
+        
+        console.log("PLAYER TARGET");
+        // if targer is player, steal random card from his hand
         // get random card from target hand
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
+        if (randomCard.name === "Mancato!") {
+            // if chosen card Mancato! set isNotPlayable
+            randomCard.isPlayable = false
+        } else if (randomCard.name === "Bang!" && !this.bangCanBeUsed) {
+            // if chosen card Bang! set isNotPlayable if Bang! can!t be used
+            randomCard.isPlayable = false;
+        } else {
+            // set playable
+            randomCard.isPlayable = true;
+        }
         
         const currentPlayerHand = this.players[playerName].hand;
         const targetPlayerHand = this.players[target].hand;
@@ -153,6 +163,19 @@ class Game {
             }
         }
         currentPlayerHand.push(randomCard);
+    }
+
+    usePanicoOnTable(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        
+        for (let player of Object.keys(this.players)) {
+            // remove from table object where name === target
+            for (let j = 0; j < this.players[player].table.length; j++) {
+                if (this.players[player].table[j].name === target && this.players[player].table[j].digit === cardDigit && this.players[player].table[j].type === cardType) {
+                    const foundCard = this.players[player].table.splice(j, 1)[0];
+                    this.players[playerName].hand.push(foundCard);
+                }
+            }
+        }
     }
 
     placeHorseOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
+export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
+
+  const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
+  const [selectCardTarget, setSelectCardTarget] = useState(false);
   
   useEffect(() => {
     // disable next turn button if health decision req on other players
@@ -24,34 +27,37 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
   })
   
 
-  let playerStyles;
-  if (selectPlayerTarget) {
-    playerStyles = {color: "red"};
-  } else {
-    playerStyles = {color: "black"};
-  }
-
-  function confirmTarget(target) {
+  function confirmPlayerTarget(target) {
+    if (!selectPlayerTarget) return;
     setSelectPlayerTarget(false);
     const cardDigit = activeCard.cardDigit;
     const cardType = activeCard.cardType;
     
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
-      setActiveCard({});
 
     } else if (activeCard.name === "Duel") {
       socket.emit("play_duel", {username, target, currentRoom, cardDigit, cardType });
-      setActiveCard({});
 
     } else if (activeCard.name === "Cat Ballou") {
       socket.emit("play_cat_ballou", {username, target, currentRoom, cardDigit, cardType });
-      setActiveCard({});
 
     } else if (activeCard.name === "Panico") {
       socket.emit("play_panico", {username, target, currentRoom, cardDigit, cardType });
-      setActiveCard({});
     }
+    setActiveCard({});
+  }
+  
+  function confirmCardTarget (cardName, cardDigit, cardType) {
+    if(!selectCardTarget) return;
+    setSelectPlayerTarget(false);
+    setSelectCardTarget(false);
+    if (activeCard.name === "Cat Ballou") {
+      console.log("Card to be stolen: ", cardName);
+    } else if (activeCard.name === "Panico") {
+      socket.emit("play_panico", {username, target: cardName, currentRoom, cardDigit, cardType });
+    }
+    setActiveCard({});
   }
 
   function cancelTargetSelect() {
@@ -69,7 +75,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
 
   return (
     <div>
-      <h1 className={playerStyles}>Game</h1>
+      <h1>Game</h1>
       <p>Current player: {currentPlayer}</p>
       
       <h2>Other players:</h2>
@@ -83,14 +89,14 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
           colorStyles = {color: "black"}
         }
         return (
-          <div>
-            <div key={player.name} style={colorStyles}>
-                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} {selectPlayerTarget ? <button onClick={() => confirmTarget(player.name)}>Select</button> : null}
+          <div key={player.name}>
+            <div style={colorStyles}>
+                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmPlayerTarget(player.name)}>Select</button>
                 <br />
             </div>
             {player.table.map(card => {
               return (
-                <button key={card.digit + card.type}>
+                <button style={colorStyles} onClick={() => confirmCardTarget(card.name, card.digit, card.type)}>
                   {card.name} <br /> {card.digit} {card.type}
                 </button>
               )
@@ -140,6 +146,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
               card={card}
               key={card.digit + card.type}
               setSelectPlayerTarget={setSelectPlayerTarget}
+              setSelectCardTarget={setSelectCardTarget}
               currentRoom={currentRoom}
               setActiveCard={setActiveCard}
               username={username} />

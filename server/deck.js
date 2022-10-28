@@ -39,14 +39,14 @@ const deck = [
         isPlayable: false
     },
         {
-        name: "Bang!",
+        name: "Cat Ballou",
         rimColor: "yellow",
         digit: 2,
         type: "spades",
         isPlayable: false
     },
     {
-        name: "Bang!",
+        name: "Panico",
         rimColor: "yellow",
         digit: 3,
         type: "spades",

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, currentRoom, username }) {
+export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username }) {
 
     // TODO: this is not necessary
     const isPlayable = card.isPlayable
@@ -37,11 +37,13 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         } else if (cardName === "Cat Ballou") {
           setActiveCard({name: cardName, cardDigit, cardType});
           setSelectPlayerTarget(true);
+          setSelectCardTarget(true);
           socket.emit("request_players_in_range", {range: "max", currentRoom, username});
-
+          
         } else if (cardName === "Panico") {
           setActiveCard({name: cardName, cardDigit, cardType});
           setSelectPlayerTarget(true);
+          setSelectCardTarget(true);
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
         
         } else if (cardName === "Apaloosa" || cardName === "Mustang") {

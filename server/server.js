@@ -166,7 +166,7 @@ io.on("connection", (socket) => {
 
   socket.on("play_panico", (data) => {
     const roomName = data.currentRoom;
-
+    console.log("data: ", data);
     rooms[roomName].game.usePanico(data.target, data.cardDigit, data.cardType);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
