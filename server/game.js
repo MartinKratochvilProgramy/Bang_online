@@ -14,7 +14,22 @@ class Game {
             this.players[playerNames[i]] = {
                 id: i,
                 hand: [],
-                table: [],
+                table: [
+                    {
+                        name: "Apaloosa",
+                        rimColor: "blue",
+                        digit: 69,
+                        type: "horse",
+                        actionReqOnStart: false,
+                    },
+                    {
+                        name: "Apaloosa",
+                        rimColor: "blue",
+                        digit: 69,
+                        type: "horse",
+                        actionReqOnStart: false,
+                    },
+                ],
                 isLosingHealth: false,
                 character: new function () {
                     return(
@@ -190,6 +205,10 @@ class Game {
         
     }
 
+    placeBlueCardOnTable() {
+        
+    }
+
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
         this.setIsLosingHealth(false, playerName);
@@ -314,7 +333,8 @@ class Game {
             state.push({
                 name: player,
                 numberOfCards: this.players[player].hand.length,
-                health: this.players[player].character.health
+                health: this.players[player].character.health,
+                table: this.players[player].table
             })
         }
         return state;

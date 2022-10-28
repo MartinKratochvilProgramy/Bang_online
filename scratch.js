@@ -1,10 +1,36 @@
-const boolean = true
+const table = [
+    {
+        name: "Barel",
+        type: "misc",
+        actionReqOnStart: false,
+    },
 
-const char = new function () {
-        return(
-            this.maxHealth = 2,
-            this.health = this.maxHealth + (boolean ? 1 : 0)
-        )
-}
+    {
+        name: "Apaloose",
+        type: "horse",
+        actionReqOnStart: false,
+    },
+    {
+        name: "Mustang",
+        type: "horse",
+        actionReqOnStart: false,
+    },
 
-console.log(char);
+    {
+        name: "Dynamite",
+        type: "misc",
+        actionReqOnStart: true,
+    },
+    {
+        name: "Prigione",
+        type: "misc",
+        actionReqOnStart: true,
+    },
+
+    {
+        name: "Vulcanic",
+        type: "gun",
+        actionReqOnStart: false,
+    },
+    ...
+]

@@ -75,20 +75,28 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       <h2>Other players:</h2>
       {allPlayersInfo.map(player => {
         if (player.name === username) return(null); // don't display my hand size
+        let colorStyles;
         if (selectPlayerTarget && playersInRange.includes(player.name)) {
           // display players in range
-          return (
-            <div key={player.name} style={{color: "red"}}>
-                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmTarget(player.name)}>Select</button>
-            </div>
-          )
+          colorStyles = {color: "red"}
         } else {
-          return (
-            <div key={player.name} style={{color: "black"}}>
-                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} 
-            </div>
-          )
+          colorStyles = {color: "black"}
         }
+        return (
+          <div>
+            <div key={player.name} style={colorStyles}>
+                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} {selectPlayerTarget ? <button onClick={() => confirmTarget(player.name)}>Select</button> : null}
+                <br />
+            </div>
+            {player.table.map(card => {
+              return (
+                <div key={card.digit + card.type}>
+                  {card.name}
+                </div>
+              )
+            })}
+          </div>
+        )
       })}
 
       <h2>Stack</h2>
@@ -99,7 +107,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       <h2>My hand</h2>
       <p>Player name: {username}</p>
       {allPlayersInfo.map(player => {
-        if (player.name !== username) return(null); // don't display my hand size
+        if (player.name !== username) return(null); // display my stats
         return (
           <div key={player.name}>
              Health: {player.health}

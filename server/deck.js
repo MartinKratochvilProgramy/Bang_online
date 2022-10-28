@@ -2,35 +2,35 @@ const deck = [
     {
         name: "Duel",
         rimColor: "yellow",
-        digit: 7,
+        digit: 1,
         type: "spades",
         isPlayable: false
     },
         {
         name: "Bang!",
         rimColor: "yellow",
-        digit: 7,
-        type: "spades",
-        isPlayable: false
-    },
-        {
-        name: "Bang!",
-        rimColor: "yellow",
-        digit: 7,
-        type: "spades",
-        isPlayable: false
-    },
-        {
-        name: "Bang!",
-        rimColor: "yellow",
-        digit: 7,
+        digit: 2,
         type: "spades",
         isPlayable: false
     },
     {
         name: "Bang!",
         rimColor: "yellow",
-        digit: 7,
+        digit: 3,
+        type: "spades",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "spades",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 5,
         type: "spades",
         isPlayable: false
     },
@@ -44,14 +44,14 @@ const deck = [
     {
         name: "Diligenza",
         rimColor: "yellow",
-        digit: 5,
+        digit: 6,
         type: "spades",
         isPlayable: false
     },
     {
         name: "Wells Fargo",
         rimColor: "yellow",
-        digit: 1,
+        digit: 10,
         type: "spades",
         isPlayable: false
     },

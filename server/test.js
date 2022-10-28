@@ -8,9 +8,7 @@ game.startGame();
 // console.log(game.getPlayerHand("Joe"));
 console.log("-----------");
 
-console.log(game.getPlayerHand("Joe").length);
-game.usePanico("Joe", 10, "spades")
-console.log(game.getPlayerHand("Joe").length);
+console.log(game.getAllPlayersInfo());
 
 
 // // SBEVE TURN

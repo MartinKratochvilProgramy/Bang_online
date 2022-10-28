@@ -19,6 +19,7 @@ function App() {
 
   const [myHand, setMyHand] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
+  const [cardsOnTable, setCardsOnTable] = useState([])
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
@@ -78,6 +79,11 @@ function App() {
     socket.on("update_all_players_info", (players) => {
       // returns array [{name, numberOfCards, health}]
       setAllPlayersInfo(players);
+      console.log("Players info: ", players);
+    })
+
+    socket.on("update_cards_on_table", (cards) => {
+      setCardsOnTable(cards);
     })
 
     socket.on("update_top_stack_card", (card) => {

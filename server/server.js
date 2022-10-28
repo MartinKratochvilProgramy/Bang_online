@@ -98,8 +98,6 @@ io.on("connection", (socket) => {
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;
 
-    console.log(data);
-
     rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType, data.username);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
