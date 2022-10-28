@@ -43,6 +43,10 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
     } else if (activeCard.name === "Cat Ballou") {
       socket.emit("play_cat_ballou", {username, target, currentRoom, cardDigit, cardType });
       setActiveCard({});
+
+    } else if (activeCard.name === "Panico") {
+      socket.emit("play_panico", {username, target, currentRoom, cardDigit, cardType });
+      setActiveCard({});
     }
   }
 

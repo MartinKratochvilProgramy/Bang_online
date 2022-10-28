@@ -8,9 +8,9 @@ game.startGame();
 // console.log(game.getPlayerHand("Joe"));
 console.log("-----------");
 
-console.log(game.getPlayerHand("Joe"));
-game.useCatBallou("Joe", 9, "spades")
-console.log(game.getPlayerHand("Joe"));
+console.log(game.getPlayerHand("Joe").length);
+game.usePanico("Joe", 10, "spades")
+console.log(game.getPlayerHand("Joe").length);
 
 
 // // SBEVE TURN

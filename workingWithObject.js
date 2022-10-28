@@ -6,12 +6,39 @@ const players = {
     "Table": {name: "Joe", id: 2},
 }
 
+const targetPlayerHand = [
+  {
+    name: 'Mancato!',
+    rimColor: 'yellow',
+    digit: 2,
+    type: 'spades',
+    isPlayable: false
+  },
+  {
+    name: 'Beer',
+    rimColor: 'yellow',
+    digit: 3,
+    type: 'spades',
+    isPlayable: false
+  }
+]
+
+// remove card from hand
+for(var i = 0; i < targetPlayerHand.length; i++) {
+    if(targetPlayerHand[i].digit === 2 && targetPlayerHand[i].type === 'spades') {
+        targetPlayerHand.splice(i, 1);
+        break;
+    }
+}
+
+console.log("hand: ", targetPlayerHand);
+
 // console.log(Object.keys(players));
 
 // for (var key of Object.keys(players)) console.log(key);
 
-console.log(Object.keys(players));
-console.log(players.indexOf());
+// console.log(Object.keys(players));
+// console.log(players.indexOf());
 // console.log(Object.keys(players).find(key => players[key].id === 1));
 // console.log(Object.keys(players).find(key => key === "Joe"));
 

@@ -136,6 +136,16 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
   })
 
+  socket.on("play_panico", (data) => {
+    const roomName = data.currentRoom;
+    // play Cat Ballou
+    rooms[roomName].game.usePanico(data.target, data.cardDigit, data.cardType);
+    // update hands
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
   socket.on("lose_health", (data) => {
     const roomName = data.currentRoom;
     // lose health

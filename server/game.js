@@ -17,10 +17,9 @@ class Game {
                 character: new function () {
                     return(
                         this.role = null,
-                        this.startingHandSize = 3,
-                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
-                        this.health = this.maxHealth
-
+                        this.maxHealth = 1 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.health = this.maxHealth,
+                        this.startingHandSize = this.maxHealth
                     )
                 }
             }
@@ -104,6 +103,26 @@ class Game {
 
         this.discard(randomCard.name, randomCard.digit, randomCard.type, target);
         console.log(`Player ${target} discarded ${randomCard.name}`);
+    }
+
+    usePanico(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        // TODO: this only works on cards in hand, not table
+        this.discard("Panico", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Panico`);
+
+        // get random card from target hand
+        const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
+        
+        const currentPlayerHand = this.players[playerName].hand;
+        const targetPlayerHand = this.players[target].hand;
+        // remove card from hand
+        for(var i = 0; i < targetPlayerHand.length; i++) {
+            if(targetPlayerHand[i].digit === randomCard.digit && targetPlayerHand[i].type === randomCard.type) {
+                targetPlayerHand.splice(i, 1);
+                break;
+            }
+        }
+        currentPlayerHand.push(randomCard);
     }
 
     useMancato(playerName, cardDigit, cardType) {
@@ -280,13 +299,14 @@ class Game {
 
     getPlayersInRange(playerName, range) {
         // returns array of players closer than range to playerName
+        // return array of all players if range === "max"
 
         const arr = Object.keys(this.players)   // array of player names;
 
         if (range === "max") return arr;        // on max range, return all
 
         const playerIndex = arr.indexOf(playerName) + arr.length;
-        const concatArray = arr.concat(arr.concat(arr));
+        const concatArray = arr.concat(arr.concat(arr));    // = [...arr, ...arr, ...arr]
         let result = [];
 
         for (let i = 0; i < concatArray.length; i++) {

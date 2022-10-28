@@ -7,6 +7,13 @@ const deck = [
     isPlayable: false
     },
     {
+    name: "Panico",
+    rimColor: "yellow",
+    digit: 10,
+    type: "spades",
+    isPlayable: false
+    },
+    {
     name: "Bang!",
     rimColor: "yellow",
     digit: 1,
