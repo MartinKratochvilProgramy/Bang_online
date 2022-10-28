@@ -1,9 +1,9 @@
 const players = {
-    "Sbeve": {name: "Joe", id: 1},
-    "Joe": {name: "Joe", id: 2},
-    "Marvin": {name: "Joe", id: 2},
-    "Samuel": {name: "Joe", id: 2},
-    "Table": {name: "Joe", id: 2},
+    "Sbeve": {name: "Joe", id: 1, table: [{name: "Mustang"}]},
+    "Joe": {name: "Joe", id: 3, table: [{name: "Apaloosa"}]},
+    "Marvin": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
+    "Samuel": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
+    "Table": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
 }
 
 const targetPlayerHand = [
@@ -16,18 +16,28 @@ const targetPlayerHand = [
   },
 ]
 
+for (let player of Object.keys(players)) {
+  // remove from table object where name ===
+  for (let j = 0; j < players[player].table.length; j++) {
+    if (players[player].table[j].name === "Apaloosa") {
+      players[player].table.splice(j, 1)[0];
+    }
+  }
+}
+
+console.log(players);
 // find card in hand
-console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
+// console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
 
 // console.log("hand: ", targetPlayerHand);
 
-// console.log(Object.keys(players));
+// console.log(Object.keys(players).includes("Sbeve"));
 
 // for (var key of Object.keys(players)) console.log(key);
 
 // console.log(Object.keys(players));
 // console.log(players.indexOf());
-console.log(Object.keys(players).find(key => players[key].id === 1));
+// console.log(Object.keys(players).find(key => players[key].id === 1));
 // console.log(Object.keys(players).find(key => key === "Joe"));
 
 // const players = {
