@@ -19,7 +19,7 @@ export default function Card({ socket, cardDigit, cardType, cardName, setActiveC
         } else if (cardName === "Cat Ballou") {
           setActiveCard({name: "Cat Ballou", cardDigit, cardType});
           setSelectPlayerTarget(true);
-          socket.emit("request_players_in_range", {range: 1, currentRoom, username});        }
+          socket.emit("request_players_in_range", {range: "max", currentRoom, username});        }
     }
 
     let styles;

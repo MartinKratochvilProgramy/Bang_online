@@ -46,6 +46,11 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
     }
   }
 
+  function cancelTargetSelect() {
+    setSelectPlayerTarget(false);
+    setActiveCard({});
+  }
+
   function loseHealth() {
     socket.emit("lose_health", {username, currentRoom})
   }
@@ -63,7 +68,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       {allPlayersInfo.map(player => {
         if (player.name === username) return(null); // don't display my hand size
         if (selectPlayerTarget && playersInRange.includes(player.name)) {
-          console.log("true");
+          // display players in range
           return (
             <div key={player.name} style={{color: "red"}}>
                 Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmTarget(player.name)}>Select</button>
@@ -112,6 +117,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
 
       <br />
       {(currentPlayer === username && nextTurn) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (

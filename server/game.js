@@ -280,7 +280,10 @@ class Game {
 
     getPlayersInRange(playerName, range) {
         // returns array of players closer than range to playerName
-        const arr = Object.keys(this.players) // array of player names;
+
+        const arr = Object.keys(this.players)   // array of player names;
+
+        if (range === "max") return arr;        // on max range, return all
 
         const playerIndex = arr.indexOf(playerName) + arr.length;
         const concatArray = arr.concat(arr.concat(arr));
