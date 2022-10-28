@@ -40,6 +40,10 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
       setActiveCard({});
 
+    } else if (activeCard.name === "Duel") {
+      socket.emit("play_duel", {username, target, currentRoom, cardDigit, cardType });
+      setActiveCard({});
+
     } else if (activeCard.name === "Cat Ballou") {
       socket.emit("play_cat_ballou", {username, target, currentRoom, cardDigit, cardType });
       setActiveCard({});

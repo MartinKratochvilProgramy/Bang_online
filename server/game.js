@@ -6,6 +6,7 @@ class Game {
         this.players = {}
         this.playerRoundId = 0;
         this.bangCanBeUsed = true;
+        this.duelActive = false;
         this.playerPlaceHolder = null;
 
         // init players
@@ -87,10 +88,18 @@ class Game {
         this.discard("Bang!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Bang! on ${target}`);
 
-        this.setPlayable("Mancato!", target);
+        if (!this.duelActive) {
+            this.setPlayable("Mancato!", target);
+        }
+        if (this.duelActive) {
+            this.setIsLosingHealth(false, playerName);
+            this.setPlayable("Bang!", target);
+        }
+
         this.setAllNotPlayable(playerName);
-        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0) {
+        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0 && !this.duelActive) {
             // if player has Volcanic, don't block Bang!s
+            // don't resolve on duelActive
             // TODO: implement this for Billy the Kid
             this.bangCanBeUsed = false;
         }
@@ -153,12 +162,48 @@ class Game {
         this.players[playerName].character.health += 1;
     }
 
+    useDiligenza(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+        this.discard("Diligenza", cardDigit, cardType);
+        console.log(`Player ${playerName} used Diligenza`);
+
+        this.draw(2, playerName);
+    }
+
+    useWellsFargo(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+        this.discard("Wells Fargo", cardDigit, cardType);
+        console.log(`Player ${playerName} used Wells Fargo`);
+
+        this.draw(3, playerName);
+    }
+
+    useDuel(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        this.discard("Duel", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Duel on ${target}`);
+
+        this.setPlayable("Bang!", target);
+        this.setIsLosingHealth(true, target);
+        
+        this.setAllNotPlayable(playerName);
+
+        this.duelActive = true;
+        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
+        
+    }
+
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
-        this.players[playerName].isLosingHealth = false;
+        this.setIsLosingHealth(false, playerName);
         this.setNotPlayable("Mancato!", playerName);
-       if (!this.bangCanBeUsed) {
+        if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
+        if (this.duelActive) {
+            this.duelActive = false;
+            if (this.bangCanBeUsed) {
+                const currentPlayer = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId);
+                this.setNotPlayable("Bang!", playerName);
+                this.setPlayable("Bang!", currentPlayer);
+            }
         }
     }
 

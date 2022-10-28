@@ -16,6 +16,17 @@ export default function Card({ socket, cardDigit, cardType, cardName, setActiveC
         } else if (cardName === "Beer") {
           socket.emit("play_beer", {username, currentRoom, cardDigit, cardType});
 
+        } else if (cardName === "Diligenza") {
+          socket.emit("play_diligenza", {username, currentRoom, cardDigit, cardType});
+
+        } else if (cardName === "Wells Fargo") {
+          socket.emit("play_wellsfargo", {username, currentRoom, cardDigit, cardType});
+
+        } else if (cardName === "Duel") {
+          setActiveCard({name: "Duel", cardDigit, cardType});
+          setSelectPlayerTarget(true);
+          socket.emit("request_players_in_range", {range: "max", currentRoom, username});
+
         } else if (cardName === "Cat Ballou") {
           setActiveCard({name: "Cat Ballou", cardDigit, cardType});
           setSelectPlayerTarget(true);

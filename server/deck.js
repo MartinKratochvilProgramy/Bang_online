@@ -1,5 +1,40 @@
 const deck = [
     {
+        name: "Duel",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
+    },
+        {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
+    },
+        {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
+    },
+        {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
+    },
+    {
         name: "Cat Ballou",
         rimColor: "yellow",
         digit: 9,
@@ -7,14 +42,14 @@ const deck = [
         isPlayable: false
     },
     {
-        name: "Bang!",
+        name: "Diligenza",
         rimColor: "yellow",
         digit: 5,
         type: "spades",
         isPlayable: false
     },
     {
-        name: "Bang!",
+        name: "Wells Fargo",
         rimColor: "yellow",
         digit: 1,
         type: "spades",
