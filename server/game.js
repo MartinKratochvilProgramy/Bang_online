@@ -5,6 +5,7 @@ class Game {
         this.stack = [];
         this.players = {}
         this.playerRoundId = 0;
+        this.bangCanBeUsed = true;
         this.playerPlaceHolder = null;
 
         // init players
@@ -17,7 +18,7 @@ class Game {
                 character: new function () {
                     return(
                         this.role = null,
-                        this.maxHealth = 1 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 3 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
@@ -88,9 +89,29 @@ class Game {
 
         this.setPlayable("Mancato!", target);
         this.setAllNotPlayable(playerName);
+        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0) {
+            // if player has Volcanic, don't block Bang!s
+            // TODO: implement this for Billy the Kid
+            this.bangCanBeUsed = false;
+        }
+
         this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
         
         this.setIsLosingHealth(true, target);
+    }
+
+    useMancato(playerName, cardDigit, cardType) {
+        this.discard("Mancato!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Mancato!`);
+
+        this.setNotPlayable("Mancato!", playerName);
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
+
+        this.setIsLosingHealth(false, playerName);
     }
 
     useCatBallou(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
@@ -125,17 +146,6 @@ class Game {
         currentPlayerHand.push(randomCard);
     }
 
-    useMancato(playerName, cardDigit, cardType) {
-        this.discard("Mancato!", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Mancato!`);
-
-        this.setNotPlayable("Mancato!", playerName);
-        this.setAllPlayable(this.playerPlaceHolder);
-        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
-
-        this.setIsLosingHealth(false, playerName);
-    }
-
     useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
         this.discard("Beer", cardDigit, cardType);
         console.log(`Player ${playerName} used Beer`);
@@ -147,6 +157,9 @@ class Game {
         this.players[playerName].character.health -= 1;
         this.players[playerName].isLosingHealth = false;
         this.setNotPlayable("Mancato!", playerName);
+       if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
     }
 
     shuffleDeck() {

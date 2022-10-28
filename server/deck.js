@@ -1,73 +1,73 @@
 const deck = [
     {
-    name: "Cat Ballou",
-    rimColor: "yellow",
-    digit: 9,
-    type: "spades",
-    isPlayable: false
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 9,
+        type: "spades",
+        isPlayable: false
     },
     {
-    name: "Panico",
-    rimColor: "yellow",
-    digit: 10,
-    type: "spades",
-    isPlayable: false
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "spades",
+        isPlayable: false
     },
     {
-    name: "Bang!",
-    rimColor: "yellow",
-    digit: 1,
-    type: "spades",
-    isPlayable: false
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 1,
+        type: "spades",
+        isPlayable: false
     },
     {
-    name: "Mancato!",
-    rimColor: "yellow",
-    digit: 2,
-    type: "spades",
-    isPlayable: false
+        name: "Panico",
+        rimColor: "yellow",
+        digit: 10,
+        type: "spades",
+        isPlayable: false
+    },
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "spades",
+        isPlayable: false
     },   
     {
-    name: "Beer",
-    rimColor: "yellow",
-    digit: 3,
-    type: "spades",
-    isPlayable: false
+        name: "Beer",
+        rimColor: "yellow",
+        digit: 3,
+        type: "spades",
+        isPlayable: false
     },   
     {
-    name: "Mancato!",
-    rimColor: "yellow",
-    digit: 4,
-    type: "spades",
-    isPlayable: false
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "spades",
+        isPlayable: false
     },   
     {
-    name: "Bang!",
-    rimColor: "yellow",
-    digit: 5,
-    type: "spades",
-    isPlayable: false
+        name: "Beer",
+        rimColor: "yellow",
+        digit: 6,
+        type: "spades",
+        isPlayable: false
+    },   
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "spades",
+        isPlayable: false
     },
     {
-    name: "Beer",
-    rimColor: "yellow",
-    digit: 6,
-    type: "spades",
-    isPlayable: false
-    },   
-    {
-    name: "Bang!",
-    rimColor: "yellow",
-    digit: 7,
-    type: "spades",
-    isPlayable: false
-    },
-    {
-    name: "Mancato!",
-    rimColor: "yellow",
-    digit: 8,
-    type: "spades",
-    isPlayable: false
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 8,
+        type: "spades",
+        isPlayable: false
     }   
 ]
 

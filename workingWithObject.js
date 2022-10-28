@@ -8,30 +8,18 @@ const players = {
 
 const targetPlayerHand = [
   {
-    name: 'Mancato!',
+    name: 'Apalosa',
     rimColor: 'yellow',
     digit: 2,
     type: 'spades',
     isPlayable: false
   },
-  {
-    name: 'Beer',
-    rimColor: 'yellow',
-    digit: 3,
-    type: 'spades',
-    isPlayable: false
-  }
 ]
 
 // remove card from hand
-for(var i = 0; i < targetPlayerHand.length; i++) {
-    if(targetPlayerHand[i].digit === 2 && targetPlayerHand[i].type === 'spades') {
-        targetPlayerHand.splice(i, 1);
-        break;
-    }
-}
+console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
 
-console.log("hand: ", targetPlayerHand);
+// console.log("hand: ", targetPlayerHand);
 
 // console.log(Object.keys(players));
 
