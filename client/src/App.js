@@ -76,6 +76,7 @@ function App() {
     })
 
     socket.on("update_all_players_info", (players) => {
+      // returns array [{name, numberOfCards, health}]
       setAllPlayersInfo(players);
     })
 

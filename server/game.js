@@ -17,6 +17,7 @@ class Game {
                 character: {
                     role: null,
                     startingHandSize: 3,
+                    maxHealth: 2,
                     health: 2
                 }
             }
@@ -85,13 +86,12 @@ class Game {
 
         this.setPlayable("Mancato!", target);
         this.setAllNotPlayable(playerName);
-        this.playerPlaceHolder = playerName;
+        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
         
         this.setIsLosingHealth(true, target);
     }
 
     useMancato(playerName, cardDigit, cardType) {
-        console.log("Playing mancato: ", playerName, cardDigit, cardType);
         this.discard("Mancato!", cardDigit, cardType, playerName);
 
         this.setNotPlayable("Mancato!", playerName);
