@@ -1,8 +1,7 @@
-duel
-
 vykládací karty...
+-možnost vyložit kartu
+-možnost zrušit kartu
+
 barel
 koně
 vězení
-
-dostavník
