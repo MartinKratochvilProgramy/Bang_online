@@ -1,5 +1,12 @@
 const deck = [
     {
+    name: "Beer",
+    rimColor: "yellow",
+    digit: 9,
+    type: "spades",
+    isPlayable: false
+    },
+    {
     name: "Bang!",
     rimColor: "yellow",
     digit: 1,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Bang from './cards/Bang';
-import Mancato from './cards/Mancato';
+import Card from './cards/Card';
 
 export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, selectPlayerTarget, setSelectPlayerTarget, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard }) { 
   
@@ -90,39 +89,27 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       })}
       
       {myHand.map(card => {
-        if (card.name === "Bang!") {
-          return (
-            <Bang 
+        return(
+          <Card 
               socket={socket}
               cardDigit={card.digit} 
               cardType={card.type} 
+              cardName={card.name}
               key={card.digit + card.type}
               setSelectPlayerTarget={setSelectPlayerTarget}
               currentRoom={currentRoom}
               setActiveCard={setActiveCard}
               isPlayable={card.isPlayable}
               username={username} />
-              )
-        } else {
-          return (
-            <Mancato
-              key={card.digit + card.type}
-              socket={socket}
-              cardDigit={card.digit} 
-              cardType={card.type} 
-              username={username}
-              currentRoom={currentRoom}
-              isPlayable={card.isPlayable} />
-          )
-        }
+        )
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn) ? <button onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (
-            <button key={username} onClick={loseHealth}>Lose health</button>
+            <button key={username} style={{color: "red"}} onClick={loseHealth}>Lose health</button>
           )
         }
         return (null)

@@ -101,6 +101,12 @@ class Game {
         this.setIsLosingHealth(false, playerName);
     }
 
+    useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+        this.discard("Beer", cardDigit, cardType);
+
+        this.players[playerName].character.healt
+    }
+
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
         this.players[playerName].isLosingHealth = false;

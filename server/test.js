@@ -8,35 +8,38 @@ console.log(game.getPlayerHand("Sbeve"));
 console.log(game.getPlayerHand("Joe"));
 console.log("-----------");
 
+console.log(game.getAllPlayersInfo());
+console.log(game.players);
+
 // for (var player in game.players) {
 //     console.log(player, ": ", game.players[player].hand);
 // }
 
 // SBEVE TURN
-game.useBang("Joe") ;
-game.useMancato("Joe");
-console.log("Deck size: ", game.deck.length);
-console.log("Stack size: ", game.stack.length);
-game.endTurn();
-game.endTurn();
-game.endTurn();
-game.endTurn();
-game.endTurn();
-game.endTurn();
-console.log("Deck size: ", game.deck.length);
-console.log("Stack size: ", game.stack.length);
+// game.useBang("Joe") ;
+// game.useMancato("Joe");
+// console.log("Deck size: ", game.deck.length);
+// console.log("Stack size: ", game.stack.length);
+// game.endTurn();
+// game.endTurn();
+// game.endTurn();
+// game.endTurn();
+// game.endTurn();
+// game.endTurn();
+// console.log("Deck size: ", game.deck.length);
+// console.log("Stack size: ", game.stack.length);
 
-// JOE TURN
-game.useBang("Sbeve");
-game.useMancato("Sbeve");
+// // JOE TURN
+// game.useBang("Sbeve");
+// game.useMancato("Sbeve");
 
-console.log("Stack: ", game.stack);
+// console.log("Stack: ", game.stack);
 
-game.putStackIntoDeck();
-console.log("Deck: ", game.deck);
-game.draw(1);
-game.useBang("Sbeve");
-game.useMancato("Sbeve");
+// game.putStackIntoDeck();
+// console.log("Deck: ", game.deck);
+// game.draw(1);
+// game.useBang("Sbeve");
+// game.useMancato("Sbeve");
 
 // game.getHands();
 
