@@ -16,7 +16,7 @@ const targetPlayerHand = [
   },
 ]
 
-// remove card from hand
+// find card in hand
 console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
 
 // console.log("hand: ", targetPlayerHand);
@@ -27,7 +27,7 @@ console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 
 
 // console.log(Object.keys(players));
 // console.log(players.indexOf());
-// console.log(Object.keys(players).find(key => players[key].id === 1));
+console.log(Object.keys(players).find(key => players[key].id === 1));
 // console.log(Object.keys(players).find(key => key === "Joe"));
 
 // const players = {

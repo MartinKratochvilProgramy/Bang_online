@@ -45,7 +45,10 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
         
         } else if (cardName === "Apaloosa" || cardName === "Mustang") {
-          socket.emit("place_blue_card_on_table", {username, currentRoom, card});
+          socket.emit("place_horse_on_table", {username, currentRoom, card});
+        
+        } else if (cardName === "Vulcanic" || cardName === "Schofield" || cardName === "Remington" || cardName === "Carabine" || cardName === "Winchester") {
+          socket.emit("place_gun_on_table", {username, currentRoom, card});
         }
     }
 

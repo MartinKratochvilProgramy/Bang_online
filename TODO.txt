@@ -1,7 +1,6 @@
-vykládací karty...
--možnost vyložit kartu
--možnost zrušit kartu
-
 barel
-koně
-vězení
+
+vykládací karty...
+-použít cat ballou na kartu na stole
+-vězení & dynamit
+

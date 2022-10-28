@@ -113,11 +113,11 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display my stats
         return (
-          <>
-            <div key={player.name}>
+          <div key={player.name}>
+            <div>
               Health: {player.health}
             </div>
-            <div key={player.name}>
+            <div>
               Table: <br />
               {player.table.map(card => {
                 return (
@@ -128,7 +128,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
               })}
             </div>
           
-          </>
+          </div>
         )
       })}
       
@@ -138,6 +138,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
           <Card 
               socket={socket}
               card={card}
+              key={card.digit + card.type}
               setSelectPlayerTarget={setSelectPlayerTarget}
               currentRoom={currentRoom}
               setActiveCard={setActiveCard}
@@ -151,7 +152,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, select
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (
-            <button key={username} style={{color: "red"}} onClick={loseHealth}>Lose health</button>
+            <button key={player.name} style={{color: "red"}} onClick={loseHealth}>Lose health</button>
           )
         }
         return (null)

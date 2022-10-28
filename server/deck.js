@@ -1,6 +1,22 @@
 const deck = [
     {
-        name: "Apaloosa",
+        name: "Vulcanic",
+        rimColor: "blue",
+        digit: 169,
+        type: "hearths",
+        class: "gun",
+        actionReqOnStart: false,
+    },
+    {
+        name: "Remington",
+        rimColor: "blue",
+        digit: 1420,
+        type: "hearths",
+        class: "gun",
+        actionReqOnStart: false,
+    },
+    {
+        name: "Mustang",
         rimColor: "blue",
         digit: 69,
         type: "hearths",

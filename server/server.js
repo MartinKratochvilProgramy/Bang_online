@@ -172,12 +172,20 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
   })
-
   
-  socket.on("place_blue_card_on_table", (data) => {
+  socket.on("place_horse_on_table", (data) => {
     const roomName = data.currentRoom;
 
-    rooms[roomName].game.placeBlueCardOnTable(data.card);
+    rooms[roomName].game.placeHorseOnTable(data.card);
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+  
+  socket.on("place_gun_on_table", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.placeGunOnTable(data.card);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());

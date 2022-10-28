@@ -19,7 +19,7 @@ class Game {
                 character: new function () {
                     return(
                         this.role = null,
-                        this.maxHealth = 3 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
@@ -155,15 +155,43 @@ class Game {
         currentPlayerHand.push(randomCard);
     }
 
-    placeBlueCardOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    placeHorseOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
         
         // remove card from hand
-        const cardIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
-        this.players[playerName].hand.splice(cardIndex, 1)[0];
-        console.log(`Player ${playerName} placed ${card.name} on table`);
+        const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
+        this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
         
-        // place card on table
-        this.players[playerName].table.push(card)
+        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.name === card.name).length === 0) {
+            // place card on table if not on table
+            this.players[playerName].table.push(card)
+        } else {
+            // remove card from table
+            const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
+            const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+            this.stack.push(removedCard);
+            // if on table, replace it
+            this.players[playerName].table.push(card);
+        }
+        console.log(`Player ${playerName} placed ${card.name} on table`);
+    }
+
+    placeGunOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        // remove card from hand, if there is gun class in table: [], place it from table to stack
+        const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
+        this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
+        
+        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length === 0) {
+            // place card on table if not on table
+            this.players[playerName].table.push(card)
+        } else {
+            // remove card from table
+            const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.class === card.class));
+            const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+            this.stack.push(removedCard);
+            // if on table, replace it
+            this.players[playerName].table.push(card);
+        }
+        console.log(`Player ${playerName} placed ${card.name} on table`);
     }
 
     useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
