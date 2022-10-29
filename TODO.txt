@@ -1,3 +1,7 @@
+duel active
+    bang -> duelTurn
+    if loseLife -> dueclActive = false
+
 
 barel
 

@@ -54,7 +54,7 @@ const deck = [
         isPlayable: false
     },
     {
-        name: "Panico",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 3,
         type: "spades",

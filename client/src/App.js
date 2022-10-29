@@ -22,6 +22,7 @@ function App() {
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
+  const [duelActive, setDuelActive] = useState(false);
 
   const usernameRef = useRef();
   const newRoomRef = useRef();
@@ -82,6 +83,11 @@ function App() {
     socket.on("update_top_stack_card", (card) => {
       console.log("Update top stack", card);
       setTopStackCard(card);
+    })
+
+    socket.on("duel_active", (state) => {
+      console.log("Duel active");
+      setDuelActive(state);
     })
 
   }, [username, currentRoom])
@@ -147,6 +153,7 @@ function App() {
           currentPlayer={currentPlayer}
           playersLosingHealth={playersLosingHealth}
           topStackCard={topStackCard}
+          duelActive={duelActive}
         />
       :
        null

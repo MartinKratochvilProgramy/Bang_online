@@ -7,6 +7,8 @@ class Game {
         this.playerRoundId = 0;
         this.bangCanBeUsed = true;
         this.duelActive = false;
+        this.duelPlayers = null;
+        this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
 
         // init players
@@ -88,18 +90,11 @@ class Game {
         this.discard("Bang!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Bang! on ${target}`);
 
-        if (!this.duelActive) {
-            this.setPlayable("Mancato!", target);
-        }
-        if (this.duelActive) {
-            this.setIsLosingHealth(false, playerName);
-            this.setPlayable("Bang!", target);
-        }
+        this.setPlayable("Mancato!", target);
 
         this.setAllNotPlayable(playerName);
-        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0 && !this.duelActive) {
+        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0) {
             // if player has Volcanic, don't block Bang!s
-            // don't resolve on duelActive
             // TODO: implement this for Billy the Kid
             this.bangCanBeUsed = false;
         }
@@ -107,6 +102,24 @@ class Game {
         this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
         
         this.setIsLosingHealth(true, target);
+    }
+
+    useBangInDuel(cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        this.discard("Bang!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Bang! in duel}`);
+
+        this.setNotPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
+        this.setIsLosingHealth(false, this.duelPlayers[this.duelTurnIndex]);
+        this.setAllNotPlayable(playerName);
+        
+        // shift to the next player in duel (duelPlayers.length should always = 2)
+        this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
+        console.log("Next player: ", this.duelPlayers[this.duelTurnIndex]);
+        // set next players Ban!g cards playable
+        // TODO: Billy the Kid exception
+        this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
+        this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
+        
     }
 
     useMancato(playerName, cardDigit, cardType) {
@@ -260,13 +273,16 @@ class Game {
         this.discard("Duel", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Duel on ${target}`);
 
+        this.duelPlayers = [target, playerName];
+        this.duelTurnIndex = 0;
+
         this.setPlayable("Bang!", target);
         this.setIsLosingHealth(true, target);
         
         this.setAllNotPlayable(playerName);
 
         this.duelActive = true;
-        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
+        this.playerPlaceHolder = playerName;    // save the name of player who used duel, so that his hand could be enabled after target player reaction
         
     }
 
@@ -279,10 +295,13 @@ class Game {
         }
         if (this.duelActive) {
             this.duelActive = false;
+            this.duelTurnIndex = 0;
+            this.duelPlayers = null;
             if (this.bangCanBeUsed) {
                 const currentPlayer = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId);
                 this.setNotPlayable("Bang!", playerName);
-                this.setPlayable("Bang!", currentPlayer);
+                this.setAllPlayable(currentPlayer);
+                this.setNotPlayable("Mancato!", currentPlayer);
             }
         }
     }

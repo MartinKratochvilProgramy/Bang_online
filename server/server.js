@@ -105,6 +105,16 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
   })
 
+  socket.on("play_bang_in_duel", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useBangInDuel(data.cardDigit, data.cardType, data.username);
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
   socket.on("play_mancato", (data) => {
     const roomName = data.currentRoom;
 
@@ -149,6 +159,7 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useDuel(data.target, data.cardDigit, data.cardType);
+    io.to(roomName).emit("duel_active", true);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
