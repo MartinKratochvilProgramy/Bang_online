@@ -1,12 +1,8 @@
 barely můžou být 2
 
-implementovat play dynamite
-    -draw
-    -remove dynamite
-    -update players with dynamite
 
 vykládací karty...
--vězení & dynamit
+-vězení
 
 force discard if handSize > health
 

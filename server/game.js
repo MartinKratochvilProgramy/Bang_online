@@ -83,9 +83,11 @@ class Game {
         }
 
         this.setAllNotPlayable(playerName);
-        if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0) {
+        if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0) {
             // if player has Volcanic, don't block Bang!s
             // TODO: implement this for Billy the Kid
+            this.bangCanBeUsed = true;
+        } else {
             this.bangCanBeUsed = false;
         }
 
@@ -120,9 +122,14 @@ class Game {
 
         this.players[playerName].canUseBarel = true;
 
-        this.setMancatoBangNotPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
+        this.setCardOnTableNotPlayable("Barilo", playerName);
+
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBangNotPlayable(this.playerPlaceHolder);
+        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+        
+        console.log("BANG STATE: ", this.bangCanBeUsed);
+
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
@@ -227,6 +234,8 @@ class Game {
                 this.stack.push(removedCard);
             }
         }
+
+        if (card.name === "Vulcanic") this.bangCanBeUsed = true;
         
         // put on table
         card.isPlayable = false;
@@ -286,7 +295,14 @@ class Game {
 
         if (drawnCard.type === "hearts") {
             this.setIsLosingHealth(false, playerName);
+            this.setNotPlayable("Mancato!", playerName);
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+            this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
+            if (!this.bangCanBeUsed) {
+                this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
+            }
         }
+
         console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
     }
 
@@ -310,8 +326,11 @@ class Game {
             this.players[nextPlayer].table.push(card);
         }
 
-        this.setAllPlayable(playerName);
-        this.setMancatoBangNotPlayable(playerName);
+        if (!this.players[playerName].table.some(card => card.name === "Dynamite")) {
+            // if not dynamite on table, allow use cards
+            this.setAllPlayable(playerName);
+            this.setMancatoBeerNotPlayable(playerName);
+        }
     }
 
     loseHealth(playerName) {
@@ -320,14 +339,19 @@ class Game {
         this.players[playerName].canUseBarel = true;
 
         this.setIsLosingHealth(false, playerName);
-        this.setMancatoBangNotPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
+        this.setCardOnTableNotPlayable("Barilo", playerName)
         
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBangNotPlayable(this.playerPlaceHolder);
+        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+
+        console.log("this.bangCanBeUsed: ", this.bangCanBeUsed);
+        console.log("this.playerPlaceHolder: ", this.playerPlaceHolder);
 
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
+
         if (this.duelActive) {
             this.duelActive = false;
             this.duelTurnIndex = 0;
@@ -336,7 +360,7 @@ class Game {
                 const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
                 this.setAllPlayable(currentPlayer);
-                this.setMancatoBangNotPlayable(currentPlayer);
+                this.setMancatoBeerNotPlayable(currentPlayer);
             }
         }
         // if player were to day, allow him to play beer
@@ -428,7 +452,7 @@ class Game {
         }
     }
 
-    setMancatoBangNotPlayable(playerName) {
+    setMancatoBeerNotPlayable(playerName) {
         this.setNotPlayable("Mancato!", playerName);
         if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
             this.setNotPlayable("Beer", playerName) // let player play beer if not max HP
@@ -456,11 +480,10 @@ class Game {
             this.draw(this.players[player].character.startingHandSize, player);
         }
 
-
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
         this.draw(2, firstPlayerName);
         this.setAllPlayable(firstPlayerName);
-        this.setMancatoBangNotPlayable(firstPlayerName)
+        this.setMancatoBeerNotPlayable(firstPlayerName)
 
         console.log("Game started!");
     }
@@ -485,7 +508,7 @@ class Game {
         } else {
             this.draw(2, currentPlayerName);
             this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-            this.setMancatoBangNotPlayable(currentPlayerName);
+            this.setMancatoBeerNotPlayable(currentPlayerName);
         }
 
         console.log("End of turn, next player: ", currentPlayerName);

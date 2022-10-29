@@ -176,6 +176,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       
       <p>Hand:</p>
       {myHand.map(card => {
+        console.log("CARD: ", card);
         return(
           <Card 
               socket={socket}

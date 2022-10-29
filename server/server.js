@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const {deckHearts, deckSpades} = require('./deck.js')
+const deckTwoBarrelsVulcanic = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
     
-    rooms[roomName].game = new Game(data.players, deckSpades);
+    rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
     io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
     
@@ -115,6 +115,7 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useMancato(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
 
