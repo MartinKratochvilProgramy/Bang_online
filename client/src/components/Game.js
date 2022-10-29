@@ -148,7 +148,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       <h2>My hand</h2>
       <p>Player name: {username}</p>
       {allPlayersInfo.map(player => {
-        if (player.name !== username) return(null); // display my stats
+        if (player.name !== username) return(null); // display only my stats
         return (
           <div key={player.name}>
             <div>

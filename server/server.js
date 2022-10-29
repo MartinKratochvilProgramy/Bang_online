@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const deck = require('./deck.js')
+const {deckHearts, deckSpades} = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
     
-    rooms[roomName].game = new Game(data.players, deck);
+    rooms[roomName].game = new Game(data.players, deckSpades);
     rooms[roomName].game.startGame();
     io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
     

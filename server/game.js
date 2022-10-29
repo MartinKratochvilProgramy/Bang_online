@@ -216,18 +216,19 @@ class Game {
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
                 this.stack.push(removedCard);
             }
+        } else if (card.class === "dynamite") {
+            
         } else {
             // only one gun card of same class allowed so filter by class
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length > 0) {
                 // remove card from table
                 const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
-                console.log("Pushing card onto stack");
                 this.stack.push(removedCard);
             }
         }
-
-        // if on table, replace it, activate dynamite
+        
+        // put on table
         card.isPlayable = false;
         this.players[playerName].table.push(card);
         console.log(`Player ${playerName} placed ${card.name} on table`);
