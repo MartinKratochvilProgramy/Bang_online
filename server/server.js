@@ -163,11 +163,29 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
   })
+  
+  socket.on("play_cat_ballou_on_table_card", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.useCatBallouOnTableCard(data.activeCard, data.target, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
 
   socket.on("play_panico", (data) => {
     const roomName = data.currentRoom;
-    console.log("data: ", data);
+    
     rooms[roomName].game.usePanico(data.target, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_hands");
+    io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
+    io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
+  socket.on("play_panico_on_table_card", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.usePanicoOnTableCard(data.activeCard, data.target, data.cardDigit, data.cardType);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());

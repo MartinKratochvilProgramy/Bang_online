@@ -30,8 +30,9 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, userna
   function confirmPlayerTarget(target) {
     if (!selectPlayerTarget) return;
     setSelectPlayerTarget(false);
-    const cardDigit = activeCard.cardDigit;
-    const cardType = activeCard.cardType;
+    setSelectCardTarget(false);
+    const cardDigit = activeCard.digit;
+    const cardType = activeCard.type;
     
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
@@ -53,9 +54,9 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, userna
     setSelectPlayerTarget(false);
     setSelectCardTarget(false);
     if (activeCard.name === "Cat Ballou") {
-      console.log("Card to be stolen: ", cardName);
+      socket.emit("play_cat_ballou_on_table_card", { activeCard, username, target: cardName, currentRoom, cardDigit, cardType });
     } else if (activeCard.name === "Panico") {
-      socket.emit("play_panico", {username, target: cardName, currentRoom, cardDigit, cardType });
+      socket.emit("play_panico_on_table_card", { activeCard, username, target: cardName, currentRoom, cardDigit, cardType });
     }
     setActiveCard({});
   }
@@ -81,22 +82,29 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, userna
       <h2>Other players:</h2>
       {allPlayersInfo.map(player => {
         if (player.name === username) return(null); // don't display my hand size
-        let colorStyles;
-        if (selectPlayerTarget && playersInRange.includes(player.name)) {
-          // display players in range
-          colorStyles = {color: "red"}
+        let playerColorStyles;
+        let tableCardColorStyles;
+        if (playersInRange.includes(player.name)) {
+          if (selectPlayerTarget) {
+            // display players in range
+            playerColorStyles = {color: "red"}
+          }
+          if (selectCardTarget) {
+            // display cards in range
+            tableCardColorStyles = {color: "red"}
+          }
         } else {
-          colorStyles = {color: "black"}
+          playerColorStyles = {color: "black"}
         }
         return (
           <div key={player.name}>
-            <div style={colorStyles}>
+            <div style={playerColorStyles}>
                 Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmPlayerTarget(player.name)}>Select</button>
                 <br />
             </div>
             {player.table.map(card => {
               return (
-                <button style={colorStyles} onClick={() => confirmCardTarget(card.name, card.digit, card.type)}>
+                <button style={tableCardColorStyles} onClick={() => confirmCardTarget(card.name, card.digit, card.type)}>
                   {card.name} <br /> {card.digit} {card.type}
                 </button>
               )

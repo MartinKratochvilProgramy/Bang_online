@@ -12,7 +12,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         if (!isPlayable) return;
         
         if (cardName === "Bang!") {
-          setActiveCard({name: "Bang!", cardDigit, cardType});
+          setActiveCard(card);
           setSelectPlayerTarget(true);
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
 
@@ -30,18 +30,18 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
 
 
         } else if (cardName === "Duel") {
-          setActiveCard({name: cardName, cardDigit, cardType});
+          setActiveCard(card);
           setSelectPlayerTarget(true);
           socket.emit("request_players_in_range", {range: "max", currentRoom, username});
 
         } else if (cardName === "Cat Ballou") {
-          setActiveCard({name: cardName, cardDigit, cardType});
+          setActiveCard(card);
           setSelectPlayerTarget(true);
           setSelectCardTarget(true);
           socket.emit("request_players_in_range", {range: "max", currentRoom, username});
           
         } else if (cardName === "Panico") {
-          setActiveCard({name: cardName, cardDigit, cardType});
+          setActiveCard(card);
           setSelectPlayerTarget(true);
           setSelectCardTarget(true);
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});

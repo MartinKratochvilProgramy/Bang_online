@@ -135,10 +135,25 @@ class Game {
         console.log(`Player ${target} discarded ${randomCard.name}`);
     }
 
+    useCatBallouOnTableCard(activeCard, target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        this.discard("Cat Ballou", activeCard.digit, activeCard.type, playerName);
+        console.log(`Player ${playerName} used Cat Ballou`);
+        
+        for (let player of Object.keys(this.players)) {
+            // remove from table object where name === target
+            for (let j = 0; j < this.players[player].table.length; j++) {
+                if (this.players[player].table[j].name === target && this.players[player].table[j].digit === cardDigit && this.players[player].table[j].type === cardType) {
+                    const foundCard = this.players[player].table.splice(j, 1)[0];
+                    this.stack.push(foundCard);
+                }
+            }
+        }
+    }
+
     usePanico(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
         this.discard("Panico", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Panico`);
         
-        console.log("PLAYER TARGET");
         // if targer is player, steal random card from his hand
         // get random card from target hand
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
@@ -165,7 +180,10 @@ class Game {
         currentPlayerHand.push(randomCard);
     }
 
-    usePanicoOnTable(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    usePanicoOnTableCard(activeCard, target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+        this.discard("Panico", activeCard.digit, activeCard.type, playerName);
+        console.log(`Player ${playerName} used Panico`);
+
         
         for (let player of Object.keys(this.players)) {
             // remove from table object where name === target

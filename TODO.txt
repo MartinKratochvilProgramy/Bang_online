@@ -1,11 +1,7 @@
-1) setActiveCard(card)
-2) vytvořit usePanicoOnTable
-    -metoda si bude brát target card a activeCard
-
+koně nefungujou
 
 barel
 
 vykládací karty...
--použít cat ballou na kartu na stole
 -vězení & dynamit
 
