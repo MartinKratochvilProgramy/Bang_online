@@ -1,4 +1,4 @@
-emit duel end
+test dilligenza, wellsfargo
 
 barel
 

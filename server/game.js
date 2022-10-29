@@ -21,7 +21,7 @@ class Game {
                 character: new function () {
                     return(
                         this.role = null,
-                        this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
@@ -114,9 +114,9 @@ class Game {
         this.discard("Mancato!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Mancato!`);
 
-        this.setNotPlayable("Mancato!", playerName);
+        this.setMancatoBangNotPlayable(playerName);
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+        this.setMancatoBangNotPlayable(this.playerPlaceHolder);
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
@@ -236,10 +236,14 @@ class Game {
     }
 
     useBeer(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
-        this.discard("Beer", cardDigit, cardType);
+        this.discard("Beer", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Beer`);
 
         this.players[playerName].character.health += 1;
+
+        if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
+            this.setNotPlayable("Beer", playerName) // do not let player play beer if not max HP
+        }
     }
 
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
@@ -275,11 +279,13 @@ class Game {
 
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
+
         this.setIsLosingHealth(false, playerName);
-        this.setNotPlayable("Mancato!", playerName);
+        this.setMancatoBangNotPlayable(playerName);
         
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+        this.setMancatoBangNotPlayable(this.playerPlaceHolder);
+
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
@@ -291,8 +297,20 @@ class Game {
                 const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
                 this.setAllPlayable(currentPlayer);
-                this.setNotPlayable("Mancato!", currentPlayer);
+                this.setMancatoBangNotPlayable(currentPlayer);
             }
+        }
+        // if player were to day, allow him to play beer
+        if (this.players[playerName].character.health <= 0) {
+            console.log("Hand: ", this.players[playerName].hand);
+            for (const card of this.players[playerName].hand) {
+                if (card.name === "Beer") {
+                    console.log("Losing: ", card.digit, card.type);
+                    this.useBeer(playerName, card.digit, card.type);
+                    return;
+                }
+            }
+            // TODO: LOSE GAME
         }
     }
 
@@ -346,6 +364,14 @@ class Game {
         }
     }
 
+    setMancatoBangNotPlayable(playerName) {
+        this.setNotPlayable("Mancato!", playerName);
+        if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
+            this.setNotPlayable("Beer", playerName) // let player play beer if not max HP
+        }
+        
+    }
+
     putStackIntoDeck() {
         this.deck = this.stack;
         this.stack = []
@@ -369,8 +395,7 @@ class Game {
 
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
         this.setAllPlayable(firstPlayerName);
-        this.setNotPlayable("Mancato!", firstPlayerName);
-        this.setNotPlayable("Beer", firstPlayerName);
+        this.setMancatoBangNotPlayable(firstPlayerName)
 
         console.log("Game started!");
     }
@@ -387,13 +412,13 @@ class Game {
 
         this.setAllNotPlayable(previousPlayerName);
 
+        this.draw(2, currentPlayerName);
         this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-        if (this.health < this.maxHealth) {
-             this.setPlayable(currentPlayerName, "Beer") // let player play beer if not max HP
-        }
-        this.setNotPlayable("Mancato!", currentPlayerName);
+        this.setMancatoBangNotPlayable(currentPlayerName);
+
 
         console.log("End of turn, next player: ", currentPlayerName);
+
     }
 
     getAllPlayersInfo() {
