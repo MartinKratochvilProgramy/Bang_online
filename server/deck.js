@@ -8,7 +8,7 @@ const deck = [
         actionReqOnStart: false,
     },
     {
-        name: "Remington",
+        name: "Bang!",
         rimColor: "blue",
         digit: 1420,
         type: "hearths",
@@ -24,7 +24,15 @@ const deck = [
         actionReqOnStart: false,
     },
     {
-        name: "Mustang",
+        name: "Apaloosa",
+        rimColor: "blue",
+        digit: 420,
+        type: "hearths",
+        class: "horse",
+        actionReqOnStart: false,
+    },
+    {
+        name: "Apaloosa",
         rimColor: "blue",
         digit: 420,
         type: "hearths",

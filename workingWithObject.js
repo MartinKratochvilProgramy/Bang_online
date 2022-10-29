@@ -16,16 +16,16 @@ const targetPlayerHand = [
   },
 ]
 
-for (let player of Object.keys(players)) {
-  // remove from table object where name ===
-  for (let j = 0; j < players[player].table.length; j++) {
-    if (players[player].table[j].name === "Apaloosa") {
-      players[player].table.splice(j, 1)[0];
-    }
-  }
-}
+// for (let player of Object.keys(players)) {
+//   // remove from table object where name ===
+//   for (let j = 0; j < players[player].table.length; j++) {
+//     if (players[player].table[j].name === "Apaloosa") {
+//       players[player].table.splice(j, 1)[0];
+//     }
+//   }
+// }
 
-console.log(players);
+console.log(players["Joe"].table.some(card => card.name === 'Apaloosa'));
 // find card in hand
 // console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
 

@@ -63,6 +63,7 @@ export default function Game({ myHand, allPlayersInfo, setAllPlayersInfo, userna
 
   function cancelTargetSelect() {
     setSelectPlayerTarget(false);
+    setSelectCardTarget(false);
     setActiveCard({});
   }
 

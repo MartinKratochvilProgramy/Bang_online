@@ -439,19 +439,35 @@ class Game {
     getPlayersInRange(playerName, range) {
         // returns array of players closer than range to playerName
         // return array of all players if range === "max"
-
+        
         const arr = Object.keys(this.players)   // array of player names;
-
+        
         if (range === "max") return arr;        // on max range, return all
+        
+        if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
+            // if player has Apaloosa, increase range by 1
+            range += 1;
+        }
 
         const playerIndex = arr.indexOf(playerName) + arr.length;
         const concatArray = arr.concat(arr.concat(arr));    // = [...arr, ...arr, ...arr]
         let result = [];
 
         for (let i = 0; i < concatArray.length; i++) {
-            if (Math.abs(i - playerIndex) <= range && i !== playerIndex) {
-                result.push(concatArray[i]);
-            }
+            const currentName = concatArray[i];
+
+            if (currentName !== playerName) {
+                if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
+                    // if player has Mustang, decrease range temporarily by 1
+                    if (Math.abs(i - playerIndex) <= range - 1) {
+                        result.push(currentName);
+                    }
+                } else if (Math.abs(i - playerIndex) <= range) {
+                    // if not Mustang, continue normally
+                    result.push(currentName);
+                }
+            };
+            
         }
         return result;
     }
