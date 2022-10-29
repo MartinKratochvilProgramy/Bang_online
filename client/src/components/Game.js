@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, topStackCard, duelActive }) { 
+export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersWithDynamite, topStackCard, duelActive }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -11,16 +11,26 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   const [selectCardTarget, setSelectCardTarget] = useState(false);
   
   useEffect(() => {
-    // disable next turn button if health decision req on other players
     setNextTurn(true);
+    // disable next turn button if health decision req on other players
     for (const player of playersLosingHealth) {
       if (player.isLosingHealth) {
         setNextTurn(false);
         break;
       }
     }
-  
   }, [playersLosingHealth])
+
+  useEffect(() => {
+    setNextTurn(true);
+    // disable next turn button if dynamite action req from current player
+    for (const player of playersWithDynamite) {
+      if (player.name === username && player.hasDynamite) {
+        setNextTurn(false);
+        break;
+      }
+    }
+  }, [playersWithDynamite, username])
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
@@ -35,6 +45,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     const cardType = activeCard.type;
     
     if (activeCard.name === "Bang!") {
+      console.log("USERNAME: ", username);
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
 
     } else if (activeCard.name === "Duel") {
@@ -72,6 +83,9 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     if (!card.isPlayable) return;
     if (card.name === "Barilo") {
       socket.emit("use_barel", {username, currentRoom});
+    }
+    if (card.name === "Dynamite") {
+      socket.emit("use_dynamite", {username, currentRoom, card});
     }
   }
 

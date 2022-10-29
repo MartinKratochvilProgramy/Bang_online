@@ -16,7 +16,7 @@ export default function Room({ users, messages, roomName, leaveRoom, sendMessage
             )
         })}
 
-        <h2>Messages</h2>
+        {/* <h2>Messages</h2>
         <form onSubmit={(e) =>{
           e.preventDefault();
           setMessageInput("");
@@ -39,7 +39,7 @@ export default function Room({ users, messages, roomName, leaveRoom, sendMessage
                     {message.username}: {message.message}
                 </div>
             )
-        })}
+        })} */}
         {!gameStarted ? 
           <button onClick={() => startGame()}>Start game</button>
         :

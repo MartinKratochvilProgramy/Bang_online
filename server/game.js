@@ -18,13 +18,14 @@ class Game {
                 hand: [],
                 table: [],
                 isLosingHealth: false,
+                canUseBarel: true,
+                hasDynamite: false,
                 character: new function () {
                     return(
                         this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
-                        this.startingHandSize = this.maxHealth,
-                        this.canUseBarel = true    // on each bang use barel once
+                        this.startingHandSize = this.maxHealth
                     )
                 }
             }
@@ -77,7 +78,7 @@ class Game {
         console.log(`Player ${playerName} used Bang! on ${target}`);
 
         this.setPlayable("Mancato!", target);
-        if (this.players[target].character.canUseBarel) {
+        if (this.players[target].canUseBarel) {
             this.setCardOnTablePlayable("Barilo", target);
         }
 
@@ -117,7 +118,7 @@ class Game {
         this.discard("Mancato!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Mancato!`);
 
-        this.players[playerName].character.canUseBarel = true;
+        this.players[playerName].canUseBarel = true;
 
         this.setMancatoBangNotPlayable(playerName);
         this.setAllPlayable(this.playerPlaceHolder);
@@ -279,7 +280,7 @@ class Game {
         this.deck.shift();
         this.stack.push(drawnCard)
 
-        this.players[playerName].character.canUseBarel = false;
+        this.players[playerName].canUseBarel = false;
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
         if (drawnCard.type === "hearts") {
@@ -288,10 +289,34 @@ class Game {
         console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
     }
 
+    useDynamite(playerName, card) {
+        card.isPlayable = false;
+        const drawnCard = this.deck[0];
+        this.deck.shift();
+        this.stack.push(drawnCard)
+        console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on dynamite`);
+
+        // remove from playerName table dynamite object
+        this.players[playerName].table = this.players[playerName].table.filter(function( tableCard ) {
+             return (tableCard.name !== card.name || tableCard.digit !== card.digit || tableCard.type !== card.type);
+        });
+
+        if (drawnCard.type === "spades" && (2 <= drawnCard.digit && drawnCard.digit <= 9)) {
+            console.log("Dynamite exploded!");
+            this.players[playerName].character.health -= 3; // lose 3 HP
+        } else {
+            const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === (this.playerRoundId + 1) % this.numOfPlayers )
+            this.players[nextPlayer].table.push(card);
+        }
+
+        this.setAllPlayable(playerName);
+        this.setMancatoBangNotPlayable(playerName);
+    }
+
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
 
-        this.players[playerName].character.canUseBarel = true;
+        this.players[playerName].canUseBarel = true;
 
         this.setIsLosingHealth(false, playerName);
         this.setMancatoBangNotPlayable(playerName);
@@ -444,6 +469,7 @@ class Game {
         const previousPlayerName = this.getNameOfCurrentTurnPlayer()
         // move playerRoundId forward
         this.playerRoundId += 1;
+        // TODO: numOfPlayers changes on death
         if (this.playerRoundId >= this.numOfPlayers) {
             this.playerRoundId = 0;
         }
@@ -453,6 +479,7 @@ class Game {
 
         if (this.getPlayerHasDynamite(currentPlayerName)) {
             console.log("Activate dynamite");
+            this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
         } else {
             this.draw(2, currentPlayerName);
@@ -508,6 +535,24 @@ class Game {
             state.push({
                 name: player,
                 isLosingHealth: this.players[player].isLosingHealth
+            })
+        }
+        return state;
+    }
+
+    getPlayersWithDynamite() {
+        // return array [{name, hasDynamite}]
+        // if is players current turn and has dynamite in table, set hasDynamite = true
+        let state = [];
+        for (var player of Object.keys(this.players)) {
+            // if player is on turn and has dynamite on table
+            let dynamiteFound = false;
+            if (player === this.getNameOfCurrentTurnPlayer() && this.players[player].table.some(card => card.name === "Dynamite")) {
+                dynamiteFound = true
+            }
+            state.push({
+                name: player,
+                hasDynamite: dynamiteFound
             })
         }
         return state;
@@ -580,6 +625,7 @@ class Game {
     }
 
     getNameOfCurrentTurnPlayer () {
+        // returns name of player who is on turn
         return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
     }
 }

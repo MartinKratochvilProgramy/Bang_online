@@ -1,3 +1,10 @@
+barely můžou být 2
+
+implementovat play dynamite
+    -draw
+    -remove dynamite
+    -update players with dynamite
+
 vykládací karty...
 -vězení & dynamit
 
@@ -5,3 +12,6 @@ force discard if handSize > health
 
 
 can multiple beers be used per turn?
+
+this.numOfPlayers changes on player death, this could cause issues with clamping function
+in this.endTurn

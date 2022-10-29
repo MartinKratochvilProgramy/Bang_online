@@ -1,6 +1,6 @@
 const players = {
     "Sbeve": {name: "Joe", id: 1, table: [{name: "Mustang"}]},
-    "Joe": {name: "Joe", id: 3, table: [{name: "Apaloosa"}]},
+    "Joe": {name: "Joe", id: 3, table: [{name: "Apaloosa", value: true}, {name: "Apaloosa", value: true}]},
     "Marvin": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
     "Samuel": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
     "Table": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
@@ -25,7 +25,9 @@ const targetPlayerHand = [
 //   }
 // }
 
-console.log(players["Joe"].table.some(card => card.name === 'Apaloosa'));
+console.log(players["Joe"].table.some(card => card.name === "Apaloosa"));
+
+// console.log(players["Joe"].table.some(card => card.name === 'Apaloosa'));
 // find card in hand
 // console.log(!targetPlayerHand.filter(item => item.name === 'Volcanic').length > 0);
 

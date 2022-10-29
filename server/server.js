@@ -201,13 +201,23 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
   })
+  
+  socket.on("use_dynamite", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.useDynamite(data.username, data.card);
+    updateGameState(io, roomName);
+    io.to(roomName).emit("update_players_with_dynamite", rooms[roomName].game.getPlayersWithDynamite());
+  })
 
   socket.on("end_turn", (currentRoom) => {
 
     rooms[currentRoom].game.endTurn(); //end turn in game
     const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
     io.to(currentRoom).emit("current_player", currentPlayer);
+    io.to(currentRoom).emit("update_players_with_dynamite", rooms[currentRoom].game.getPlayersWithDynamite());
     updateGameState(io, currentRoom)
+    io.to(currentRoom).emit("update_players_with_dynamite", rooms[currentRoom].game.getPlayersWithDynamite());
   })
 
   socket.on("request_players_in_range", (data) => {

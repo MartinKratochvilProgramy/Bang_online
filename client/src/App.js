@@ -20,6 +20,7 @@ function App() {
   const [myHand, setMyHand] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
+  const [playersWithDynamite, setPlayersWithDynamite] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
   const [duelActive, setDuelActive] = useState(false);
@@ -72,6 +73,11 @@ function App() {
 
     socket.on("update_players_losing_health", (players) => {
       setPlayersLosingHealth(players);
+    })
+
+    socket.on("update_players_with_dynamite", (players) => {
+      console.log("PLAYERS WITH DYNAMITE: ", players);
+      setPlayersWithDynamite(players);
     })
 
     socket.on("update_all_players_info", (players) => {
@@ -152,6 +158,7 @@ function App() {
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
           playersLosingHealth={playersLosingHealth}
+          playersWithDynamite={playersWithDynamite}
           topStackCard={topStackCard}
           duelActive={duelActive}
         />
