@@ -1,4 +1,5 @@
-barely můžou být 2
+setMancatoBeerNotPlayable funguje divně?
+    -není potřeba deaktivovat beer?
 
 
 vykládací karty...

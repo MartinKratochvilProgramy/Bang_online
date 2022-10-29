@@ -508,7 +508,10 @@ class Game {
         } else {
             this.draw(2, currentPlayerName);
             this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-            this.setMancatoBeerNotPlayable(currentPlayerName);
+            this.setNotPlayable("Mancato!", currentPlayerName);
+            if (this.players[currentPlayerName].character.health >= this.players[currentPlayerName].character.maxHealth) {
+                this.setNotPlayable("Beer", currentPlayerName);
+            }
         }
 
         console.log("End of turn, next player: ", currentPlayerName);
