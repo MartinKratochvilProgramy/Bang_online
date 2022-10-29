@@ -86,7 +86,7 @@ function App() {
     })
 
     socket.on("duel_active", (state) => {
-      console.log("Duel active");
+      console.log("Duel state: ", state);
       setDuelActive(state);
     })
 

@@ -30,11 +30,11 @@ class Game {
         }
     }
 
-    draw(numToDraw, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    draw(numToDraw, playerName = this.getNameOfCurrentTurnPlayer()) {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         
-        const currentTurnPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId);
+        const currentTurnPlayerName = this.getNameOfCurrentTurnPlayer();
         let playerTurn = false;
         if (currentTurnPlayerName === playerName) playerTurn = true;
 
@@ -60,22 +60,8 @@ class Game {
         }
     }
 
-    discard(cardName, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), target=null) {
-        // remove card from playerId hand and place it to the end of stack
-        const playerId = this.players[playerName].id;
-
-        // find if card in player hand and isPlayable = true
-        // let foundCard = false;
-        // for (var card of this.players[playerName].hand) {
-        //     if (card.name === cardName && card.isPlayable) {
-        //         foundCard = true;
-        //         break;
-        //     }
-        // }
-        // if (!foundCard) {
-        //     console.log(`Card ${cardName} not in hand!`);
-        //     return;
-        // }
+    discard(cardName, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // remove card from playerName hand and place it to the end of stack
 
         // remove card from hand
         const cardIndex = this.players[playerName].hand.findIndex(card => (card.name === cardName && card.digit === cardDigit && card.type === cardType));
@@ -86,7 +72,7 @@ class Game {
 
     }
 
-    useBang(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    useBang(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Bang!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Bang! on ${target}`);
 
@@ -104,9 +90,11 @@ class Game {
         this.setIsLosingHealth(true, target);
     }
 
-    useBangInDuel(cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    useBangInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // special case of Bang! use, sets the next turn of the duel state
+
         this.discard("Bang!", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Bang! in duel}`);
+        console.log(`Player ${playerName} used Bang! in duel`);
 
         this.setNotPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(false, this.duelPlayers[this.duelTurnIndex]);
@@ -116,7 +104,7 @@ class Game {
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
         console.log("Next player: ", this.duelPlayers[this.duelTurnIndex]);
         // set next players Ban!g cards playable
-        // TODO: Billy the Kid exception
+        // TODO: character exception
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
         
@@ -136,7 +124,7 @@ class Game {
         this.setIsLosingHealth(false, playerName);
     }
 
-    useCatBallou(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: this only works on cards in hand, not table
         this.discard("Cat Ballou", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Cat Ballou`);
@@ -148,7 +136,7 @@ class Game {
         console.log(`Player ${target} discarded ${randomCard.name}`);
     }
 
-    useCatBallouOnTableCard(activeCard, target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    useCatBallouOnTableCard(activeCard, target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Cat Ballou", activeCard.digit, activeCard.type, playerName);
         console.log(`Player ${playerName} used Cat Ballou`);
         
@@ -163,7 +151,7 @@ class Game {
         }
     }
 
-    usePanico(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    usePanico(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Panico", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Panico`);
         
@@ -193,7 +181,7 @@ class Game {
         currentPlayerHand.push(randomCard);
     }
 
-    usePanicoOnTableCard(activeCard, target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    usePanicoOnTableCard(activeCard, target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Panico", activeCard.digit, activeCard.type, playerName);
         console.log(`Player ${playerName} used Panico`);
 
@@ -209,13 +197,12 @@ class Game {
         }
     }
 
-    placeHorseOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
-        
-        // remove card from hand
+    placeHorseOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // remove card from hand, if there is gun class in table: [], place it from table to stack
         const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
         this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
         
-        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.name === card.name).length === 0) {
+        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length === 0) {
             // place card on table if not on table
             this.players[playerName].table.push(card)
         } else {
@@ -229,7 +216,7 @@ class Game {
         console.log(`Player ${playerName} placed ${card.name} on table`);
     }
 
-    placeGunOnTable(card, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    placeGunOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
         // remove card from hand, if there is gun class in table: [], place it from table to stack
         const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
         this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
@@ -248,28 +235,28 @@ class Game {
         console.log(`Player ${playerName} placed ${card.name} on table`);
     }
 
-    useBeer(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+    useBeer(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Beer", cardDigit, cardType);
         console.log(`Player ${playerName} used Beer`);
 
         this.players[playerName].character.health += 1;
     }
 
-    useDiligenza(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+    useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Diligenza", cardDigit, cardType);
         console.log(`Player ${playerName} used Diligenza`);
 
         this.draw(2, playerName);
     }
 
-    useWellsFargo(playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId), cardDigit, cardType) {
+    useWellsFargo(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Wells Fargo", cardDigit, cardType);
         console.log(`Player ${playerName} used Wells Fargo`);
 
         this.draw(3, playerName);
     }
 
-    useDuel(target, cardDigit, cardType, playerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)) {
+    useDuel(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Duel", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Duel on ${target}`);
 
@@ -290,6 +277,9 @@ class Game {
         this.players[playerName].character.health -= 1;
         this.setIsLosingHealth(false, playerName);
         this.setNotPlayable("Mancato!", playerName);
+        
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
@@ -298,7 +288,7 @@ class Game {
             this.duelTurnIndex = 0;
             this.duelPlayers = null;
             if (this.bangCanBeUsed) {
-                const currentPlayer = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId);
+                const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
                 this.setAllPlayable(currentPlayer);
                 this.setNotPlayable("Mancato!", currentPlayer);
@@ -387,13 +377,13 @@ class Game {
 
     endTurn() {
         //find who was previous player
-        const previousPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+        const previousPlayerName = this.getNameOfCurrentTurnPlayer()
         // move playerRoundId forward
         this.playerRoundId += 1;
         if (this.playerRoundId >= this.numOfPlayers) {
             this.playerRoundId = 0;
         }
-        const currentPlayerName = Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+        const currentPlayerName = this.getNameOfCurrentTurnPlayer()
 
         this.setAllNotPlayable(previousPlayerName);
 
@@ -492,7 +482,7 @@ class Game {
     }
 
     getCurrentPlayer() {
-        return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+        return this.getNameOfCurrentTurnPlayer()
     }
 
     getPlayerHand(playerName) {
@@ -519,6 +509,10 @@ class Game {
 
     getPlayers() {
         return this.players;
+    }
+
+    getNameOfCurrentTurnPlayer () {
+        return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
     }
 }
 

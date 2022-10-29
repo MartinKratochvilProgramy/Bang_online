@@ -159,7 +159,7 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useDuel(data.target, data.cardDigit, data.cardType);
-    io.to(roomName).emit("duel_active", true);
+    io.to(roomName).emit("duel_active", rooms[roomName].game.duelActive);
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
@@ -224,6 +224,7 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
     
     rooms[roomName].game.loseHealth(data.username);
+    io.to(roomName).emit("duel_active", rooms[roomName].game.duelActive); // TODO: this is not optimal, lose_health happens also outside duel
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());

@@ -8,7 +8,7 @@ const deck = [
         actionReqOnStart: false,
     },
     {
-        name: "Bang!",
+        name: "Remington",
         rimColor: "blue",
         digit: 1420,
         type: "hearths",
