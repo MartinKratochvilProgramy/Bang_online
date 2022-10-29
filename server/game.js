@@ -226,7 +226,7 @@ class Game {
             }
         }
 
-        // if on table, replace it
+        // if on table, replace it, activate dynamite
         card.isPlayable = false;
         this.players[playerName].table.push(card);
         console.log(`Player ${playerName} placed ${card.name} on table`);
@@ -451,10 +451,14 @@ class Game {
 
         this.setAllNotPlayable(previousPlayerName);
 
-        this.draw(2, currentPlayerName);
-        this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-        this.setMancatoBangNotPlayable(currentPlayerName);
-
+        if (this.getPlayerHasDynamite(currentPlayerName)) {
+            console.log("Activate dynamite");
+            this.setCardOnTablePlayable("Dynamite", currentPlayerName);
+        } else {
+            this.draw(2, currentPlayerName);
+            this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+            this.setMancatoBangNotPlayable(currentPlayerName);
+        }
 
         console.log("End of turn, next player: ", currentPlayerName);
 
@@ -545,10 +549,6 @@ class Game {
         return result;
     }
 
-    getCurrentPlayer() {
-        return this.getNameOfCurrentTurnPlayer()
-    }
-
     getPlayerHand(playerName) {
         return (this.players[playerName].hand);
     }
@@ -557,6 +557,10 @@ class Game {
         for (var player of Object.keys(this.players)) {
             console.log(player, ": ", this.players[player].hand);
         }
+    }
+
+    getPlayerHasDynamite(playerName) {
+        return (this.players[playerName].table.some(card => card.name === 'Dynamite'));
     }
 
     getPlayerTurn() {

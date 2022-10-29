@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
     rooms[roomName].game.startGame();
     io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
     
-    io.to(roomName).emit("current_player", rooms[roomName].game.getCurrentPlayer());
+    io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
   });
 
   socket.on("get_my_hand", data => {
@@ -97,7 +97,6 @@ io.on("connection", (socket) => {
 
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;
-    console.log("LOSING HEALTH: ", rooms[roomName].game.getPlayersLosingHealth());
 
     rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType, data.username);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
@@ -204,9 +203,11 @@ io.on("connection", (socket) => {
   })
 
   socket.on("end_turn", (currentRoom) => {
+
     rooms[currentRoom].game.endTurn(); //end turn in game
-    const currentPlayer = rooms[currentRoom].game.getCurrentPlayer(); // get current player
+    const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
     io.to(currentRoom).emit("current_player", currentPlayer);
+    updateGameState(io, currentRoom)
   })
 
   socket.on("request_players_in_range", (data) => {

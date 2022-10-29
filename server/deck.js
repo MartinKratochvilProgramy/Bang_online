@@ -1,10 +1,10 @@
 const deck = [
     {
-        name: "Barilo",
+        name: "Dynamite",
         rimColor: "blue",
         digit: 1,
         type: "hearts",
-        class: "barel",
+        class: "dynamite",
         isPlayable: false,
         actionReqOnStart: false,
     },  

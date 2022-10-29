@@ -68,9 +68,11 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   }
 
 
-  function playBarel(card) {
+  function playCardOnTable(card) {
     if (!card.isPlayable) return;
-    socket.emit("use_barel", {username, currentRoom});
+    if (card.name === "Barilo") {
+      socket.emit("use_barel", {username, currentRoom});
+    }
   }
 
   function loseHealth() {
@@ -141,12 +143,13 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
             <div>
               Table: <br />
               {player.table.map(card => {
+                console.log("CARD ON TABLE: ", card);
                   let tableCardColorStyles = {color: "black"};
                   if (card.isPlayable) {
                       tableCardColorStyles = {color: "red"}
                   }
                 return (
-                  <button style={tableCardColorStyles} key={card.digit + card.type} onClick={() => playBarel(card)}>
+                  <button style={tableCardColorStyles} key={card.digit + card.type} onClick={() => playCardOnTable(card)}>
                     {card.name} <br /> {card.digit} {card.type}
                   </button>
                 )
