@@ -1,36 +1,8 @@
-const table = [
-    {
-        name: "Barel",
-        class: "misc",
-        actionReqOnStart: false,
-    },
+const arr = ["Sbeve", "Joe"];
+let index = 0;
 
-    {
-        name: "Apaloose",
-        class: "horse",
-        actionReqOnStart: false,
-    },
-    {
-        name: "Mustang",
-        class: "horse",
-        actionReqOnStart: false,
-    },
+console.log(arr[index]);
+index =
 
-    {
-        name: "Dynamite",
-        class: "misc",
-        actionReqOnStart: true,
-    },
-    {
-        name: "Prigione",
-        class: "misc",
-        actionReqOnStart: true,
-    },
 
-    {
-        name: "Vulcanic",
-        class: "gun",
-        actionReqOnStart: false,
-    },
-    ...
-]
+console.log(2 % 2);
