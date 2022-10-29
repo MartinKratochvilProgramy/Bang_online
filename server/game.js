@@ -23,7 +23,8 @@ class Game {
                         this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
-                        this.startingHandSize = this.maxHealth
+                        this.startingHandSize = this.maxHealth,
+                        this.canUseBarel = true    // on each bang use barel once
                     )
                 }
             }
@@ -47,7 +48,6 @@ class Game {
             if (this.deck.length === 0) this.putStackIntoDeck();
 
             const card = this.deck[0];
-            if (playerTurn && card.name !== "Mancato!") card.isPlayable = true;
             this.players[playerName].hand.push(card);
             this.deck.shift();
         }
@@ -77,6 +77,9 @@ class Game {
         console.log(`Player ${playerName} used Bang! on ${target}`);
 
         this.setPlayable("Mancato!", target);
+        if (this.players[target].character.canUseBarel) {
+            this.setCardOnTablePlayable("Barilo", target);
+        }
 
         this.setAllNotPlayable(playerName);
         if (!this.players[playerName].table.filter(item => item.name === 'Volcanic').length > 0) {
@@ -113,6 +116,8 @@ class Game {
     useMancato(playerName, cardDigit, cardType) {
         this.discard("Mancato!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Mancato!`);
+
+        this.players[playerName].character.canUseBarel = true;
 
         this.setMancatoBangNotPlayable(playerName);
         this.setAllPlayable(this.playerPlaceHolder);
@@ -198,11 +203,9 @@ class Game {
     }
 
     placeBlueCardOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
-        // const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
-        // this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
+        const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
+        this.players[playerName].hand.splice(cardInHandIndex, 1)[0]; // this can't be handled by this.discard() because decision must be made weather to push card on table or stack
 
-        this.discard(card.name, card.digit, card.type, playerName);
-        
         //let cardOnTableIndex;
         if (card.class === "horse") {
             // two horses allowed on table, so filter by name
@@ -218,11 +221,13 @@ class Game {
                 // remove card from table
                 const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+                console.log("Pushing card onto stack");
                 this.stack.push(removedCard);
             }
         }
 
         // if on table, replace it
+        card.isPlayable = false;
         this.players[playerName].table.push(card);
         console.log(`Player ${playerName} placed ${card.name} on table`);
     }
@@ -269,8 +274,24 @@ class Game {
         
     }
 
+    useBarel(playerName) {
+        const drawnCard = this.deck[0];
+        this.deck.shift();
+        this.stack.push(drawnCard)
+
+        this.players[playerName].character.canUseBarel = false;
+        this.setCardOnTableNotPlayable("Barilo", playerName);
+
+        if (drawnCard.type === "hearts") {
+            this.setIsLosingHealth(false, playerName);
+        }
+        console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
+    }
+
     loseHealth(playerName) {
         this.players[playerName].character.health -= 1;
+
+        this.players[playerName].character.canUseBarel = true;
 
         this.setIsLosingHealth(false, playerName);
         this.setMancatoBangNotPlayable(playerName);
@@ -356,6 +377,31 @@ class Game {
         }
     }
 
+    setCardOnTablePlayable(cardName, playerName) {
+        // sets cardName in playerName table to isPlayable = true
+        for (var card of this.players[playerName].table) {
+            if (card.name === cardName) {
+                card.isPlayable = true;
+            }
+        }
+    }
+
+    setCardOnTableNotPlayable(cardName, playerName) {
+        // sets cardName in playerName hand to isPlayable = false
+        for (var card of this.players[playerName].table) {
+            if (card.name === cardName) {
+                card.isPlayable = false;
+            }
+        }
+    }
+
+    setAllCardsOnTableNotPlayable(playerName) {
+        // sets cards in playerName hand to isPlayable = false
+        for (var card of this.players[playerName].table) {
+            card.isPlayable = false;
+        }
+    }
+
     setMancatoBangNotPlayable(playerName) {
         this.setNotPlayable("Mancato!", playerName);
         if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
@@ -386,6 +432,7 @@ class Game {
 
 
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
+        this.draw(2, firstPlayerName);
         this.setAllPlayable(firstPlayerName);
         this.setMancatoBangNotPlayable(firstPlayerName)
 
@@ -414,7 +461,7 @@ class Game {
     }
 
     getAllPlayersInfo() {
-        // returns array [{name, numberOfCards, health}]
+        // returns array [{name, numberOfCards, health, table}]
         let state = [];
         for (var player of Object.keys(this.players)) {
             state.push({

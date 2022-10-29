@@ -97,6 +97,7 @@ io.on("connection", (socket) => {
 
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;
+    console.log("LOSING HEALTH: ", rooms[roomName].game.getPlayersLosingHealth());
 
     rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType, data.username);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
@@ -115,7 +116,6 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useMancato(data.username, data.cardDigit, data.cardType);
-    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
 
@@ -131,7 +131,6 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useDiligenza(data.username, data.cardDigit, data.cardType);
-    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
 
@@ -139,7 +138,6 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useWellsFargo(data.username, data.cardDigit, data.cardType);
-    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
 
@@ -195,6 +193,14 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+  })
+
+  socket.on("use_barel", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.useBarel(data.username);
+    updateGameState(io, roomName);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
   })
 
   socket.on("end_turn", (currentRoom) => {

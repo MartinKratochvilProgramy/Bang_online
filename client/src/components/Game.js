@@ -67,6 +67,12 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     setActiveCard({});
   }
 
+
+  function playBarel(card) {
+    if (!card.isPlayable) return;
+    socket.emit("use_barel", {username, currentRoom});
+  }
+
   function loseHealth() {
     socket.emit("lose_health", {username, currentRoom})
   }
@@ -135,8 +141,12 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
             <div>
               Table: <br />
               {player.table.map(card => {
+                  let tableCardColorStyles = {color: "black"};
+                  if (card.isPlayable) {
+                      tableCardColorStyles = {color: "red"}
+                  }
                 return (
-                  <button key={card.digit + card.type}>
+                  <button style={tableCardColorStyles} key={card.digit + card.type} onClick={() => playBarel(card)}>
                     {card.name} <br /> {card.digit} {card.type}
                   </button>
                 )
