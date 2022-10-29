@@ -180,17 +180,10 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
   })
   
-  socket.on("place_horse_on_table", (data) => {
+  socket.on("place_blue_card_on_table", (data) => {
     const roomName = data.currentRoom;
 
-    rooms[roomName].game.placeHorseOnTable(data.card);
-    updateGameState(io, roomName);
-  })
-  
-  socket.on("place_gun_on_table", (data) => {
-    const roomName = data.currentRoom;
-
-    rooms[roomName].game.placeGunOnTable(data.card);
+    rooms[roomName].game.placeBlueCardOnTable(data.card);
     updateGameState(io, roomName);
   })
 

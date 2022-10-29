@@ -1,8 +1,9 @@
-test dilligenza, wellsfargo
-
 barel
 
 vykládací karty...
 -vězení & dynamit
 
-you have to target Bang! in a duel
+force discard if handSize > health
+
+
+can multiple beers be used per turn?

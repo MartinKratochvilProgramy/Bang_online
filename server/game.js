@@ -197,41 +197,33 @@ class Game {
         }
     }
 
-    placeHorseOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
-        // remove card from hand, if there is gun class in table: [], place it from table to stack
-        const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
-        this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
-        
-        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length === 0) {
-            // place card on table if not on table
-            this.players[playerName].table.push(card)
-        } else {
-            // remove card from table
-            const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
-            const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
-            this.stack.push(removedCard);
-            // if on table, replace it
-            this.players[playerName].table.push(card);
-        }
-        console.log(`Player ${playerName} placed ${card.name} on table`);
-    }
+    placeBlueCardOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
+        // this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
 
-    placeGunOnTable(card, playerName = this.getNameOfCurrentTurnPlayer()) {
-        // remove card from hand, if there is gun class in table: [], place it from table to stack
-        const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
-        this.players[playerName].hand.splice(cardInHandIndex, 1)[0];
+        this.discard(card.name, card.digit, card.type, playerName);
         
-        if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length === 0) {
-            // place card on table if not on table
-            this.players[playerName].table.push(card)
+        //let cardOnTableIndex;
+        if (card.class === "horse") {
+            // two horses allowed on table, so filter by name
+            if (this.players[playerName].table.filter(cardOnTable => cardOnTable.name === card.name).length > 0) {
+                // remove card from table
+                const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
+                const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+                this.stack.push(removedCard);
+            }
         } else {
-            // remove card from table
-            const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.class === card.class));
-            const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
-            this.stack.push(removedCard);
-            // if on table, replace it
-            this.players[playerName].table.push(card);
+            // only one gun card of same class allowed so filter by class
+            if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length > 0) {
+                // remove card from table
+                const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
+                const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+                this.stack.push(removedCard);
+            }
         }
+
+        // if on table, replace it
+        this.players[playerName].table.push(card);
         console.log(`Player ${playerName} placed ${card.name} on table`);
     }
 
