@@ -215,7 +215,15 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game.useDynamite(data.username, data.card);
     updateGameState(io, roomName);
-    io.to(roomName).emit("update_players_with_dynamite", rooms[roomName].game.getPlayersWithDynamite());
+    io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
+  })
+  
+  socket.on("use_prigione", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.usePrison(data.username, data.card);
+    updateGameState(io, roomName);
+    io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   })
 
   socket.on("end_turn", (currentRoom) => {
@@ -223,9 +231,9 @@ io.on("connection", (socket) => {
     rooms[currentRoom].game.endTurn(); //end turn in game
     const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
     io.to(currentRoom).emit("current_player", currentPlayer);
-    io.to(currentRoom).emit("update_players_with_dynamite", rooms[currentRoom].game.getPlayersWithDynamite());
+    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
     updateGameState(io, currentRoom)
-    io.to(currentRoom).emit("update_players_with_dynamite", rooms[currentRoom].game.getPlayersWithDynamite());
+    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
   })
 
   socket.on("request_players_in_range", (data) => {

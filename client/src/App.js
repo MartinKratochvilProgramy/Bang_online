@@ -75,7 +75,7 @@ function App() {
       setPlayersLosingHealth(players);
     })
 
-    socket.on("update_players_with_dynamite", (players) => {
+    socket.on("update_players_with_action_required", (players) => {
       console.log("PLAYERS WITH DYNAMITE: ", players);
       setPlayersWithDynamite(players);
     })

@@ -25,7 +25,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     setNextTurn(true);
     // disable next turn button if dynamite action req from current player
     for (const player of playersWithDynamite) {
-      if (player.name === username && player.hasDynamite) {
+      if (player.name === username && (player.hasDynamite || player.isInPrison)) {
         setNextTurn(false);
         break;
       }
@@ -88,6 +88,9 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     }
     if (card.name === "Dynamite") {
       socket.emit("use_dynamite", {username, currentRoom, card});
+    }
+    if (card.name === "Prigione") {
+      socket.emit("use_prigione", {username, currentRoom, card});
     }
   }
 

@@ -322,7 +322,7 @@ class Game {
         this.stack.push(drawnCard)
         console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on dynamite`);
 
-        // remove from playerName table dynamite object
+        // remove from playerName table card object
         this.players[playerName].table = this.players[playerName].table.filter(function( tableCard ) {
              return (tableCard.name !== card.name || tableCard.digit !== card.digit || tableCard.type !== card.type);
         });
@@ -335,12 +335,44 @@ class Game {
             this.players[nextPlayer].table.push(card);
         }
         
-        if (!this.players[playerName].table.some(card => card.name === "Dynamite")) {
+        if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
+            console.log("HERE");
             // if not dynamite on table, allow use cards
             this.setAllPlayable(playerName);
             this.setMancatoBeerNotPlayable(playerName);
             this.draw(2, playerName);
         }
+    }
+
+    usePrison(playerName, card) {
+        card.isPlayable = false;
+
+        // place prison on stack
+        this.stack.push(card)
+
+        // draw card
+        const drawnCard = this.deck[0];
+        this.deck.shift();
+        this.stack.push(drawnCard)
+        console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on prison`);
+
+        // remove from playerName table card object
+        this.players[playerName].table = this.players[playerName].table.filter(function( tableCard ) {
+             return (tableCard.name !== card.name || tableCard.digit !== card.digit || tableCard.type !== card.type);
+        });
+
+        if (drawnCard.type === "hearts") {
+            if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
+                // if not dynamite on table, allow use cards
+                this.setAllPlayable(playerName);
+                this.setMancatoBeerNotPlayable(playerName);
+                this.draw(2, playerName);
+            }
+        } else {
+            // next player round
+            this.endTurn();
+        }
+        
     }
 
     loseHealth(playerName) {
@@ -512,10 +544,18 @@ class Game {
         this.setAllNotPlayable(previousPlayerName);
 
         if (this.getPlayerHasDynamite(currentPlayerName)) {
-            console.log("Activate dynamite");
+            console.log("Activate dynamite: ", currentPlayerName);
             this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
-        } else {
+        }
+
+        if (this.getPlayerIsInPrison(currentPlayerName)) {
+            console.log("Activate prison: ", currentPlayerName);
+            this.players[currentPlayerName].isInPrison = true;
+            this.setCardOnTablePlayable("Prigione", currentPlayerName);
+        } 
+        
+        if (!this.getPlayerHasDynamite(currentPlayerName) && !this.getPlayerIsInPrison(currentPlayerName)) {
             this.draw(2, currentPlayerName);
             this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
             this.setNotPlayable("Mancato!", currentPlayerName);
@@ -577,19 +617,26 @@ class Game {
         return state;
     }
 
-    getPlayersWithDynamite() {
+    getPlayersWithActionRequired() {
         // return array [{name, hasDynamite}]
         // if is players current turn and has dynamite in table, set hasDynamite = true
         let state = [];
         for (var player of Object.keys(this.players)) {
             // if player is on turn and has dynamite on table
             let dynamiteFound = false;
-            if (player === this.getNameOfCurrentTurnPlayer() && this.getPlayerHasDynamite(player)) {
-                dynamiteFound = true
+            let prisonFound = false;
+            if (player === this.getNameOfCurrentTurnPlayer()) {
+                if (this.getPlayerHasDynamite(player)) {
+                    dynamiteFound = true
+                } 
+                if (this.getPlayerIsInPrison(player)) {
+                    prisonFound = true;
+                }
             }
             state.push({
                 name: player,
-                hasDynamite: dynamiteFound
+                hasDynamite: dynamiteFound,
+                isInPrison: prisonFound,
             })
         }
         return state;
