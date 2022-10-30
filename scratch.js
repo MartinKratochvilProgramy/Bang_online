@@ -1,13 +1,8 @@
-console.log("pět = ", 5)
+const array = [
+    "Sbeve",
+    "Joe"
+]
 
-class Game {
-    constructor(variable) {
-        this.variable = variable;
-    }
-
-    printVariable() {
-        console.log(this.variable);
-    }
-}
-
-const game = Game("variable");
+let index = array.findIndex(player => player === "Sbeve")
+index += 1;
+console.log(index);

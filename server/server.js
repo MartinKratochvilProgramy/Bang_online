@@ -141,6 +141,24 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
   })
 
+  socket.on("play_emporio", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useEmporio(data.username, data.cardDigit, data.cardType);
+    // send emporio state to clients
+    io.to(roomName).emit("emporio_state", {cards: rooms[roomName].game.emporio, nextEmporioTurn: rooms[roomName].game.nextEmporioTurn});
+    updateGameState(io, roomName);
+  })
+
+  socket.on("get_emporio_card", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.getEmporioCard(data.username, data.card);
+    // send emporio state to clients
+    io.to(roomName).emit("emporio_state", {cards: rooms[roomName].game.emporio, nextEmporioTurn: rooms[roomName].game.nextEmporioTurn});
+    updateGameState(io, roomName);
+  })
+
   socket.on("play_diligenza", (data) => {
     const roomName = data.currentRoom;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive }) { 
+export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, nextEmporioTurn }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -80,7 +80,6 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     setActiveCard({});
   }
 
-
   function playCardOnTable(card) {
     if (!card.isPlayable) return;
     if (card.name === "Barilo") {
@@ -92,6 +91,10 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     if (card.name === "Prigione") {
       socket.emit("use_prigione", {username, currentRoom, card});
     }
+  }
+
+  function getEmporioCard(card) {
+    socket.emit("get_emporio_card", {username, currentRoom, card});
   }
 
   function loseHealth() {
@@ -149,6 +152,19 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       :
         null      
       }
+      <br />
+      {emporioState.length > 0 ? <p>Emporio:</p> : null}
+      {emporioState.map(card => {
+        let emporioStyles = {color: "black"};
+        if (nextEmporioTurn === username) {
+          emporioStyles = {color: "red"}
+        }
+        return (
+          <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
+            {card.name} <br /> {card.digit} {card.type}
+          </button>
+        )
+      })}
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
@@ -162,7 +178,6 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
             <div>
               Table: <br />
               {player.table.map(card => {
-                console.log("CARD ON TABLE: ", card);
                   let tableCardColorStyles = {color: "black"};
                   if (card.isPlayable) {
                       tableCardColorStyles = {color: "red"}
@@ -198,7 +213,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn && emporioState.length === 0) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {

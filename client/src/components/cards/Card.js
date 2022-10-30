@@ -35,6 +35,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         } else if (cardName === "Saloon") {
           socket.emit("play_saloon", {username, currentRoom, cardDigit, cardType});
 
+        } else if (cardName === "Emporio") {
+          socket.emit("play_emporio", {username, currentRoom, cardDigit, cardType});
+
         } else if (cardName === "Diligenza") {
           socket.emit("play_diligenza", {username, currentRoom, cardDigit, cardType});
 

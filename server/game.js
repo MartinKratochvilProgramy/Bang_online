@@ -3,6 +3,7 @@ class Game {
         this.numOfPlayers = playerNames.length;
         this.deck = deck;
         this.stack = [];
+        this.emporio = [];
         this.players = {}
         this.playerRoundId = 0;
         this.bangCanBeUsed = true;
@@ -142,8 +143,6 @@ class Game {
 
         this.setMancatoBeerNotPlayable(playerName);
         this.setCardOnTableNotPlayable("Barilo", playerName);
-        
-        console.log("BANG STATE: ", this.bangCanBeUsed);
         
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
@@ -287,6 +286,47 @@ class Game {
                 this.players[player].character.health += 1;
             }
         }
+    }
+
+    useEmporio(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
+        this.discard("Emporio", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Emporio`);
+
+        this.setAllNotPlayable(playerName);
+        
+        this.emporio = []; // this is not necessary, but to be sure
+        for (let i = 0; i < this.numOfPlayers; i++) {
+            this.emporio.push(this.deck[0])
+            this.deck.shift();
+        }
+        this.nextEmporioTurn = playerName;
+        this.playerPlaceHolder = playerName;
+    }
+
+    getEmporioCard(playerName, card) {
+        const getCardIndex = this.emporio.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type))
+        // return if card not found
+        if (getCardIndex < 0) return;
+        // place card in player hand
+        this.players[playerName].hand.push(this.emporio[getCardIndex]);
+        // remove from emporio
+        this.emporio.splice(getCardIndex, 1); 
+
+        if (this.emporio.length <= 0) {
+            this.setAllPlayable(this.playerPlaceHolder);
+            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+            this.emporio = [];
+            this.nextEmporioTurn = "";
+            return;
+        }
+        const playerNames = Object.keys(this.players);
+        let currentEmporioTurnPlayerIndex = playerNames.findIndex(player => player === this.nextEmporioTurn)
+        currentEmporioTurnPlayerIndex += 1;
+        if (currentEmporioTurnPlayerIndex >= this.numOfPlayers) {
+            currentEmporioTurnPlayerIndex = 0;
+        }
+        this.nextEmporioTurn = playerNames[currentEmporioTurnPlayerIndex];
+
     }
 
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {

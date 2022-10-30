@@ -946,7 +946,7 @@ test('use dynamite', t => {
         name: "Bang!",
         rimColor: "yellow",
         digit: 8,
-        type: "hearts",
+        type: "hearts", // this is drawn on dynamite
         isPlayable: false
     },  
   ]

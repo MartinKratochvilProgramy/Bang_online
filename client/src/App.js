@@ -25,6 +25,8 @@ function App() {
   const [topStackCard, setTopStackCard] = useState({});
   const [duelActive, setDuelActive] = useState(false);
   const [indianiActive, setIndianiActive] = useState(false);
+  const [emporioState, setEmporioState] = useState([]);
+  const [nextEmporioTurn, setNextEmporioTurn] = useState("");
 
   const usernameRef = useRef();
   const newRoomRef = useRef();
@@ -102,6 +104,12 @@ function App() {
       setIndianiActive(state);
     })
 
+    socket.on("emporio_state", (state) => {
+      console.log("Emporio state: ", state);
+      setEmporioState(state.cards);
+      setNextEmporioTurn(state.nextEmporioTurn);
+    })
+
   }, [username, currentRoom])
 
   const joinRoom = (e) => {
@@ -168,6 +176,8 @@ function App() {
           topStackCard={topStackCard}
           duelActive={duelActive}
           indianiActive={indianiActive}
+          emporioState={emporioState}
+          nextEmporioTurn={nextEmporioTurn}
         />
       :
        null
