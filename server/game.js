@@ -285,6 +285,15 @@ class Game {
         
     }
 
+    usePrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // TODO: special case for Sheriffo
+        this.discard("Prigione", card.digit, card.type, playerName);
+        console.log(`Player ${playerName} put ${target} in prison`);
+
+        card.isPlayable = false;
+        this.players[target].table.push(card);
+    }
+
     useBarel(playerName) {
         const drawnCard = this.deck[0];
         this.deck.shift();
@@ -325,11 +334,12 @@ class Game {
             const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === (this.playerRoundId + 1) % this.numOfPlayers )
             this.players[nextPlayer].table.push(card);
         }
-
+        
         if (!this.players[playerName].table.some(card => card.name === "Dynamite")) {
             // if not dynamite on table, allow use cards
             this.setAllPlayable(playerName);
             this.setMancatoBeerNotPlayable(playerName);
+            this.draw(2, playerName);
         }
     }
 
@@ -574,7 +584,7 @@ class Game {
         for (var player of Object.keys(this.players)) {
             // if player is on turn and has dynamite on table
             let dynamiteFound = false;
-            if (player === this.getNameOfCurrentTurnPlayer() && this.players[player].table.some(card => card.name === "Dynamite")) {
+            if (player === this.getNameOfCurrentTurnPlayer() && this.getPlayerHasDynamite(player)) {
                 dynamiteFound = true
             }
             state.push({
@@ -633,6 +643,10 @@ class Game {
 
     getPlayerHasDynamite(playerName) {
         return (this.players[playerName].table.some(card => card.name === 'Dynamite'));
+    }
+
+    getPlayerIsInPrison(playerName) {
+        return (this.players[playerName].table.some(card => card.name === 'Prigione'));
     }
 
     getPlayerTurn() {

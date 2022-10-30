@@ -1,6 +1,3 @@
-setMancatoBeerNotPlayable funguje divně?
-    -není potřeba deaktivovat beer?
-
 
 vykládací karty...
 -vězení

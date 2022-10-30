@@ -460,18 +460,20 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Mancato!",
-        rimColor: "yellow",
-        digit: 2222,
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 22,
         type: "hearts",
-        isPlayable: false
-    },   
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
     {
-        name: "Barilo",
+        name: "Dynamite",
         rimColor: "blue",
         digit: 2,
         type: "hearts",
-        class: "barel",
+        class: "dynamite",
         isPlayable: false,
         actionReqOnStart: false,
     },  

@@ -149,6 +149,13 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
+  
+  socket.on("play_prigione", (data) => {
+    const roomName = data.currentRoom;
+    
+    rooms[roomName].game.usePrigione(data.target, data.activeCard);
+    updateGameState(io, roomName);
+  })
 
   socket.on("play_cat_ballou", (data) => {
     const roomName = data.currentRoom;

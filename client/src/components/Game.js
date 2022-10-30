@@ -45,17 +45,19 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     const cardType = activeCard.type;
     
     if (activeCard.name === "Bang!") {
-      console.log("USERNAME: ", username);
-      socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType });
+      socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType});
 
     } else if (activeCard.name === "Duel") {
-      socket.emit("play_duel", {username, target, currentRoom, cardDigit, cardType });
+      socket.emit("play_duel", {target, currentRoom, cardDigit, cardType});
 
     } else if (activeCard.name === "Cat Ballou") {
-      socket.emit("play_cat_ballou", {username, target, currentRoom, cardDigit, cardType });
+      socket.emit("play_cat_ballou", {target, currentRoom, cardDigit, cardType});
 
     } else if (activeCard.name === "Panico") {
-      socket.emit("play_panico", {username, target, currentRoom, cardDigit, cardType });
+      socket.emit("play_panico", {target, currentRoom, cardDigit, cardType});
+
+    } else if (activeCard.name === "Prigione") {
+      socket.emit("play_prigione", {username, target, currentRoom, activeCard});
     }
     setActiveCard({});
   }

@@ -51,8 +51,13 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
           setSelectCardTarget(true);
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
         
-        } else if (card.rimColor === "blue") {
+        } else if (card.rimColor === "blue" && card.name !== "Prigione") {
           socket.emit("place_blue_card_on_table", {username, currentRoom, card});
+
+        } else if (card.name === "Prigione") {
+          setActiveCard(card);
+          setSelectPlayerTarget(true);
+          socket.emit("request_players_in_range", {range: "max", currentRoom, username});
         }
     }
 
