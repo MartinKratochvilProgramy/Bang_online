@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, duelActive }) {
+export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, duelActive, indianiActive }) {
 
     // TODO: this is not necessary
     const isPlayable = card.isPlayable
@@ -12,12 +12,17 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         if (!isPlayable) return;
         
         if (cardName === "Bang!") {
-          if (!duelActive) {
+          if (!duelActive && !indianiActive) {
             setActiveCard(card);
             setSelectPlayerTarget(true);
             socket.emit("request_players_in_range", {range: 1, currentRoom, username});
-          } else {
-            console.log("Bong in duel");
+
+          } else if (indianiActive) {
+            console.log("Bang on indiani");
+            socket.emit("play_bang_on_indiani", {username, currentRoom, cardDigit, cardType});
+
+          } else if (duelActive) {
+            console.log("Bang in duel");
             socket.emit("play_bang_in_duel", {username, currentRoom, cardDigit, cardType});
           }
 
@@ -35,6 +40,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
 
         } else if (cardName === "Gatling") {
           socket.emit("play_gatling", {username, currentRoom, cardDigit, cardType});
+
+        } else if (cardName === "Indiani") {
+          socket.emit("play_indiani", {username, currentRoom, cardDigit, cardType});
 
         } else if (cardName === "Duel") {
           setActiveCard(card);

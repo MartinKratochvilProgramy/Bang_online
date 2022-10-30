@@ -7,6 +7,7 @@ class Game {
         this.playerRoundId = 0;
         this.bangCanBeUsed = true;
         this.duelActive = false;
+        this.indianiActive = false;
         this.duelPlayers = null;
         this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
@@ -94,6 +95,23 @@ class Game {
         this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
         
         this.setIsLosingHealth(true, target);
+    }
+
+    useBangOnIndiani(cardDigit, cardType, playerName) {
+        this.discard("Bang!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Bang! on Indiani`);
+
+        this.setIsLosingHealth(false, playerName);
+
+        // if there is player loosing health, return
+        // if no player is found, set playable for playerPlaceholder
+        for (const player of this.getPlayersLosingHealth()) {
+            if (player.isLosingHealth) return;
+        }
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+        this.indianiActive = false;
+
     }
 
     useBangInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -297,7 +315,6 @@ class Game {
         for (const target of Object.keys(this.players)) {
             // put hit on all players, except playerName
             if (target !== playerName) {
-                console.log("TARGET: ", target);
                 this.setPlayable("Mancato!", target);
                 if (this.players[target].canUseBarel) {
                     this.setCardOnTablePlayable("Barilo", target);
@@ -311,6 +328,26 @@ class Game {
 
         this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
     
+    }
+
+    useIndiani(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
+        this.discard("Indiani", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Indiani`);
+
+        for (const target of Object.keys(this.players)) {
+            // put hit on all players, except playerName
+            if (target !== playerName) {
+                this.setPlayable("Bang!", target);
+                
+                this.setIsLosingHealth(true, target);
+            }
+        }
+
+        this.indianiActive = true;
+
+        this.setAllNotPlayable(playerName);
+
+        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
     }
 
     playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {

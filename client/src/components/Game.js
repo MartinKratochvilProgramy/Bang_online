@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersWithDynamite, topStackCard, duelActive }) { 
+export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersWithDynamite, topStackCard, duelActive, indianiActive }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -192,6 +192,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
               setActiveCard={setActiveCard}
               username={username}
               duelActive={duelActive}
+              indianiActive={indianiActive}
               />
         )
       })}

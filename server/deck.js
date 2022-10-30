@@ -469,7 +469,7 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Gatling",
+        name: "Indiani",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",
@@ -485,16 +485,16 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Dynamite",
+        name: "Barilo",
         rimColor: "blue",
         digit: 2,
-        type: "hearts",
+        type: "barel",
         class: "dynamite",
         isPlayable: false,
         actionReqOnStart: false,
     },  
     {
-        name: "Mancato!",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 101,
         type: "hearts",

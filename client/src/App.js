@@ -24,6 +24,7 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
   const [duelActive, setDuelActive] = useState(false);
+  const [indianiActive, setIndianiActive] = useState(false);
 
   const usernameRef = useRef();
   const newRoomRef = useRef();
@@ -96,6 +97,11 @@ function App() {
       setDuelActive(state);
     })
 
+    socket.on("indiani_active", (state) => {
+      console.log("Indiani state: ", state);
+      setIndianiActive(state);
+    })
+
   }, [username, currentRoom])
 
   const joinRoom = (e) => {
@@ -161,6 +167,7 @@ function App() {
           playersWithDynamite={playersWithDynamite}
           topStackCard={topStackCard}
           duelActive={duelActive}
+          indianiActive={indianiActive}
         />
       :
        null

@@ -111,6 +111,14 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
   })
 
+  socket.on("play_bang_on_indiani", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useBangOnIndiani(data.cardDigit, data.cardType, data.username);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+
   socket.on("play_mancato", (data) => {
     const roomName = data.currentRoom;
 
@@ -138,6 +146,15 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useGatling(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+
+  socket.on("play_indiani", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useIndiani(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("indiani_active", rooms[roomName].game.indianiActive);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
