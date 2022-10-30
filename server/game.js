@@ -75,6 +75,7 @@ class Game {
 
     }
 
+    // ******************* USE CARDS *******************
     useBang(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Bang!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Bang! on ${target}`);
@@ -536,24 +537,7 @@ class Game {
         }
     }
 
-    shuffleDeck() {
-        let currentIndex = this.deck.length,  randomIndex;
-      
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-      
-          // Pick a remaining element.
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex--;
-      
-          // And swap it with the current element.
-          [this.deck[currentIndex], this.deck[randomIndex]] = [
-            this.deck[randomIndex], this.deck[currentIndex]];
-        }
-
-        console.log("Deck shuffled");
-    }
-
+    // ******************* SETERS *******************
     setPlayable(cardName, playerName) {
         // sets cardName in playerName hand to isPlayable = true
         for (var card of this.players[playerName].hand) {
@@ -619,72 +603,7 @@ class Game {
         
     }
 
-    putStackIntoDeck() {
-        this.deck = this.stack;
-        this.stack = []
-     
-        console.log("Stack shuffled into deck");
-     
-        this.shuffleDeck();
-    }
-
-    setIsLosingHealth(bool, player) {
-        this.players[player].isLosingHealth = bool;
-    }
-
-    startGame() {
-        // each player draws startingHandSize cards
-        //this.shuffleDeck(); // TODO: uncomment
-        for (var player of Object.keys(this.players)) {
-            this.draw(this.players[player].character.startingHandSize, player);
-        }
-
-        const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
-        this.draw(2, firstPlayerName);
-        this.setAllPlayable(firstPlayerName);
-        this.setMancatoBeerNotPlayable(firstPlayerName)
-
-        console.log("Game started!");
-    }
-
-    endTurn() {
-        //find who was previous player
-        const previousPlayerName = this.getNameOfCurrentTurnPlayer()
-        // move playerRoundId forward
-        this.playerRoundId += 1;
-        // TODO: numOfPlayers changes on death
-        if (this.playerRoundId >= this.numOfPlayers) {
-            this.playerRoundId = 0;
-        }
-        const currentPlayerName = this.getNameOfCurrentTurnPlayer()
-
-        this.setAllNotPlayable(previousPlayerName);
-
-        if (this.getPlayerHasDynamite(currentPlayerName)) {
-            console.log("Activate dynamite: ", currentPlayerName);
-            this.players[currentPlayerName].hasDynamite = true;
-            this.setCardOnTablePlayable("Dynamite", currentPlayerName);
-        }
-
-        if (this.getPlayerIsInPrison(currentPlayerName)) {
-            console.log("Activate prison: ", currentPlayerName);
-            this.players[currentPlayerName].isInPrison = true;
-            this.setCardOnTablePlayable("Prigione", currentPlayerName);
-        } 
-        
-        if (!this.getPlayerHasDynamite(currentPlayerName) && !this.getPlayerIsInPrison(currentPlayerName)) {
-            this.draw(2, currentPlayerName);
-            this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-            this.setNotPlayable("Mancato!", currentPlayerName);
-            if (this.players[currentPlayerName].character.health >= this.players[currentPlayerName].character.maxHealth) {
-                this.setNotPlayable("Beer", currentPlayerName);
-            }
-        }
-
-        console.log("End of turn, next player: ", currentPlayerName);
-
-    }
-
+    // ******************* GETERS *******************
     getAllPlayersInfo() {
         // returns array [{name, numberOfCards, health, table}]
         let state = [];
@@ -845,6 +764,91 @@ class Game {
     getNameOfCurrentTurnPlayer () {
         // returns name of player who is on turn
         return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+    }
+
+    // ******************* GAME FLOW *******************
+    putStackIntoDeck() {
+        this.deck = this.stack;
+        this.stack = []
+     
+        console.log("Stack shuffled into deck");
+     
+        this.shuffleDeck();
+    }
+
+    setIsLosingHealth(bool, player) {
+        this.players[player].isLosingHealth = bool;
+    }
+
+    startGame() {
+        // each player draws startingHandSize cards
+        //this.shuffleDeck(); // TODO: uncomment
+        for (var player of Object.keys(this.players)) {
+            this.draw(this.players[player].character.startingHandSize, player);
+        }
+
+        const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
+        this.draw(2, firstPlayerName);
+        this.setAllPlayable(firstPlayerName);
+        this.setMancatoBeerNotPlayable(firstPlayerName)
+
+        console.log("Game started!");
+    }
+
+    shuffleDeck() {
+        let currentIndex = this.deck.length,  randomIndex;
+      
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+      
+          // Pick a remaining element.
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+      
+          // And swap it with the current element.
+          [this.deck[currentIndex], this.deck[randomIndex]] = [
+            this.deck[randomIndex], this.deck[currentIndex]];
+        }
+
+        console.log("Deck shuffled");
+    }
+
+    endTurn() {
+        //find who was previous player
+        const previousPlayerName = this.getNameOfCurrentTurnPlayer()
+        // move playerRoundId forward
+        this.playerRoundId += 1;
+        // TODO: numOfPlayers changes on death
+        if (this.playerRoundId >= this.numOfPlayers) {
+            this.playerRoundId = 0;
+        }
+        const currentPlayerName = this.getNameOfCurrentTurnPlayer()
+
+        this.setAllNotPlayable(previousPlayerName);
+
+        if (this.getPlayerHasDynamite(currentPlayerName)) {
+            console.log("Activate dynamite: ", currentPlayerName);
+            this.players[currentPlayerName].hasDynamite = true;
+            this.setCardOnTablePlayable("Dynamite", currentPlayerName);
+        }
+
+        if (this.getPlayerIsInPrison(currentPlayerName)) {
+            console.log("Activate prison: ", currentPlayerName);
+            this.players[currentPlayerName].isInPrison = true;
+            this.setCardOnTablePlayable("Prigione", currentPlayerName);
+        } 
+        
+        if (!this.getPlayerHasDynamite(currentPlayerName) && !this.getPlayerIsInPrison(currentPlayerName)) {
+            this.draw(2, currentPlayerName);
+            this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+            this.setNotPlayable("Mancato!", currentPlayerName);
+            if (this.players[currentPlayerName].character.health >= this.players[currentPlayerName].character.maxHealth) {
+                this.setNotPlayable("Beer", currentPlayerName);
+            }
+        }
+
+        console.log("End of turn, next player: ", currentPlayerName);
+
     }
 }
 

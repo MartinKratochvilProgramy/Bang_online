@@ -1,8 +1,6 @@
-emporio, salon
-
-
 force discard if handSize > health
 
+on death, cards affected: dynamite, emporio, saloon, endTurn, getPlayersInRange()
 
 this.numOfPlayers changes on player death, this could cause issues with clamping function
 in this.endTurn
@@ -11,3 +9,6 @@ this.playerPlaceholder is not necessary as playerName returns name
 of current player anyway
 
 write tests for Gatling, Indiani
+
+
+DEPLOY TO DIGITALOCEAN
