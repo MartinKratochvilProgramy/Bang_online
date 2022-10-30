@@ -131,7 +131,13 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useBeer(data.username, data.cardDigit, data.cardType);
-    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+
+  socket.on("play_saloon", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useSaloon(data.username, data.cardDigit, data.cardType);
     updateGameState(io, roomName);
   })
 

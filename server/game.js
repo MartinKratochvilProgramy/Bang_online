@@ -25,7 +25,7 @@ class Game {
                     return(
                         this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
-                        this.health = this.maxHealth,
+                        this.health = this.maxHealth - 1, //TODO: remove - 1
                         this.startingHandSize = this.maxHealth
                     )
                 }
@@ -274,6 +274,18 @@ class Game {
 
         if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
             this.setNotPlayable("Beer", playerName) // do not let player play beer if not max HP
+        }
+    }
+
+    useSaloon(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
+        this.discard("Saloon", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Saloon`);
+
+        for (const player of Object.keys(this.players)) {
+            // put hit on all players, except playerName
+            if (this.players[player].character.health < this.players[player].character.maxHealth) {
+                this.players[player].character.health += 1;
+            }
         }
     }
 

@@ -469,7 +469,7 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Indiani",
+        name: "Saloon",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",

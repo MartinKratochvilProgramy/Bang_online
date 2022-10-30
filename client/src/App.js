@@ -20,7 +20,7 @@ function App() {
   const [myHand, setMyHand] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
-  const [playersWithDynamite, setPlayersWithDynamite] = useState([]);
+  const [playersActionRequiredOnStart, setPlayersActionRequiredOnStart] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [topStackCard, setTopStackCard] = useState({});
   const [duelActive, setDuelActive] = useState(false);
@@ -77,8 +77,8 @@ function App() {
     })
 
     socket.on("update_players_with_action_required", (players) => {
-      console.log("PLAYERS WITH DYNAMITE: ", players);
-      setPlayersWithDynamite(players);
+      console.log("PLAYERS WITH ACTION REQUIRED: ", players);
+      setPlayersActionRequiredOnStart(players);
     })
 
     socket.on("update_all_players_info", (players) => {
@@ -164,7 +164,7 @@ function App() {
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
           playersLosingHealth={playersLosingHealth}
-          playersWithDynamite={playersWithDynamite}
+          playersActionRequiredOnStart={playersActionRequiredOnStart}
           topStackCard={topStackCard}
           duelActive={duelActive}
           indianiActive={indianiActive}

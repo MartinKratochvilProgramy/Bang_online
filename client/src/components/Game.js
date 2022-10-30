@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersWithDynamite, topStackCard, duelActive, indianiActive }) { 
+export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -24,13 +24,13 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   useEffect(() => {
     setNextTurn(true);
     // disable next turn button if dynamite action req from current player
-    for (const player of playersWithDynamite) {
+    for (const player of playersActionRequiredOnStart) {
       if (player.name === username && (player.hasDynamite || player.isInPrison)) {
         setNextTurn(false);
         break;
       }
     }
-  }, [playersWithDynamite, username])
+  }, [playersActionRequiredOnStart, username])
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
