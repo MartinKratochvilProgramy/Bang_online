@@ -515,6 +515,94 @@ test('use Panico on player', t => {
   assert.strictEqual(game.players["Sbeve"].hand.some(card => card.digit === 3), true)      // card in hand
 })
 
+test('use Panico on table', t => {
+  const panicoDeck = [    
+      {
+        name: "Barilo",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "barel",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Panico",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 6,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 8,
+        type: "hearts",
+        isPlayable: false
+    },  
+  ]
+
+  const game = new Game(["Sbeve", "Joe"], panicoDeck);
+  game.players["Sbeve"].character.startingHandSize = 2;
+  game.players["Joe"].character.startingHandSize = 1;
+  game.startGame();
+  game.placeBlueCardOnTable({
+        name: "Barilo",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "barel",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, "Sbeve");
+  game.endTurn();
+  game.usePanicoOnTableCard(    {
+        name: "Panico",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    }, "Barilo", 1, "hearts", "Joe");
+  assert.strictEqual(game.players["Sbeve"].table.some(card => card.name === "Barilo"), false);
+  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Barilo"), true);
+  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Panico"), false);
+})
+
 test('use Cat Ballou on player', t => {
   const panicoDeck = [    
     {
@@ -563,4 +651,265 @@ test('use Cat Ballou on player', t => {
   assert.strictEqual(game.players["Sbeve"].hand.some(card => card.digit === 1), false)      // not in hand
   assert.strictEqual(game.players["Sbeve"].hand.length, 3)      // card in hand
   assert.strictEqual(game.players["Joe"].hand.length, 0)      // card in hand
+})
+
+test('use Cat Ballou on table', t => {
+  const panicoDeck = [    
+      {
+        name: "Barilo",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "barel",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 6,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 8,
+        type: "hearts",
+        isPlayable: false
+    },  
+  ]
+
+  const game = new Game(["Sbeve", "Joe"], panicoDeck);
+  game.players["Sbeve"].character.startingHandSize = 2;
+  game.players["Joe"].character.startingHandSize = 1;
+  game.startGame();
+  game.placeBlueCardOnTable({
+        name: "Barilo",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "barel",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, "Sbeve");
+  game.endTurn();
+  game.useCatBallouOnTableCard(    {
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    }, "Barilo", 1, "hearts", "Joe");
+  assert.strictEqual(game.players["Sbeve"].table.some(card => card.name === "Barilo"), false);
+  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Barilo"), false);
+  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Cat Ballou"), false);
+})
+
+test('use prigione', t => {
+  const prisonDeck = [    
+    {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 6,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 8,
+        type: "hearts",
+        isPlayable: false
+    },  
+  ]
+
+  const game = new Game(["Sbeve", "Joe"], prisonDeck);
+  game.players["Sbeve"].character.startingHandSize = 1;
+  game.players["Joe"].character.startingHandSize = 1;
+  game.startGame();
+  game.playPrison("Joe", {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    });
+  game.endTurn();
+  assert.strictEqual(game.players["Sbeve"].hand.some(card => card.name === "Prison"), false);
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prison"), true);
+
+})
+
+test('use dynamite', t => {
+  const dynamiteDeck = [    
+    {
+        name: "Dynamite",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "dynamite",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 6,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 7,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 8,
+        type: "hearts",
+        isPlayable: false
+    },  
+  ]
+
+  const game = new Game(["Sbeve", "Joe"], dynamiteDeck);
+  game.players["Sbeve"].character.startingHandSize = 1;
+  game.players["Joe"].character.startingHandSize = 1;
+  game.startGame();
+  game.placeBlueCardOnTable({
+        name: "Dynamite",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "dynamite",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, "Sbeve");
+  game.endTurn();
+  assert.strictEqual(game.players["Sbeve"].hand.some(card => card.name === "Dynamite"), false);
+  assert.strictEqual(game.players["Sbeve"].table.some(card => card.name === "Dynamite"), true);
+  game.endTurn();
+  game.useDynamite("Sbeve", {
+    name: "Dynamite",
+    rimColor: "blue",
+    digit: 1,
+    type: "hearts",
+    class: "dynamite",
+    isPlayable: false,
+    actionReqOnStart: false,
+  })
+  assert.strictEqual(game.players["Sbeve"].table.some(card => card.name === "Dynamite"), false);
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Dynamite"), true);
 })

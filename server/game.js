@@ -285,8 +285,9 @@ class Game {
         
     }
 
-    usePrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
+    playPrison(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: special case for Sheriffo
+        // put prison in other players' table
         this.discard("Prigione", card.digit, card.type, playerName);
         console.log(`Player ${playerName} put ${target} in prison`);
 
@@ -336,7 +337,6 @@ class Game {
         }
         
         if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
-            console.log("HERE");
             // if not dynamite on table, allow use cards
             this.setAllPlayable(playerName);
             this.setMancatoBeerNotPlayable(playerName);
