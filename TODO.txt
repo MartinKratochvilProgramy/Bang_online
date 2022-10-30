@@ -1,6 +1,6 @@
 force discard if handSize > health
 
-on death, cards affected: dynamite, emporio, saloon, endTurn, getPlayersInRange()
+on death, cards affected: dynamite, emporio, saloon, 
 
 this.numOfPlayers changes on player death, this could cause issues with clamping function
 in this.endTurn

@@ -505,9 +505,6 @@ class Game {
         this.setAllPlayable(this.playerPlaceHolder);
         this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
 
-        console.log("this.bangCanBeUsed: ", this.bangCanBeUsed);
-        console.log("this.playerPlaceHolder: ", this.playerPlaceHolder);
-
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
@@ -525,7 +522,6 @@ class Game {
         }
         // if player were to day, allow him to play beer
         if (this.players[playerName].character.health <= 0) {
-            console.log("Hand: ", this.players[playerName].hand);
             for (const card of this.players[playerName].hand) {
                 if (card.name === "Beer") {
                     console.log("Losing: ", card.digit, card.type);
@@ -679,52 +675,59 @@ class Game {
     }
 
     getPlayersInRange(playerName, range) {
-        // returns array of players closer than range to playerName
+        // returns array of alive players closer than range to playerName
         // return array of all players if range === "max"
         
         const playerNames = Object.keys(this.players)   // array of player names;
-        
-        if (range === "max") return playerNames;        // on max range, return all
 
-        // ******** MAX RANGE BUT NOT SHERIFFO ********
-        if (range === "max_not_sheriffo") {
-            // max range but exclude sheriff
+        if  (range === "max" || range === "max_not_sheriffo") {
+            // ******** MAX RANGE ********
             let result = [];
             for (const player of playerNames) {
-                if (player !== playerName && this.players[player].character.role !== "Sheriffo") {
-                    result.push(player);
+                if (this.players[player].character.health > 0 && player !== playerName) {
+                    // if player is alive
+    
+                    if (range === "max") {
+                        result.push(player);
+    
+                    } else if (range === "max_not_sheriffo") {
+                        if (player !== playerName && this.players[player].character.role !== "Sheriffo") {
+                            result.push(player);
+                        }
+    
+                    }
                 }
             }
             return result;
-        }
-        
-        // ******** CUSTOM RANGE ********
-        if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
-            // if player has Apaloosa, increase range by 1
-            range += 1;
-        }
-
-        const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
-        const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
-        let result = [];
-
-        for (let i = 0; i < concatArray.length; i++) {
-            const currentName = concatArray[i];
-
-            if (currentName !== playerName) {
-                if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
-                    // if player has Mustang, decrease range temporarily by 1
-                    if (Math.abs(i - playerIndex) <= range - 1) {
+        } else {
+            // ******** CUSTOM RANGE ********
+            let result = [];
+            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
+                // if player has Apaloosa, increase range by 1
+                range += 1;
+            }
+    
+            const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
+            const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
+    
+            for (let i = 0; i < concatArray.length; i++) {
+                const currentName = concatArray[i];
+    
+                if (currentName !== playerName && this.players[currentName].character.health > 0) {
+                    if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
+                        // if player has Mustang, decrease range temporarily by 1
+                        if (Math.abs(i - playerIndex) <= range - 1) {
+                            result.push(currentName);
+                        }
+                    } else if (Math.abs(i - playerIndex) <= range) {
+                        // if not Mustang, continue normally
                         result.push(currentName);
                     }
-                } else if (Math.abs(i - playerIndex) <= range) {
-                    // if not Mustang, continue normally
-                    result.push(currentName);
-                }
-            };
-            
+                };
+                
+            }
+            return result;
         }
-        return result;
     }
 
     getPlayerHand(playerName) {
@@ -816,11 +819,17 @@ class Game {
     endTurn() {
         //find who was previous player
         const previousPlayerName = this.getNameOfCurrentTurnPlayer()
-        // move playerRoundId forward
-        this.playerRoundId += 1;
-        // TODO: numOfPlayers changes on death
-        if (this.playerRoundId >= this.numOfPlayers) {
-            this.playerRoundId = 0;
+        for (let i = 0; i < this.numOfPlayers; i++) {
+            // move playerRoundId forward
+            this.playerRoundId += 1;
+            // TODO: numOfPlayers changes on death
+            if (this.playerRoundId >= this.numOfPlayers) {
+                this.playerRoundId = 0;
+            }
+            if (this.players[this.getNameOfCurrentTurnPlayer()].character.health > 0) {
+                // if the next player is alive, continue and set his turn
+                break;
+            }            
         }
         const currentPlayerName = this.getNameOfCurrentTurnPlayer()
 

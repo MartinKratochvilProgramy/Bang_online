@@ -501,7 +501,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Mancato!",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 102,
         type: "hearts",
@@ -535,14 +535,14 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     }, 
     {
-        name: "Beer",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 404,
         type: "hearts",
         isPlayable: false
     },  
     {
-        name: "Beer",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 5,
         type: "hearts",
