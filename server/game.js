@@ -285,7 +285,7 @@ class Game {
         
     }
 
-    playPrison(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
+    playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: special case for Sheriffo
         // put prison in other players' table
         this.discard("Prigione", card.digit, card.type, playerName);
@@ -344,7 +344,7 @@ class Game {
         }
     }
 
-    usePrison(playerName, card) {
+    usePrigione(playerName, card) {
         card.isPlayable = false;
 
         // place prison on stack

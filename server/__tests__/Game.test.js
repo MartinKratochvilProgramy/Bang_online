@@ -741,7 +741,7 @@ test('use Cat Ballou on table', t => {
   assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Cat Ballou"), false);
 })
 
-test('use prigione', t => {
+test('use prison, draw on prison and suceed', t => {
   const prisonDeck = [    
     {
         name: "Prigione",
@@ -780,34 +780,14 @@ test('use prigione', t => {
         type: "hearts",
         isPlayable: false
     },
-    {
-        name: "Bang!",
-        rimColor: "yellow",
-        digit: 6,
-        type: "hearts",
-        isPlayable: false
-    },  
-    {
-        name: "Mancato!",
-        rimColor: "yellow",
-        digit: 7,
-        type: "hearts",
-        isPlayable: false
-    },
-    {
-        name: "Bang!",
-        rimColor: "yellow",
-        digit: 8,
-        type: "hearts",
-        isPlayable: false
-    },  
   ]
 
   const game = new Game(["Sbeve", "Joe"], prisonDeck);
   game.players["Sbeve"].character.startingHandSize = 1;
   game.players["Joe"].character.startingHandSize = 1;
   game.startGame();
-  game.playPrison("Joe", {
+  console.log(game.players["Sbeve"].hand)
+  game.playPrigione("Joe", {
         name: "Prigione",
         rimColor: "blue",
         digit: 1,
@@ -815,10 +795,97 @@ test('use prigione', t => {
         class: "prison",
         isPlayable: false,
         actionReqOnStart: false,
-    });
+    }, "Sbeve");
   game.endTurn();
-  assert.strictEqual(game.players["Sbeve"].hand.some(card => card.name === "Prison"), false);
-  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prison"), true);
+  assert.strictEqual(game.players["Sbeve"].hand.some(card => card.name === "Prigione"), false);
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prigione"), true);
+  
+  // draw on prison, succeed
+  game.usePrigione("Joe", {
+    name: "Prigione",
+    rimColor: "blue",
+    digit: 1,
+    type: "hearts",
+    class: "prison",
+    isPlayable: false,
+    actionReqOnStart: false,
+  })
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prigione"), false);
+  assert.strictEqual(game.getNameOfCurrentTurnPlayer(), "Joe")
+
+})
+
+test('use prison, draw on prison and fail', t => {
+  const prisonDeck = [    
+    {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 2,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Cat Ballou",
+        rimColor: "yellow",
+        digit: 3,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 4,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 5,
+        type: "spades",
+        isPlayable: false
+    },
+  ]
+
+  const game = new Game(["Sbeve", "Joe"], prisonDeck);
+  game.players["Sbeve"].character.startingHandSize = 1;
+  game.players["Joe"].character.startingHandSize = 1;
+  game.startGame();
+  console.log(game.players["Sbeve"].hand)
+  game.playPrigione("Joe", {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 1,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, "Sbeve");
+  game.endTurn();
+  assert.strictEqual(game.players["Sbeve"].hand.some(card => card.name === "Prigione"), false);
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prigione"), true);
+  
+  // draw on prison, succeed
+  game.usePrigione("Joe", {
+    name: "Prigione",
+    rimColor: "blue",
+    digit: 1,
+    type: "hearts",
+    class: "prison",
+    isPlayable: false,
+    actionReqOnStart: false,
+  })
+  assert.strictEqual(game.players["Joe"].table.some(card => card.name === "Prigione"), false);
+  assert.strictEqual(game.getNameOfCurrentTurnPlayer(), "Sbeve")
 
 })
 

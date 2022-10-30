@@ -153,7 +153,7 @@ io.on("connection", (socket) => {
   socket.on("play_prigione", (data) => {
     const roomName = data.currentRoom;
     
-    rooms[roomName].game.playPrison(data.target, data.activeCard);
+    rooms[roomName].game.playPrigione(data.target, data.activeCard);
     updateGameState(io, roomName);
   })
 
@@ -221,7 +221,7 @@ io.on("connection", (socket) => {
   socket.on("use_prigione", (data) => {
     const roomName = data.currentRoom;
     
-    rooms[roomName].game.usePrison(data.username, data.card);
+    rooms[roomName].game.usePrigione(data.username, data.card);
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   })
