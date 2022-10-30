@@ -230,6 +230,15 @@ const deckHearts = [
 ]
 const deckSpades = [
     {
+        name: "Mustang",
+        rimColor: "blue",
+        digit: 314,
+        type: "spades",
+        class: "horse",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },
+    {
         name: "Dynamite",
         rimColor: "blue",
         digit: 1690,
@@ -460,6 +469,13 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
+        name: "Gatling",
+        rimColor: "yellow",
+        digit: 314,
+        type: "hearts",
+        isPlayable: false
+    }, 
+    {
         name: "Prigione",
         rimColor: "blue",
         digit: 22,
@@ -478,14 +494,14 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Bang!",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 101,
         type: "hearts",
         isPlayable: false
     },  
     {
-        name: "Bang!",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 102,
         type: "hearts",

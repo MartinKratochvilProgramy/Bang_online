@@ -33,6 +33,8 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         } else if (cardName === "Wells Fargo") {
           socket.emit("play_wellsfargo", {username, currentRoom, cardDigit, cardType});
 
+        } else if (cardName === "Gatling") {
+          socket.emit("play_gatling", {username, currentRoom, cardDigit, cardType});
 
         } else if (cardName === "Duel") {
           setActiveCard(card);

@@ -124,17 +124,22 @@ class Game {
 
         this.setMancatoBeerNotPlayable(playerName);
         this.setCardOnTableNotPlayable("Barilo", playerName);
-
-        this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         
         console.log("BANG STATE: ", this.bangCanBeUsed);
-
+        
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
         }
-
+        
         this.setIsLosingHealth(false, playerName);
+
+        // if there is player loosing health, return
+        // if no player is found, set playable for playerPlaceholder
+        for (const player of this.getPlayersLosingHealth()) {
+            if (player.isLosingHealth) return;
+        }
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
     }
 
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -283,6 +288,29 @@ class Game {
         this.duelActive = true;
         this.playerPlaceHolder = playerName;    // save the name of player who used duel, so that his hand could be enabled after target player reaction
         
+    }
+
+    useGatling(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
+        this.discard("Gatling", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Gatling`);
+
+        for (const target of Object.keys(this.players)) {
+            // put hit on all players, except playerName
+            if (target !== playerName) {
+                console.log("TARGET: ", target);
+                this.setPlayable("Mancato!", target);
+                if (this.players[target].canUseBarel) {
+                    this.setCardOnTablePlayable("Barilo", target);
+                }
+                
+                this.setIsLosingHealth(true, target);
+            }
+        }
+
+        this.setAllNotPlayable(playerName);
+
+        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
+    
     }
 
     playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {

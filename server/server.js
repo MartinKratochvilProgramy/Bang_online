@@ -134,6 +134,14 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
   })
 
+  socket.on("play_gatling", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useGatling(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+
   socket.on("play_wellsfargo", (data) => {
     const roomName = data.currentRoom;
 
