@@ -1,6 +1,5 @@
+gatling, idniáni
 
-vykládací karty...
--vězení
 
 force discard if handSize > health
 

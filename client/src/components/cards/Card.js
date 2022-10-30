@@ -57,7 +57,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         } else if (card.name === "Prigione") {
           setActiveCard(card);
           setSelectPlayerTarget(true);
-          socket.emit("request_players_in_range", {range: "max", currentRoom, username});
+          socket.emit("request_players_in_range", {range: "max_not_sheriffo", currentRoom, username});
         }
     }
 

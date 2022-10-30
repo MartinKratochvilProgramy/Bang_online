@@ -22,7 +22,7 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.role = null,
+                        this.role = "Sheriffo",
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
@@ -646,17 +646,30 @@ class Game {
         // returns array of players closer than range to playerName
         // return array of all players if range === "max"
         
-        const arr = Object.keys(this.players)   // array of player names;
+        const playerNames = Object.keys(this.players)   // array of player names;
         
-        if (range === "max") return arr;        // on max range, return all
+        if (range === "max") return playerNames;        // on max range, return all
+
+        // ******** MAX RANGE BUT NOT SHERIFFO ********
+        if (range === "max_not_sheriffo") {
+            // max range but exclude sheriff
+            let result = [];
+            for (const player of playerNames) {
+                if (player !== playerName && this.players[player].character.role !== "Sheriffo") {
+                    result.push(player);
+                }
+            }
+            return result;
+        }
         
+        // ******** CUSTOM RANGE ********
         if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
             // if player has Apaloosa, increase range by 1
             range += 1;
         }
 
-        const playerIndex = arr.indexOf(playerName) + arr.length;
-        const concatArray = arr.concat(arr.concat(arr));    // = [...arr, ...arr, ...arr]
+        const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
+        const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
         let result = [];
 
         for (let i = 0; i < concatArray.length; i++) {
