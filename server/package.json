@@ -4,13 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "react-scripts test"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "nodemon": "^2.0.15",
     "socket.io": "^4.4.1",
+    "test": "^3.2.1",
     "uuid": "^9.0.0"
   }
 }

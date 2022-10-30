@@ -1,5 +1,7 @@
 gatling, idniáni
 
+change playersWithDynamite in Game.js
+
 
 force discard if handSize > health
 

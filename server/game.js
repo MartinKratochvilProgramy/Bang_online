@@ -22,7 +22,7 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.role = "Sheriffo",
+                        this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
