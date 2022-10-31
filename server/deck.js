@@ -469,14 +469,14 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Emporio",
+        name: "Indiani",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",
         isPlayable: false
     }, 
     {
-        name: "Prigione",
+        name: "Dynamite",
         rimColor: "blue",
         digit: 22,
         type: "hearts",

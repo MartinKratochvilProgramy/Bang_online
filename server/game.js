@@ -283,7 +283,7 @@ class Game {
 
         for (const player of Object.keys(this.players)) {
             // put hit on all players, except playerName
-            if (this.players[player].character.health < this.players[player].character.maxHealth) {
+            if (this.players[player].character.health > 0 && this.players[player].character.health < this.players[player].character.maxHealth) {
                 this.players[player].character.health += 1;
             }
         }
@@ -366,8 +366,8 @@ class Game {
         console.log(`Player ${playerName} used Gatling`);
 
         for (const target of Object.keys(this.players)) {
-            // put hit on all players, except playerName
-            if (target !== playerName) {
+            // put hit on all players, except playerName and dead players
+            if (target !== playerName && this.players[target].character.health > 0) {
                 this.setPlayable("Mancato!", target);
                 if (this.players[target].canUseBarel) {
                     this.setCardOnTablePlayable("Barilo", target);
@@ -389,7 +389,7 @@ class Game {
 
         for (const target of Object.keys(this.players)) {
             // put hit on all players, except playerName
-            if (target !== playerName) {
+            if (target !== playerName && this.players[target].character.health > 0) {
                 this.setPlayable("Bang!", target);
                 
                 this.setIsLosingHealth(true, target);
@@ -450,8 +450,21 @@ class Game {
             console.log("Dynamite exploded!");
             this.players[playerName].character.health -= 3; // lose 3 HP
         } else {
-            const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === (this.playerRoundId + 1) % this.numOfPlayers )
-            this.players[nextPlayer].table.push(card);
+            // find next alive player
+            let currentPlayerId = this.playerRoundId + 1;
+            for (let i = 0; i < this.numOfPlayers; i++) {
+                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentPlayerId);
+                if (this.players[nextPlayer].character.health > 0) {
+                    this.players[nextPlayer].table.push(card);
+                    break;
+                }
+                currentPlayerId += 1;
+                // clamp player ID
+                if (currentPlayerId >= this.numOfPlayers) {
+                    currentPlayerId = 0;
+                }
+
+            }
         }
         
         if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
@@ -507,6 +520,12 @@ class Game {
 
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
+
+        if (playerName !== this.getNameOfCurrentTurnPlayer()) {
+            // if not players turn, disable his Bang!
+            // this is for lose life when Indiani
+            this.setNotPlayable("Bang!", playerName)
         }
 
         if (this.duelActive) {
