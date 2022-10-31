@@ -278,16 +278,18 @@ io.on("connection", (socket) => {
   socket.on("discard", (data) => {
     const currentRoom = data.currentRoom;
 
-    const currentPlayer = rooms[currentRoom].game.discard(data.card.name, data.card.digit, data.card.type, data.username); // get current player
-    updateGameState(io, currentRoom)
+    rooms[currentRoom].game.discard(data.card.name, data.card.digit, data.card.type, data.username); // get current player
     if (rooms[currentRoom].game.players[data.username].hand.length <= rooms[currentRoom].game.players[data.username].character.health) {
       // if less of equal cards in hand -> endTurn
       socket.emit("end_discard");
       rooms[currentRoom].game.endTurn()
+      const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
+      console.log("CURRENT PLAYER: ", currentPlayer);
       io.to(currentRoom).emit("current_player", currentPlayer);
       io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
       updateGameState(io, currentRoom)
-      io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
+    } else {
+      updateGameState(io, currentRoom)
     }
   })
 

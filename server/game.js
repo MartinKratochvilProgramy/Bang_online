@@ -251,6 +251,7 @@ class Game {
                 // remove card from table
                 const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+                if (removedCard.name === "Vulcanic") this.bangCanBeUsed = false;
                 this.stack.push(removedCard);
             }
         }
@@ -732,13 +733,47 @@ class Game {
                 }
             }
             return result;
+        } else if (range === "one_not_gun") {
+                // ******** CUSTOM RANGE ********
+                let result = [];
+                if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
+                    // if player has Apaloosa, increase range by 1
+                    range += 1;
+                }
+
+                const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
+                const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
+
+                for (let i = 0; i < concatArray.length; i++) {
+                    const currentName = concatArray[i];
+
+                    if (currentName !== playerName && this.players[currentName].character.health > 0) {
+                        if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
+                            // if player has Mustang, decrease range temporarily by 1
+                            if (Math.abs(i - playerIndex) <= range - 1) {
+                                result.push(currentName);
+                            }
+                        } else if (Math.abs(i - playerIndex) <= range) {
+                            // if not Mustang, continue normally
+                            result.push(currentName);
+                        }
+                    };
+                    
+                }
+                return result;
         } else {
             // ******** CUSTOM RANGE ********
             let result = [];
-            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
-                // if player has Apaloosa, increase range by 1
-                range += 1;
-            }
+            // if player has Apaloosa, increase range by 1
+            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) range += 1;
+            // if player has Schofield, increase range by 1
+            if (this.players[playerName].table.some(card => card.name === 'Schofield')) range += 1;
+            // if player has Remington, increase range by 2
+            if (this.players[playerName].table.some(card => card.name === 'Remington')) range += 2;
+            // if player has Rev. Carabine, increase range by 3
+            if (this.players[playerName].table.some(card => card.name === 'Rev. Carabine')) range += 3;
+            // if player has Winchester, increase range by 4
+            if (this.players[playerName].table.some(card => card.name === 'Winchester')) range += 4;
     
             const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
             const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]

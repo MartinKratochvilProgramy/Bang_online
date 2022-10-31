@@ -11,7 +11,6 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     function handleClick() {
       
       if (discarding) {
-        console.log("discard");
         socket.emit("discard", {username, currentRoom, card});
         return;
       }
@@ -72,7 +71,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
           setActiveCard(card);
           setSelectPlayerTarget(true);
           setSelectCardTarget(true);
-          socket.emit("request_players_in_range", {range: 1, currentRoom, username});
+          socket.emit("request_players_in_range", {range: "one_not_gun", currentRoom, username});
         
         } else if (card.rimColor === "blue" && card.name !== "Prigione") {
           socket.emit("place_blue_card_on_table", {username, currentRoom, card});
@@ -85,9 +84,11 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     }
 
     let styles;
-    if (isPlayable || discarding) {
-      console.log("DISCARDING: ", discarding);
+    if (isPlayable) {
       styles = {color: "red"}
+    } 
+    if (discarding) {
+      styles = {color: "red", border: "solid 1px red"}
     } 
 
   return (
