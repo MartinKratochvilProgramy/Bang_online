@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Willy the Kid", "Calamity Janet"]
+        const namesOfCharacters = ["El Gringo", "Calamity Janet"]
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -642,6 +642,14 @@ class Game {
                 this.setMancatoBeerNotPlayable(currentPlayer);
             }
         }
+        //El Gringo can draw when hit by Bang! or Gatling
+        // Mancato! has also be in stack because of CJ
+        console.log("Card: ", this.getTopStackCard());
+        if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
+            this.draw(1, playerName);
+            console.log("El Gringo was hit, so he draws 1 card");
+        }
+
         // if player were to day, allow him to play beer
         if (this.players[playerName].character.health <= 0) {
             for (const card of this.players[playerName].hand) {
