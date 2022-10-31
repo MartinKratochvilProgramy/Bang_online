@@ -24,7 +24,7 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.name = "Bart Cassidy",
+                        this.name = "Black Jack",
                         this.role = null,
                         this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
@@ -39,10 +39,6 @@ class Game {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         
-        const currentTurnPlayerName = this.getNameOfCurrentTurnPlayer();
-        let playerTurn = false;
-        if (currentTurnPlayerName === playerName) playerTurn = true;
-
         if (this.deck.length <= 0) {
             console.log("DECK EMPTY!");
             this.putStackIntoDeck();
@@ -885,7 +881,14 @@ class Game {
         } 
         
         if (!this.getPlayerHasDynamite(currentPlayerName) && !this.getPlayerIsInPrison(currentPlayerName)) {
-            this.draw(2, currentPlayerName);
+            // proceed and draw
+            if (this.players[currentPlayerName].character.name === "Black Jack" && (this.deck[1].type === "hearts" || this.deck[1].type === "diamonds")){
+                // Black Jack can draw 3 on hearts or diamonds
+                console.log(`Player ${currentPlayerName} is Black Jack and drew ${this.deck[1].name} ${this.deck[1].type} so he draws another card`);
+                this.draw(3, currentPlayerName);
+            } else {
+                this.draw(2, currentPlayerName);
+            }
             this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
             this.setNotPlayable("Mancato!", currentPlayerName);
             if (this.players[currentPlayerName].character.health >= this.players[currentPlayerName].character.maxHealth) {
