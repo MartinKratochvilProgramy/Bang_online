@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["El Gringo", "Jesse Jones"]
+        const namesOfCharacters = ["El Gringo", "Jourdonnais"]
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -687,6 +687,28 @@ class Game {
         this.draw(1, playerName);
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+    }
+
+    jourdonnaisBarel(playerName){
+        const drawnCard = this.deck[0];
+        this.deck.shift();
+        this.stack.push(drawnCard)
+
+        if (drawnCard.type === "hearts") {
+            this.setIsLosingHealth(false, playerName);
+            this.setNotPlayable("Mancato!", playerName);
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+            this.setMancatoBeerNotPlayable(this.getNameOfCurrentTurnPlayer());
+            if (!this.bangCanBeUsed) {
+                this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
+                if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
+                    // laso disallow Mancato! for CJ
+                    this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer())
+                }
+            }
+        }
+
+        console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on Jourdonnais`);
     }
 
     // ******************* SETERS *******************

@@ -8,7 +8,12 @@ add characters:
     Calamity Janet
     El Gringo
     Jessie Jones
-        -
+
+
+    check on server target === "..."
+    emit to room that target can use barel as self
+    socket.on if char === "..." -> clickable
+    onClick -> use barel
 
 this.playerPlaceholder is not necessary as playerName returns name 
 of current player anyway

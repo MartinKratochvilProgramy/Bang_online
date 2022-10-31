@@ -106,6 +106,10 @@ io.on("connection", (socket) => {
     rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType, data.username);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
+
+    if (rooms[roomName].game.players[data.target].character.name = "Jourdonnais") {
+      io.to(roomName).emit("jourdonnais_can_use_barel");
+    }
   })
 
   socket.on("play_bang_as_CJ", (data) => {
@@ -201,6 +205,13 @@ io.on("connection", (socket) => {
     rooms[roomName].game.useGatling(data.username, data.cardDigit, data.cardType);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
+
+    for (const player of Object.keys(rooms[roomName].game.players)) {
+      if (rooms[roomName].game.players[player].character.name = "Jourdonnais") {
+        io.to(roomName).emit("jourdonnais_can_use_barel");
+      }
+    }
+
   })
 
   socket.on("play_indiani", (data) => {
@@ -308,6 +319,14 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.jesseJonesTarget(data.target);
+    updateGameState(io, roomName);
+  })
+    
+  socket.on("jourdonnais_barel", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.jourdonnaisBarel(data.username);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
 

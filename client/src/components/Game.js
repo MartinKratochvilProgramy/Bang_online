@@ -55,6 +55,12 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     setDiscarding(false);
   })
 
+  socket.on("jourdonnais_can_use_barel", () => {
+    if (character === "Jourdonnais") {
+      setCharacterUsable(true);
+    }
+  })
+
   function confirmPlayerTarget(target) {
     if (!selectPlayerTarget) return;
     setSelectPlayerTarget(false);
@@ -137,6 +143,10 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     if (character === "Jesse Jones") {
       setSelectPlayerTarget(true);
       socket.emit("request_players_in_range", {range: "max", currentRoom, username});
+    }
+    if (character === "Jourdonnais") {
+      setCharacterUsable(false);
+      socket.emit("jourdonnais_barel", {currentRoom, username});
     }
   }
 
