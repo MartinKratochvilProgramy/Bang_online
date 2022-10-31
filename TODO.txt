@@ -1,4 +1,3 @@
-není vyřešen dostřel
 
 maybe graphically distinguish discardable from playable
 
