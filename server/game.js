@@ -24,7 +24,7 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.name = "Willy the Kid",
+                        this.name = "Bart Cassidy",
                         this.role = null,
                         this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
@@ -532,6 +532,12 @@ class Game {
 
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
+
+        if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
+            // Bart Cassidy draws a card on hit
+            // this works on all damage taken except Indiani -> could cause problems
+            this.draw(1, playerName);
         }
 
         if (playerName !== this.getNameOfCurrentTurnPlayer()) {
