@@ -1,6 +1,6 @@
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Panico",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",
@@ -16,6 +16,20 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 101,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 1010,
+        type: "hearts",
+        isPlayable: false
+    },  
+    {
         name: "Barilo",
         rimColor: "blue",
         digit: 2,
@@ -25,13 +39,6 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Mancato!",
-        rimColor: "yellow",
-        digit: 101,
-        type: "hearts",
-        isPlayable: false
-    },  
-    {
         name: "Bang!",
         rimColor: "yellow",
         digit: 102,
@@ -39,20 +46,18 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Mustang",
-        rimColor: "blue",
-        digit: 69,
+        name: "Gatling",
+        rimColor: "yellow",
+        digit: 102,
         type: "hearts",
-        class: "horse",
-        isPlayable: false,
-        actionReqOnStart: false,
-    },
+        isPlayable: false
+    }, 
     {
-        name: "Mustang",
+        name: "Vulcanic",
         rimColor: "blue",
         digit: 68,
         type: "hearts",
-        class: "horse",
+        class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
     },

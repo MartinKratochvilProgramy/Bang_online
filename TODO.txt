@@ -5,6 +5,7 @@ add characters:
     Willy the Kid
     Bart Cassidy
     Black Jack
+    Calamity Janet -> check Gatling Indiani
 
 this.playerPlaceholder is not necessary as playerName returns name 
 of current player anyway

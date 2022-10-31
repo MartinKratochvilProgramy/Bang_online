@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, nextEmporioTurn }) { 
+export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, nextEmporioTurn }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -62,6 +62,9 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
     
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType});
+
+    } else if (activeCard.name === "Mancato!" && character === "Calamity Janet") {
+      socket.emit("play_mancato_as_CJ", {target, currentRoom, cardDigit, cardType});
 
     } else if (activeCard.name === "Duel") {
       socket.emit("play_duel", {target, currentRoom, cardDigit, cardType});
@@ -188,6 +191,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
+      <p>Character: <button type="">{character}</button></p>
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display only my stats
         return (
@@ -226,9 +230,11 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
               currentRoom={currentRoom}
               setActiveCard={setActiveCard}
               username={username}
+              currentPlayer={currentPlayer}
               duelActive={duelActive}
               indianiActive={indianiActive}
               discarding={discarding}
+              character={character}
               />
         )
       })}

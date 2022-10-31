@@ -1,6 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
+        const namesOfCharacters = ["Willy the Kid", "Calamity Janet"]
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -24,9 +25,9 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.name = "Black Jack",
+                        this.name = namesOfCharacters[i],
                         this.role = null,
-                        this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
@@ -95,6 +96,31 @@ class Game {
         
         this.setIsLosingHealth(true, target);
     }
+    
+    useBangAsCJ(playerName, cardDigit, cardType) {
+        this.discard("Bang!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Bang! as Mancato!`);
+
+        this.players[playerName].canUseBarel = true;
+
+        this.setMancatoBeerNotPlayable(playerName);
+        this.setCardOnTableNotPlayable("Barilo", playerName);
+        this.setNotPlayable("Bang!", playerName);
+        
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        }
+        
+        this.setIsLosingHealth(false, playerName);
+
+        // if there is player loosing health, return
+        // if no player is found, set playable for playerPlaceholder
+        for (const player of this.getPlayersLosingHealth()) {
+            if (player.isLosingHealth) return;
+        }
+        this.setAllPlayable(this.playerPlaceHolder);
+        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+    }
 
     useBangOnIndiani(cardDigit, cardType, playerName) {
         this.discard("Bang!", cardDigit, cardType, playerName);
@@ -142,12 +168,13 @@ class Game {
         this.setMancatoBeerNotPlayable(playerName);
         this.setCardOnTableNotPlayable("Barilo", playerName);
         
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+        this.setIsLosingHealth(false, playerName);
+        
+        if (this.indianiActive) {
+            // CJ can play Mancato! on Indiani, so disable all cards if this happens
+            this.setAllNotPlayable(playerName);
         }
         
-        this.setIsLosingHealth(false, playerName);
-
         // if there is player loosing health, return
         // if no player is found, set playable for playerPlaceholder
         for (const player of this.getPlayersLosingHealth()) {
@@ -155,6 +182,38 @@ class Game {
         }
         this.setAllPlayable(this.playerPlaceHolder);
         this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+        
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+            if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                // also disable Mancato! for CJ
+                this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+            }
+        }
+    }
+
+    useMancatoAsCJ(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
+        this.discard("Mancato!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Mancato! as Bang! on ${target}`);
+
+        this.setPlayable("Mancato!", target);
+        if (this.players[target].canUseBarel) {
+            this.setCardOnTablePlayable("Barilo", target);
+        }
+
+        this.setAllNotPlayable(playerName);
+        if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
+            // if player has Volcanic or is Willy the Kid don't block Bang!s
+            // TODO: implement this for Billy the Kid
+            this.bangCanBeUsed = true;
+        } else {
+            this.bangCanBeUsed = false;
+        }
+
+        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
+        
+        this.setIsLosingHealth(true, target);
+
     }
 
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -435,9 +494,13 @@ class Game {
             this.setIsLosingHealth(false, playerName);
             this.setNotPlayable("Mancato!", playerName);
             this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-            this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
+            this.setMancatoBeerNotPlayable(this.getNameOfCurrentTurnPlayer());
             if (!this.bangCanBeUsed) {
                 this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
+                if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
+                    // laso disallow Mancato! for CJ
+                    this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer())
+                }
             }
         }
 
@@ -529,6 +592,10 @@ class Game {
 
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
+            if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                // also disable Mancato! for CJ
+                this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+            }
         }
 
         if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
@@ -573,6 +640,20 @@ class Game {
         for (var card of this.players[playerName].hand) {
             if (card.name === cardName) {
                 card.isPlayable = true;
+            }
+        }
+        if (cardName === "Bang!" && this.players[playerName].character.name === "Calamity Janet") {
+            for (var card of this.players[playerName].hand) {
+                if (card.name === "Mancato!") {
+                    card.isPlayable = true;
+                }
+            }
+        }
+        if (cardName === "Mancato!" && this.players[playerName].character.name === "Calamity Janet") {
+            for (var card of this.players[playerName].hand) {
+                if (card.name === "Bang!") {
+                    card.isPlayable = true;
+                }
             }
         }
     }
@@ -626,11 +707,15 @@ class Game {
     }
 
     setMancatoBeerNotPlayable(playerName) {
-        this.setNotPlayable("Mancato!", playerName);
         if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
             this.setNotPlayable("Beer", playerName) // let player play beer if not max HP
         }
-        
+        if (this.players[playerName].character.name !== "Calamity Janet") {
+            this.setNotPlayable("Mancato!", playerName);
+        }
+        if (this.players[playerName].character.name !== "Calamity Janet" && this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0) {
+            this.setPlayable("Mancato!", playerName);
+        }
     }
 
     // ******************* GETERS *******************
@@ -925,10 +1010,7 @@ class Game {
                 this.draw(2, currentPlayerName);
             }
             this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
-            this.setNotPlayable("Mancato!", currentPlayerName);
-            if (this.players[currentPlayerName].character.health >= this.players[currentPlayerName].character.maxHealth) {
-                this.setNotPlayable("Beer", currentPlayerName);
-            }
+            this.setMancatoBeerNotPlayable(currentPlayerName);
         }
 
         console.log("End of turn, next player: ", currentPlayerName);

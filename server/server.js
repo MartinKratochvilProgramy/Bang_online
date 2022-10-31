@@ -86,7 +86,12 @@ io.on("connection", (socket) => {
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
     io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
-    
+
+    let characters = []
+    for (var player of Object.keys(rooms[roomName].game.players)) {
+      characters.push({playerName: player, character: rooms[roomName].game.players[player].character.name})
+    }
+    io.to(roomName).emit("characters", characters);
     io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
   });
 
@@ -99,6 +104,14 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useBang(data.target, data.cardDigit, data.cardType, data.username);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+
+  socket.on("play_bang_as_CJ", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useBangAsCJ(data.username, data.cardDigit, data.cardType);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })
@@ -123,6 +136,14 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.useMancato(data.username, data.cardDigit, data.cardType);
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    updateGameState(io, roomName);
+  })
+  
+  socket.on("play_mancato_as_CJ", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.useMancatoAsCJ(data.target, data.cardDigit, data.cardType, data.username);
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
   })

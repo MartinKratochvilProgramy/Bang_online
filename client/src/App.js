@@ -16,6 +16,7 @@ function App() {
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
+  const [character, setCharacter] = useState("");
 
   const [myHand, setMyHand] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
@@ -53,6 +54,15 @@ function App() {
       }
       console.log("all hands: ", data);
       setAllPlayersInfo(data);
+    })
+
+    socket.on("characters", characters => {
+      for (let character of characters) {
+        if (character.playerName === username) {
+          setCharacter(character.character);
+          break;
+        }
+      }
     })
 
     socket.on("current_player", playerName => {
@@ -168,6 +178,7 @@ function App() {
           allPlayersInfo={allPlayersInfo}
           setAllPlayersInfo={setAllPlayersInfo}
           username={username}
+          character={character}
           socket={socket}
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
