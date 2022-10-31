@@ -1,3 +1,4 @@
+Lucky Duke should also work on other drawable cards
 
 maybe graphically distinguish discardable from playable
 
