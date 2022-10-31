@@ -8,6 +8,8 @@ add characters:
     Calamity Janet
     El Gringo
     Jessie Jones
+    Jourdonnais
+    Kit Carlson
 
 
     check on server target === "..."

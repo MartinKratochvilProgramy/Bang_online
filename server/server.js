@@ -207,6 +207,16 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_hands");
   })
 
+  socket.on("get_choice_card_LD", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.getChoiceCardLD(data.username, data.card);
+    // send emporio state to clients
+    updateGameState(io, roomName);
+    io.to(roomName).emit("update_draw_choices", "Lucky Duke");
+    io.to(roomName).emit("update_hands");
+  })
+
   socket.on("play_diligenza", (data) => {
     const roomName = data.currentRoom;
 
@@ -386,6 +396,9 @@ function endTurn(io, currentRoom) {
   
   if (rooms[currentRoom].game.players[currentPlayer].character.name === "Kit Carlson") {
     io.to(currentRoom).emit("update_draw_choices", "Kit Carlson");
+
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Lucky Duke") {
+    io.to(currentRoom).emit("update_draw_choices", "Lucky Duke");
   }
 
   io.to(currentRoom).emit("current_player", currentPlayer);

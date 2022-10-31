@@ -67,12 +67,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     setSelectCardTarget(false);
     const cardDigit = activeCard.digit;
     const cardType = activeCard.type;
-
-    console.log("Active card: ", activeCard);
-    console.log("Active card: ", activeCard);
-    console.log("Active card: ", activeCard);
-    console.log("Active card: ", activeCard);
-    
+   
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType});
 
@@ -135,7 +130,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   }
   
   function getChoiceCard(card) {
-    socket.emit("get_choice_card_KC", {username, currentRoom, card});
+    if (character === "Kit Carlson") {
+      socket.emit("get_choice_card_KC", {username, currentRoom, card});
+    } else if (character === "Lucky Duke") {
+      socket.emit("get_choice_card_LD", {username, currentRoom, card});
+    }
   }
 
   function loseHealth() {
@@ -284,7 +283,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn && emporioState.length === 0) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {

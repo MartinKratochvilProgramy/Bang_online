@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["El Gringo", "Kit Carlson"] // TODO: remove
+        const namesOfCharacters = ["El Gringo", "Lucky Duke"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -14,6 +14,7 @@ class Game {
         this.duelPlayers = null;
         this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
+        this.luckyDukeFirstDraw = true;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -432,11 +433,41 @@ class Game {
         this.drawChoice.splice(getCardIndex, 1); 
 
         if (this.drawChoice.length === 1) {
-            this.stack.push(this.drawChoice)
+            this.stack.push(this.drawChoice[0]);
             // end when no cards to draw
             this.setAllPlayable(playerName);
             this.setMancatoBeerNotPlayable(playerName);
             this.drawChoice = [];
+            return;
+        }
+    }
+
+    getChoiceCardLD(playerName, card) {
+        const getCardIndex = this.drawChoice.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type))
+        // return if card not found
+        if (getCardIndex < 0) return;
+        // place card in player hand
+        this.players[playerName].hand.push(this.drawChoice[getCardIndex]);
+        // remove from drawChoice
+        this.drawChoice.splice(getCardIndex, 1); 
+
+        if (this.luckyDukeFirstDraw) {
+            this.stack.push(this.drawChoice[0])
+            // end when no cards to draw
+            this.luckyDukeFirstDraw = false;
+            this.drawChoice = [];
+            for (let i = 0; i < 2; i++) {
+                const card = this.deck[0];
+                this.drawChoice.push(card);
+                this.deck.shift();
+            }
+            return;
+        } else {
+            this.stack.push(this.drawChoice[0])
+            this.setAllPlayable(playerName);
+            this.setMancatoBeerNotPlayable(playerName);
+            this.drawChoice = [];
+            this.luckyDukeFirstDraw = true;
             return;
         }
     }
@@ -1108,6 +1139,15 @@ class Game {
             // populate create draw choice for Kit Carlson
             this.drawChoice = [];
             for (let i = 0; i < 3; i++) {
+                const card = this.deck[0];
+                this.drawChoice.push(card);
+                this.deck.shift();
+            }
+        
+        } else if (this.players[currentPlayerName].character.name === "Lucky Duke") {
+            // populate create draw choice for Kit Carlson
+            this.drawChoice = [];
+            for (let i = 0; i < 2; i++) {
                 const card = this.deck[0];
                 this.drawChoice.push(card);
                 this.deck.shift();

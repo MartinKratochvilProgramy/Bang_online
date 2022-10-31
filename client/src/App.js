@@ -95,7 +95,7 @@ function App() {
       console.log("character: ", character);
       console.log("characterName: ", characterName);
       if (characterName === character) {
-        socket.emit("get_my_draw_choice", {username, currentRoom});
+        socket.emit("get_my_draw_choice", {username, currentRoom, character});
       }
     })
 
