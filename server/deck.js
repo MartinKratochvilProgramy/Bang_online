@@ -469,7 +469,7 @@ const deckSpades = [
 ]
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Emporio",
+        name: "Panico",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",
