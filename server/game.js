@@ -24,9 +24,10 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
+                        this.name = "Willy the Kid",
                         this.role = null,
-                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
-                        this.health = this.maxHealth - 1, //TODO: remove - 1
+                        this.maxHealth = 4 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
                 }
@@ -86,8 +87,8 @@ class Game {
         }
 
         this.setAllNotPlayable(playerName);
-        if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0) {
-            // if player has Volcanic, don't block Bang!s
+        if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
+            // if player has Volcanic or is Willy the Kid don't block Bang!s
             // TODO: implement this for Billy the Kid
             this.bangCanBeUsed = true;
         } else {
