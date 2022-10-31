@@ -1,7 +1,5 @@
 force discard if handSize > health
 
-on death, cards affected: emporio
-
 this.playerPlaceholder is not necessary as playerName returns name 
 of current player anyway
 

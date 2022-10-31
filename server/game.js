@@ -296,9 +296,12 @@ class Game {
         this.setAllNotPlayable(playerName);
         
         this.emporio = []; // this is not necessary, but to be sure
-        for (let i = 0; i < this.numOfPlayers; i++) {
-            this.emporio.push(this.deck[0])
-            this.deck.shift();
+        for (let player of Object.keys(this.players)) {
+            if (this.players[player].character.health > 0) {
+                // don't include dead players in Emporio
+                this.emporio.push(this.deck[0])
+                this.deck.shift();
+            }
         }
         this.nextEmporioTurn = playerName;
         this.playerPlaceHolder = playerName;
@@ -314,6 +317,7 @@ class Game {
         this.emporio.splice(getCardIndex, 1); 
 
         if (this.emporio.length <= 0) {
+            // end when no cards to draw
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
             this.emporio = [];
@@ -322,12 +326,20 @@ class Game {
         }
         const playerNames = Object.keys(this.players);
         let currentEmporioTurnPlayerIndex = playerNames.findIndex(player => player === this.nextEmporioTurn)
-        currentEmporioTurnPlayerIndex += 1;
-        if (currentEmporioTurnPlayerIndex >= this.numOfPlayers) {
-            currentEmporioTurnPlayerIndex = 0;
-        }
+            // find next alive player
+            for (let i = 0; i < this.numOfPlayers; i++) {
+                currentEmporioTurnPlayerIndex += 1;
+                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentEmporioTurnPlayerIndex);
+                if (this.players[nextPlayer].character.health > 0) {
+                    this.players[nextPlayer].table.push(card);
+                    break;
+                }
+                // clamp player ID
+                if (currentEmporioTurnPlayerIndex >= this.numOfPlayers) {
+                    currentEmporioTurnPlayerIndex = 0;
+                }
+            }
         this.nextEmporioTurn = playerNames[currentEmporioTurnPlayerIndex];
-
     }
 
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
@@ -463,7 +475,6 @@ class Game {
                 if (currentPlayerId >= this.numOfPlayers) {
                     currentPlayerId = 0;
                 }
-
             }
         }
         
