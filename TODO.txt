@@ -1,3 +1,5 @@
+První kartu si nemusí vzít z ruky
+
 Lucky Duke should also work on other drawable cards
     -barel
     -prigione
