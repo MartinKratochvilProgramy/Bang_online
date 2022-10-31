@@ -19,6 +19,7 @@ function App() {
   const [character, setCharacter] = useState("");
 
   const [myHand, setMyHand] = useState([]);
+  const [myDrawChoice, setMyDrawChoice] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [playersActionRequiredOnStart, setPlayersActionRequiredOnStart] = useState([]);
@@ -78,10 +79,24 @@ function App() {
       setMyHand(hand);
     })
 
+    socket.on("my_draw_choice", hand => {
+      setMyDrawChoice(hand);
+    })
+
     socket.on("update_hands", () => {
       if (username === "") return;
       if (currentRoom === null) return;
       socket.emit("get_my_hand", {username, currentRoom});
+    })
+
+    socket.on("update_draw_choices", (characterName) => {
+      if (username === "") return;
+      if (currentRoom === null) return;
+      console.log("character: ", character);
+      console.log("characterName: ", characterName);
+      if (characterName === character) {
+        socket.emit("get_my_draw_choice", {username, currentRoom});
+      }
     })
 
     socket.on("update_players_losing_health", (players) => {
@@ -120,7 +135,7 @@ function App() {
       setNextEmporioTurn(state.nextEmporioTurn);
     })
 
-  }, [username, currentRoom])
+  }, [username, currentRoom, character])
 
   const joinRoom = (e) => {
     const room = e.target.id;
@@ -188,6 +203,7 @@ function App() {
           duelActive={duelActive}
           indianiActive={indianiActive}
           emporioState={emporioState}
+          myDrawChoice={myDrawChoice}
           nextEmporioTurn={nextEmporioTurn}
         />
       :

@@ -100,6 +100,11 @@ io.on("connection", (socket) => {
     socket.emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
   })
 
+  socket.on("get_my_draw_choice", data => {
+    const roomName = data.currentRoom;
+    socket.emit("my_draw_choice", rooms[roomName].game.drawChoice);
+  })
+
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;
 
@@ -190,6 +195,16 @@ io.on("connection", (socket) => {
     // send emporio state to clients
     io.to(roomName).emit("emporio_state", {cards: rooms[roomName].game.emporio, nextEmporioTurn: rooms[roomName].game.nextEmporioTurn});
     updateGameState(io, roomName);
+  })
+
+  socket.on("get_choice_card_KC", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.getChoiceCardKC(data.username, data.card);
+    // send emporio state to clients
+    updateGameState(io, roomName);
+    io.to(roomName).emit("update_draw_choices", "Kit Carlson");
+    io.to(roomName).emit("update_hands");
   })
 
   socket.on("play_diligenza", (data) => {
@@ -333,16 +348,11 @@ io.on("connection", (socket) => {
   socket.on("discard", (data) => {
     const currentRoom = data.currentRoom;
 
-    rooms[currentRoom].game.discard(data.card.name, data.card.digit, data.card.type, data.username); // get current player
+    rooms[currentRoom].game.discard(data.card.name, data.card.digit, data.card.type, data.username);
     if (rooms[currentRoom].game.players[data.username].hand.length <= rooms[currentRoom].game.players[data.username].character.health) {
       // if less of equal cards in hand -> endTurn
       socket.emit("end_discard");
-      rooms[currentRoom].game.endTurn()
-      const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
-      console.log("CURRENT PLAYER: ", currentPlayer);
-      io.to(currentRoom).emit("current_player", currentPlayer);
-      io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
-      updateGameState(io, currentRoom)
+      endTurn(io, currentRoom);
     } else {
       updateGameState(io, currentRoom)
     }
@@ -350,12 +360,7 @@ io.on("connection", (socket) => {
 
   socket.on("end_turn", (currentRoom) => {
 
-    rooms[currentRoom].game.endTurn(); //end turn in game
-    const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
-    io.to(currentRoom).emit("current_player", currentPlayer);
-    // TODO: tady toho je nějak moc
-    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
-    updateGameState(io, currentRoom)
+    endTurn(io, currentRoom);
   })
 
   socket.on("request_players_in_range", (data) => {
@@ -372,4 +377,18 @@ function updateGameState(io, roomName) {
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_top_stack_card", rooms[roomName].game.getTopStackCard());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+}
+
+function endTurn(io, currentRoom) {
+  rooms[currentRoom].game.endTurn();
+
+  const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
+  
+  if (rooms[currentRoom].game.players[currentPlayer].character.name === "Kit Carlson") {
+    io.to(currentRoom).emit("update_draw_choices", "Kit Carlson");
+  }
+
+  io.to(currentRoom).emit("current_player", currentPlayer);
+  io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
+  updateGameState(io, currentRoom)
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, nextEmporioTurn }) { 
+export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, myDrawChoice, nextEmporioTurn }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
@@ -133,6 +133,10 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   function getEmporioCard(card) {
     socket.emit("get_emporio_card", {username, currentRoom, card});
   }
+  
+  function getChoiceCard(card) {
+    socket.emit("get_choice_card_KC", {username, currentRoom, card});
+  }
 
   function loseHealth() {
     socket.emit("lose_health", {username, currentRoom})
@@ -215,6 +219,15 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         }
         return (
           <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
+            {card.name} <br /> {card.digit} {card.type}
+          </button>
+        )
+      })}
+      <br />
+      {myDrawChoice.length > 0 ? <p>Emporio:</p> : null}
+      {myDrawChoice.map(card => {
+        return (
+          <button style={{color: "red"}} onClick={() => getChoiceCard(card)}>
             {card.name} <br /> {card.digit} {card.type}
           </button>
         )

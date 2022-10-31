@@ -1,10 +1,11 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["El Gringo", "Jourdonnais"]
+        const namesOfCharacters = ["El Gringo", "Kit Carlson"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
+        this.drawChoice = [];
         this.players = {}
         this.playerRoundId = 0;
         this.bangCanBeUsed = true;
@@ -419,6 +420,25 @@ class Game {
                 }
             }
         this.nextEmporioTurn = playerNames[currentEmporioTurnPlayerIndex];
+    }
+
+    getChoiceCardKC(playerName, card) {
+        const getCardIndex = this.drawChoice.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type))
+        // return if card not found
+        if (getCardIndex < 0) return;
+        // place card in player hand
+        this.players[playerName].hand.push(this.drawChoice[getCardIndex]);
+        // remove from drawChoice
+        this.drawChoice.splice(getCardIndex, 1); 
+
+        if (this.drawChoice.length === 1) {
+            this.stack.push(this.drawChoice)
+            // end when no cards to draw
+            this.setAllPlayable(playerName);
+            this.setMancatoBeerNotPlayable(playerName);
+            this.drawChoice = [];
+            return;
+        }
     }
 
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
@@ -1083,6 +1103,16 @@ class Game {
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
             null
+        
+        } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {
+            // populate create draw choice for Kit Carlson
+            this.drawChoice = [];
+            for (let i = 0; i < 3; i++) {
+                const card = this.deck[0];
+                this.drawChoice.push(card);
+                this.deck.shift();
+            }
+
         } else {
             // proceed and draw
             if (this.players[currentPlayerName].character.name === "Black Jack" && (this.deck[1].type === "hearts" || this.deck[1].type === "diamonds")){
