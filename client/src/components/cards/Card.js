@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, duelActive, indianiActive }) {
+export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, duelActive, indianiActive, discarding }) {
 
     // TODO: this is not necessary
     const isPlayable = card.isPlayable
@@ -9,7 +9,14 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     const cardType = card.type;
 
     function handleClick() {
-        if (!isPlayable) return;
+      
+      if (discarding) {
+        console.log("discard");
+        socket.emit("discard", {username, currentRoom, card});
+        return;
+      }
+
+      if (!isPlayable) return;
         
         if (cardName === "Bang!") {
           if (!duelActive && !indianiActive) {
@@ -78,7 +85,8 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     }
 
     let styles;
-    if (isPlayable) {
+    if (isPlayable || discarding) {
+      console.log("DISCARDING: ", discarding);
       styles = {color: "red"}
     } 
 

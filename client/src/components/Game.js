@@ -6,9 +6,11 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
+  const [myHealth, setMyHealth] = useState(null);
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
   const [selectCardTarget, setSelectCardTarget] = useState(false);
+  const [discarding, setDiscarding] = useState(false);
   
   useEffect(() => {
     setNextTurn(true);
@@ -20,6 +22,16 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       }
     }
   }, [playersLosingHealth])
+
+  useEffect(() => {
+    for (const player of allPlayersInfo) {
+      if (player.name === username) {
+        setMyHealth(player.health)
+      }
+    }
+  
+  }, [allPlayersInfo, username])
+  
 
   useEffect(() => {
     setNextTurn(true);
@@ -35,7 +47,11 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
   })
-  
+
+  socket.on("end_discard", () => {
+    console.log("End discard");
+    setDiscarding(false);
+  })
 
   function confirmPlayerTarget(target) {
     if (!selectPlayerTarget) return;
@@ -208,12 +224,14 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
               username={username}
               duelActive={duelActive}
               indianiActive={indianiActive}
+              discarding={discarding}
               />
         )
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn && emporioState.length === 0) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn && emporioState.length === 0 && myHand.length <= myHealth) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {myHand.length > myHealth ? <button onClick={() => setDiscarding(true)} style={{color: "red"}}>Discard</button> : <button>Discard</button>}
       {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
