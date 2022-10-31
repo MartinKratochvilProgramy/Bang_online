@@ -1,1 +1,4 @@
-const array = [ { playerName: 'a', character: 'Calamity Janet' } ];
+const obj = {};
+
+
+console.log(Object.keys(obj).length === 0);

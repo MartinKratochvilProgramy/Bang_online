@@ -303,6 +303,13 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   })
+    
+  socket.on("jesse_jones_target", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.jesseJonesTarget(data.target);
+    updateGameState(io, roomName);
+  })
 
   socket.on("discard", (data) => {
     const currentRoom = data.currentRoom;
@@ -330,7 +337,6 @@ io.on("connection", (socket) => {
     // TODO: tady toho je nějak moc
     io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
     updateGameState(io, currentRoom)
-    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
   })
 
   socket.on("request_players_in_range", (data) => {

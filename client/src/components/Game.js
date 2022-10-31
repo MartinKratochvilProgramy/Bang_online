@@ -7,6 +7,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
   const [myHealth, setMyHealth] = useState(null);
+  const [characterUsable, setCharacterUsable] = useState(false);
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
   const [selectCardTarget, setSelectCardTarget] = useState(false);
@@ -35,10 +36,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
   useEffect(() => {
     setNextTurn(true);
-    // disable next turn button if dynamite action req from current player
+    // disable next turn button if dynamite, prison or action req from current player
     for (const player of playersActionRequiredOnStart) {
-      if (player.name === username && (player.hasDynamite || player.isInPrison)) {
+      if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
+        setCharacterUsable(true);
         break;
       }
     }
@@ -59,6 +61,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     setSelectCardTarget(false);
     const cardDigit = activeCard.digit;
     const cardType = activeCard.type;
+
+    console.log("Active card: ", activeCard);
+    console.log("Active card: ", activeCard);
+    console.log("Active card: ", activeCard);
+    console.log("Active card: ", activeCard);
     
     if (activeCard.name === "Bang!") {
       socket.emit("play_bang", {username, target, currentRoom, cardDigit, cardType});
@@ -77,6 +84,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
     } else if (activeCard.name === "Prigione") {
       socket.emit("play_prigione", {username, target, currentRoom, activeCard});
+
+    } else if (Object.keys(activeCard).length === 0 && character === "Jesse Jones") {
+      // no active card and Jese jones
+      socket.emit("jesse_jones_target", {username, target, currentRoom});
+      setCharacterUsable(false);
     }
     setActiveCard({});
   }
@@ -120,6 +132,14 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     socket.emit("lose_health", {username, currentRoom})
   }
 
+  function activateCharacter() {
+    if (!characterUsable) return;
+    if (character === "Jesse Jones") {
+      setSelectPlayerTarget(true);
+      socket.emit("request_players_in_range", {range: "max", currentRoom, username});
+    }
+  }
+
   function endTurn() {
     if (myHand.length > myHealth) {
       setDiscarding(true);
@@ -128,6 +148,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     }
   }
 
+  
   return (
     <div>
       <h1>Game</h1>
@@ -191,7 +212,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
-      <p>Character: <button type="">{character}</button></p>
+      {characterUsable ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display only my stats
         return (

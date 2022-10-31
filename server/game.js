@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["El Gringo", "Calamity Janet"]
+        const namesOfCharacters = ["El Gringo", "Jesse Jones"]
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -271,6 +271,7 @@ class Game {
         // if targer is player, steal random card from his hand
         // get random card from target hand
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
+        if (!randomCard) return;
         if (randomCard.name === "Mancato!") {
             // if chosen card Mancato! set isNotPlayable
             randomCard.isPlayable = false
@@ -663,6 +664,31 @@ class Game {
         }
     }
 
+    jesseJonesTarget(target, playerName = this.getNameOfCurrentTurnPlayer()) {
+        console.log(`Player ${playerName} stole 1 card from ${target}`);
+        
+        // if targer is player, steal random card from his hand
+        // get random card from target hand
+        const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)];
+        if (!randomCard) return;
+        
+        const currentPlayerHand = this.players[playerName].hand;
+        const targetPlayerHand = this.players[target].hand;
+        // remove card from hand
+        for(var i = 0; i < targetPlayerHand.length; i++) {
+            if(targetPlayerHand[i].digit === randomCard.digit && targetPlayerHand[i].type === randomCard.type) {
+                targetPlayerHand.splice(i, 1);
+                break;
+            }
+        }
+        currentPlayerHand.push(randomCard);
+
+        // continue with turn
+        this.draw(1, playerName);
+        this.setAllPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
+    }
+
     // ******************* SETERS *******************
     setPlayable(cardName, playerName) {
         // sets cardName in playerName hand to isPlayable = true
@@ -798,6 +824,7 @@ class Game {
     }
 
     getPlayersWithActionRequired() {
+        // TODO: this does not have tu run every turn?
         // return array [{name, hasDynamite}]
         // if is players current turn and has dynamite in table, set hasDynamite = true
         let state = [];
@@ -805,6 +832,7 @@ class Game {
             // if player is on turn and has dynamite on table
             let dynamiteFound = false;
             let prisonFound = false;
+            let actionRequired = false;
             if (player === this.getNameOfCurrentTurnPlayer()) {
                 if (this.getPlayerHasDynamite(player)) {
                     dynamiteFound = true
@@ -812,11 +840,15 @@ class Game {
                 if (this.getPlayerIsInPrison(player)) {
                     prisonFound = true;
                 }
+                if (this.players[player].character.name === "Jesse Jones") {
+                    actionRequired = true;
+                }
             }
             state.push({
                 name: player,
                 hasDynamite: dynamiteFound,
                 isInPrison: prisonFound,
+                actionRequired: actionRequired
             })
         }
         return state;
@@ -1021,19 +1053,19 @@ class Game {
             console.log("Activate dynamite: ", currentPlayerName);
             this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
-        }
-
-        if (this.getPlayerIsInPrison(currentPlayerName)) {
+        
+        } else if (this.getPlayerIsInPrison(currentPlayerName)) {
             console.log("Activate prison: ", currentPlayerName);
             this.players[currentPlayerName].isInPrison = true;
             this.setCardOnTablePlayable("Prigione", currentPlayerName);
-        } 
         
-        if (!this.getPlayerHasDynamite(currentPlayerName) && !this.getPlayerIsInPrison(currentPlayerName)) {
+        } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
+            null
+        } else {
             // proceed and draw
             if (this.players[currentPlayerName].character.name === "Black Jack" && (this.deck[1].type === "hearts" || this.deck[1].type === "diamonds")){
                 // Black Jack can draw 3 on hearts or diamonds
-                console.log(`Player ${currentPlayerName} is Black Jack and drew ${this.deck[1].name} ${this.deck[1].type} so he draws another card`);
+                console.log(`Player ${currentPlayerName} is Black Jack and drew ${this.deck[1].name} ${this.deck[1].type} as a second card so he draws another card`);
                 this.draw(3, currentPlayerName);
             } else {
                 this.draw(2, currentPlayerName);
