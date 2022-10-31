@@ -1,4 +1,7 @@
 Lucky Duke should also work on other drawable cards
+    -barel
+    -prigione
+    -dynamite
 
 maybe graphically distinguish discardable from playable
 

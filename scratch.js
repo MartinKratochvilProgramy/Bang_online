@@ -1,4 +1,1 @@
-const obj = {};
-
-
-console.log(Object.keys(obj).length === 0);
+console.log((false || (true && true)));

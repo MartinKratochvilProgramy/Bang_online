@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["El Gringo", "Lucky Duke"] // TODO: remove
+        const namesOfCharacters = ["Lucky Duke", "Stormy daniels"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -558,12 +558,22 @@ class Game {
     useBarel(playerName) {
         const drawnCard = this.deck[0];
         this.deck.shift();
-        this.stack.push(drawnCard)
+        this.stack.push(drawnCard);
+
+        console.log("PLAYER: ", this.players[playerName].character.name);
+        
+        if (this.players[playerName].character.name === "Lucky Duke") {
+            // Lucky Duke second card
+            const secondDrawnCard = this.deck[0];
+            this.deck.shift();
+            this.stack.push(secondDrawnCard);
+            console.log(`Player ${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on barel`);
+        }
 
         this.players[playerName].canUseBarel = false;
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
-        if (drawnCard.type === "hearts") {
+        if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
             this.setIsLosingHealth(false, playerName);
             this.setNotPlayable("Mancato!", playerName);
             this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
@@ -576,8 +586,9 @@ class Game {
                 }
             }
         }
-
-        console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
+	    if (!this.players[playerName].character.name === "Lucky Duke") {
+            console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
+        }
     }
 
     useDynamite(playerName, card) {
