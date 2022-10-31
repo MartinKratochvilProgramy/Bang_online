@@ -1,6 +1,6 @@
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Mancato!",
+        name: "Duel",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",

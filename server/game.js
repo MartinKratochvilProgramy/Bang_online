@@ -192,6 +192,27 @@ class Game {
         }
     }
 
+    useMancatoInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // special case of Bang! use, sets the next turn of the duel state
+
+        this.discard("Mancato!", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Mancato! as Bang! in duel`);
+
+        this.setNotPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
+        this.setNotPlayable("Mancato!", this.duelPlayers[this.duelTurnIndex]);
+        this.setIsLosingHealth(false, this.duelPlayers[this.duelTurnIndex]);
+        this.setAllNotPlayable(playerName);
+        
+        // shift to the next player in duel (duelPlayers.length should always = 2)
+        this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
+        console.log("Next player: ", this.duelPlayers[this.duelTurnIndex]);
+        // set next players Ban!g cards playable
+        // TODO: character exception
+        this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
+        this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
+        
+    }
+
     useMancatoAsCJ(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Mancato!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Mancato! as Bang! on ${target}`);
