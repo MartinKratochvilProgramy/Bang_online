@@ -118,7 +118,11 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
   }
 
   function endTurn() {
-    socket.emit("end_turn", currentRoom);
+    if (myHand.length > myHealth) {
+      setDiscarding(true);
+    } else {
+      socket.emit("end_turn", currentRoom);
+    }
   }
 
   return (
@@ -230,8 +234,7 @@ export default function Game({ myHand, allPlayersInfo, username, socket, current
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn && emporioState.length === 0 && myHand.length <= myHealth) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
-      {myHand.length > myHealth ? <button onClick={() => setDiscarding(true)} style={{color: "red"}}>Discard</button> : <button>Discard</button>}
+      {(currentPlayer === username && nextTurn && emporioState.length === 0) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
