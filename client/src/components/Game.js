@@ -255,7 +255,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
-      {characterUsable || (currentPlayer === username && character === "Sid Ketchum") ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
+      {(characterUsable && character !== "Kit Carlson") || (currentPlayer === username && character === "Sid Ketchum") ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display only my stats
         return (

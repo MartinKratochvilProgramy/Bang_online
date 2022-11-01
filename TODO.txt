@@ -12,17 +12,11 @@ add characters:
     Kit Carlson
     Lucky Duke
     Paul Regret
+    Sid Ketchum
 
-
-    check on server target === "..."
-    emit to room that target can use barel as self
-    socket.on if char === "..." -> clickable
-    onClick -> use barel
 
 this.playerPlaceholder is not necessary as playerName returns name 
 of current player anyway
-
-write tests for Gatling, Indiani
 
 
 DEPLOY TO DIGITALOCEAN

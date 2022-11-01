@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Sid Ketchum", "Paul Regret"] // TODO: remove
+        const namesOfCharacters = ["Slab the Killer", "Calamity Janet"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -116,8 +116,22 @@ class Game {
     useBang(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Bang!", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Bang! on ${target}`);
-
+        
         this.setPlayable("Mancato!", target);
+        
+        if (this.players[playerName].character.name === "Slab the Killer" && this.players[target].hand.filter(card => card.name === "Mancato!").length < 2) {
+            // target needs 2 Mancato! for Slab the Killer
+            this.setNotPlayable("Mancato!", target);
+        }
+        
+        if (this.players[playerName].character.name === "Slab the Killer" && this.players[target].character.name === "Calamity Janet") {
+            this.setPlayable("Bang!", target);
+            if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length < 2) {
+                this.setNotPlayable("Mancato!", target);
+                this.setNotPlayable("Bang!", target);
+            }
+        }
+
         if (this.players[target].canUseBarel) {
             this.setCardOnTablePlayable("Barilo", target);
         }
@@ -137,8 +151,21 @@ class Game {
     }
     
     useBangAsCJ(playerName, cardDigit, cardType) {
-        this.discard("Bang!", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Bang! as Mancato!`);
+        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
+            // Calamity Janet discard 2 Mancato! or Bang!
+            for (let i = 0; i < 2; i++) {
+                const index = this.players[playerName].hand.findIndex(card => {
+                    return (card.name === 'Mancato!' || card.name === "Bang!");
+                });
+                const card = this.players[playerName].hand[index];
+                this.discard(card.name, card.digit, card.type, playerName);
+                console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+            }
+        } else {
+            // normally discard 1 card
+            this.discard("Bang!", cardDigit, cardType, playerName);
+            console.log(`Player ${playerName} used Bang! as Mancato!`);
+        }
 
         this.players[playerName].canUseBarel = true;
 
@@ -199,8 +226,33 @@ class Game {
     }
 
     useMancato(playerName, cardDigit, cardType) {
-        this.discard("Mancato!", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Mancato!`);
+        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
+            if (this.players[playerName].character.name === "Calamity Janet") {
+                // Calamity Janet discard 2 Mancato! or Bang!
+                for (let i = 0; i < 2; i++) {
+                    const index = this.players[playerName].hand.findIndex(card => {
+                        return (card.name === 'Mancato!' || card.name === "Bang!");
+                    });
+                    const card = this.players[playerName].hand[index];
+                    this.discard(card.name, card.digit, card.type, playerName);
+                    console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+                }
+            } else {
+                // on Slab the Killer, discard two Mancato!
+                for (let i = 0; i < 2; i++) {
+                    const index = this.players[playerName].hand.findIndex(card => {
+                        return (card.name === 'Mancato!');
+                    });
+                    const card = this.players[playerName].hand[index];
+                    this.discard(card.name, card.digit, card.type, playerName);
+                }
+                  console.log(`Player ${playerName} discarded 2 Mancato! on Slab the Killer`);
+            }
+        } else {
+            // normally discard one Mancato!
+            this.discard("Mancato!", cardDigit, cardType, playerName);
+            console.log(`Player ${playerName} used Mancato!`);
+        }
 
         this.players[playerName].canUseBarel = true;
 
@@ -254,7 +306,7 @@ class Game {
 
     useMancatoAsCJ(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Mancato!", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Mancato! as Bang! on ${target}`);
+        console.log(`Player ${playerName} discarded Mancato! as Bang! on ${target}`);
 
         this.setPlayable("Mancato!", target);
         if (this.players[target].canUseBarel) {
