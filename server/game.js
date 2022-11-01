@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Lucky Duke", "Stormy daniels"] // TODO: remove
+        const namesOfCharacters = ["Jesse Jones", "Kit Carlson"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -55,6 +55,33 @@ class Game {
             this.deck.shift();
         }
 
+
+        if (numToDraw === 1) {
+            console.log(`Player ${playerName} drew ${numToDraw} card`);
+        } else {
+            console.log(`Player ${playerName} drew ${numToDraw} cards`);
+        }
+    }
+
+    jesseJonesdrawFromDeck(numToDraw, playerName = this.getNameOfCurrentTurnPlayer()) {
+        // put nomToDraw cards into hand of current playerRoundId
+        // remove top card from deck
+        
+        if (this.deck.length <= 0) {
+            console.log("DECK EMPTY!");
+            this.putStackIntoDeck();
+        }
+        for (let i = 0; i < numToDraw; i++) {
+            // if no cards in deck, put stack into deck
+            if (this.deck.length === 0) this.putStackIntoDeck();
+
+            const card = this.deck[0];
+            this.players[playerName].hand.push(card);
+            this.deck.shift();
+        }
+
+        this.setAllPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
 
         if (numToDraw === 1) {
             console.log(`Player ${playerName} drew ${numToDraw} card`);
@@ -1089,9 +1116,33 @@ class Game {
         }
 
         const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
-        this.draw(2, firstPlayerName);
-        this.setAllPlayable(firstPlayerName);
-        this.setMancatoBeerNotPlayable(firstPlayerName)
+
+        if (this.players[firstPlayerName].character.name === "Lucky Duke") {
+            // populate create draw choice for Kit Carlson
+            this.drawChoice = [];
+            for (let i = 0; i < 2; i++) {
+                const card = this.deck[0];
+                this.drawChoice.push(card);
+                this.deck.shift();
+            }
+            
+        } else if (this.players[firstPlayerName].character.name === "Jesse Jones") {
+            null
+
+        } else if (this.players[firstPlayerName].character.name === "Kit Carlson") {
+            // populate create draw choice for Kit Carlson
+            this.drawChoice = [];
+            for (let i = 0; i < 3; i++) {
+                const card = this.deck[0];
+                this.drawChoice.push(card);
+                this.deck.shift();
+            }
+        
+        } else {
+            this.draw(2, firstPlayerName);
+            this.setAllPlayable(firstPlayerName);
+            this.setMancatoBeerNotPlayable(firstPlayerName)
+        }
 
         console.log("Game started!");
     }

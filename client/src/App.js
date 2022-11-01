@@ -29,6 +29,7 @@ function App() {
   const [indianiActive, setIndianiActive] = useState(false);
   const [emporioState, setEmporioState] = useState([]);
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
+  const [characterUsable, setCharacterUsable] = useState(false);
 
   const usernameRef = useRef();
   const newRoomRef = useRef();
@@ -95,7 +96,11 @@ function App() {
       console.log("character: ", character);
       console.log("characterName: ", characterName);
       if (characterName === character) {
-        socket.emit("get_my_draw_choice", {username, currentRoom, character});
+        if (characterName === "Jesse Jones") {
+          setCharacterUsable(true);
+        } else {
+          socket.emit("get_my_draw_choice", {username, currentRoom, character});
+        }
       }
     })
 
@@ -205,6 +210,8 @@ function App() {
           emporioState={emporioState}
           myDrawChoice={myDrawChoice}
           nextEmporioTurn={nextEmporioTurn}
+          characterUsable={characterUsable}
+          setCharacterUsable={setCharacterUsable}
         />
       :
        null

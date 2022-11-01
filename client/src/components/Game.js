@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Card from './cards/Card';
 
-export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, myDrawChoice, nextEmporioTurn }) { 
+export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
   const [myHealth, setMyHealth] = useState(null);
-  const [characterUsable, setCharacterUsable] = useState(false);
 
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
   const [selectCardTarget, setSelectCardTarget] = useState(false);
@@ -44,7 +43,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         break;
       }
     }
-  }, [playersActionRequiredOnStart, username])
+  }, [playersActionRequiredOnStart, username, setCharacterUsable])
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
@@ -153,6 +152,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     }
   }
 
+  function drawFromDeck() {
+    socket.emit("jesse_jones_draw_from_deck", {currentRoom, username})
+    setCharacterUsable(false);
+  }
+
   function endTurn() {
     if (myHand.length > myHealth) {
       setDiscarding(true);
@@ -202,12 +206,15 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       })}
 
       <h2>Stack</h2>
-      {topStackCard ? 
+      {topStackCard && 
         <button> 
             {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
-        </button>  
-      :
-        null      
+        </button>        
+      }
+      {(character === "Jesse Jones" && characterUsable) ? 
+        <button onClick={() => drawFromDeck()} style={{color: "red"}} type="">Deck <br/>..</button>
+        :
+        <button  type="">Deck <br/>..</button>
       }
       <br />
       {emporioState.length > 0 ? <p>Emporio:</p> : null}
@@ -223,7 +230,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         )
       })}
       <br />
-      {myDrawChoice.length > 0 ? <p>Emporio:</p> : null}
+      {myDrawChoice.length > 0 ? <p>{character}'s card choice:</p> : null}
       {myDrawChoice.map(card => {
         return (
           <button style={{color: "red"}} onClick={() => getChoiceCard(card)}>
@@ -283,7 +290,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       })}
 
       <br />
-      {(currentPlayer === username && nextTurn && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
+      {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
@@ -297,3 +304,4 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     </div>
   )
 }
+

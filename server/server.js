@@ -85,14 +85,27 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
-    io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
-
+    
     let characters = []
     for (var player of Object.keys(rooms[roomName].game.players)) {
       characters.push({playerName: player, character: rooms[roomName].game.players[player].character.name})
     }
     io.to(roomName).emit("characters", characters);
     io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
+    
+    const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer(); // get current player
+  
+    if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
+      io.to(roomName).emit("update_draw_choices", "Kit Carlson");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Lucky Duke") {
+      io.to(roomName).emit("update_draw_choices", "Lucky Duke");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
+      io.to(roomName).emit("update_draw_choices", "Jesse Jones");
+    }
+
+    io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
   });
 
   socket.on("get_my_hand", data => {
@@ -344,6 +357,13 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.jesseJonesTarget(data.target);
+    updateGameState(io, roomName);
+  })
+    
+  socket.on("jesse_jones_draw_from_deck", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.jesseJonesdrawFromDeck(2, data.username);
     updateGameState(io, roomName);
   })
     
