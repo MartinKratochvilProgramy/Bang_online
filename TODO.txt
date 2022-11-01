@@ -11,6 +11,7 @@ add characters:
     Jourdonnais
     Kit Carlson
     Lucky Duke
+    Paul Regret
 
 
     check on server target === "..."

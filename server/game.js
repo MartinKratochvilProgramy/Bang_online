@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Paul Regret", "Paul Regret"] // TODO: remove
+        const namesOfCharacters = ["Pedro Ramirez", "Paul Regret"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -63,7 +63,7 @@ class Game {
         }
     }
 
-    jesseJonesdrawFromDeck(numToDraw, playerName = this.getNameOfCurrentTurnPlayer()) {
+    drawFromDeck(numToDraw, playerName = this.getNameOfCurrentTurnPlayer()) {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         
@@ -499,6 +499,20 @@ class Game {
         }
     }
 
+    getStackCardPR(playerName) {
+        // place card in player hand
+        this.players[playerName].hand.push(this.getTopStackCard());
+        // remove from stack
+        this.stack.pop();
+        
+        this.draw(1, playerName);
+        
+        this.setAllPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
+        
+        console.log("Pedro Ramirez drew first crad from stack");
+    }
+
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Diligenza", cardDigit, cardType);
         console.log(`Player ${playerName} used Diligenza`);
@@ -803,7 +817,7 @@ class Game {
     }
 
     jesseJonesTarget(target, playerName = this.getNameOfCurrentTurnPlayer()) {
-        console.log(`Player ${playerName} stole 1 card from ${target}`);
+        console.log(`Player ${playerName} stole 1 card from ${target} because he's Jesse Jones`);
         
         // if targer is player, steal random card from his hand
         // get random card from target hand
@@ -1250,6 +1264,9 @@ class Game {
             this.setCardOnTablePlayable("Prigione", currentPlayerName);
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
+            null
+        
+        } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez") {
             null
         
         } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {

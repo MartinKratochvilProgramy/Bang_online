@@ -103,6 +103,7 @@ io.on("connection", (socket) => {
   
     } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
       io.to(roomName).emit("update_draw_choices", "Jesse Jones");
+  
     }
 
     io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
@@ -214,7 +215,6 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.getChoiceCardKC(data.username, data.card);
-    // send emporio state to clients
     updateGameState(io, roomName);
     io.to(roomName).emit("update_draw_choices", "Kit Carlson");
     io.to(roomName).emit("update_hands");
@@ -224,10 +224,16 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
 
     rooms[roomName].game.getChoiceCardLD(data.username, data.card);
-    // send emporio state to clients
     updateGameState(io, roomName);
     io.to(roomName).emit("update_draw_choices", "Lucky Duke");
-    io.to(roomName).emit("update_hands");
+  })
+
+  socket.on("get_stack_card_PR", (data) => {
+    const roomName = data.currentRoom;
+
+    rooms[roomName].game.getStackCardPR(data.username,);
+    // send emporio state to clients
+    updateGameState(io, roomName);
   })
 
   socket.on("play_diligenza", (data) => {
@@ -382,10 +388,10 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
   })
     
-  socket.on("jesse_jones_draw_from_deck", (data) => {
+  socket.on("draw_from_deck", (data) => {
     const roomName = data.currentRoom;
 
-    rooms[roomName].game.jesseJonesdrawFromDeck(2, data.username);
+    rooms[roomName].game.drawFromDeck(2, data.username);
     updateGameState(io, roomName);
   })
     
@@ -441,6 +447,9 @@ function endTurn(io, currentRoom) {
 
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Lucky Duke") {
     io.to(currentRoom).emit("update_draw_choices", "Lucky Duke");
+
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
+    io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
   }
 
   io.to(currentRoom).emit("current_player", currentPlayer);

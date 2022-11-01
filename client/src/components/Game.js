@@ -151,10 +151,15 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       setCharacterUsable(false);
       socket.emit("jourdonnais_barel", {currentRoom, username});
     }
+    if (character === "Pedro Ramirez") {
+      setCharacterUsable(false);
+      socket.emit("get_stack_card_PR", {currentRoom, username});
+      socket.emit("get_stack_card_PR", {currentRoom, username});
+    }
   }
 
   function drawFromDeck() {
-    socket.emit("jesse_jones_draw_from_deck", {currentRoom, username})
+    socket.emit("draw_from_deck", {currentRoom, username})
     setCharacterUsable(false);
   }
 
@@ -212,7 +217,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
             {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
         </button>        
       }
-      {(character === "Jesse Jones" && characterUsable) ? 
+      {((character === "Jesse Jones" || character === "Pedro Ramirez") && characterUsable) ? 
         <button onClick={() => drawFromDeck()} style={{color: "red"}} type="">Deck <br/>..</button>
         :
         <button  type="">Deck <br/>..</button>

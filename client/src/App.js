@@ -96,8 +96,13 @@ function App() {
       console.log("character: ", character);
       console.log("characterName: ", characterName);
       if (characterName === character) {
+
         if (characterName === "Jesse Jones") {
           setCharacterUsable(true);
+
+        } else if (characterName === "Pedro Ramirez") {
+          setCharacterUsable(true);
+
         } else {
           socket.emit("get_my_draw_choice", {username, currentRoom, character});
         }
