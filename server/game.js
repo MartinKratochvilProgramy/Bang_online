@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Lucky Duke", "Kit Carlson"] // TODO: remove
+        const namesOfCharacters = ["Paul Regret", "Paul Regret"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -634,6 +634,9 @@ class Game {
         } else {
             // find next alive player
             let currentPlayerId = this.playerRoundId + 1;
+            if (currentPlayerId >= this.numOfPlayers) {
+                currentPlayerId = 0;
+            }
             for (let i = 0; i < this.numOfPlayers; i++) {
                 const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentPlayerId);
                 if (this.players[nextPlayer].character.health > 0) {
@@ -1017,6 +1020,10 @@ class Game {
         
         const playerNames = Object.keys(this.players)   // array of player names;
 
+        if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
+            // if player has Apaloosa, increase range by 1
+            range += 1;
+        }
         if  (range === "max" || range === "max_not_sheriffo") {
             // ******** MAX RANGE ********
             let result = [];
@@ -1039,25 +1046,19 @@ class Game {
         } else if (range === "one_not_gun") {
                 // ******** CUSTOM RANGE ********
                 let result = [];
-                if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
-                    // if player has Apaloosa, increase range by 1
-                    range += 1;
-                }
 
                 const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
                 const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
 
                 for (let i = 0; i < concatArray.length; i++) {
-                    const currentName = concatArray[i];
+                    let currentName = concatArray[i];
 
                     if (currentName !== playerName && this.players[currentName].character.health > 0) {
-                        if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
-                            // if player has Mustang, decrease range temporarily by 1
-                            if (Math.abs(i - playerIndex) <= range - 1) {
-                                result.push(currentName);
-                            }
-                        } else if (Math.abs(i - playerIndex) <= range) {
-                            // if not Mustang, continue normally
+                        const currentRange = range;
+                        if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
+                        if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
+
+                        if (Math.abs(i - playerIndex) <= currentRange) {
                             result.push(currentName);
                         }
                     };
@@ -1083,19 +1084,16 @@ class Game {
     
             for (let i = 0; i < concatArray.length; i++) {
                 const currentName = concatArray[i];
-    
+
                 if (currentName !== playerName && this.players[currentName].character.health > 0) {
-                    if (this.players[currentName].table.some(card => card.name === 'Mustang')) {
-                        // if player has Mustang, decrease range temporarily by 1
-                        if (Math.abs(i - playerIndex) <= range - 1) {
-                            result.push(currentName);
-                        }
-                    } else if (Math.abs(i - playerIndex) <= range) {
-                        // if not Mustang, continue normally
+                    let currentRange = range;
+                    if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
+                    if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
+
+                    if (Math.abs(i - playerIndex) <= currentRange) {
                         result.push(currentName);
                     }
                 };
-                
             }
             return result;
         }

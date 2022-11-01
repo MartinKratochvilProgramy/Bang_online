@@ -10,6 +10,7 @@ add characters:
     Jessie Jones
     Jourdonnais
     Kit Carlson
+    Lucky Duke
 
 
     check on server target === "..."

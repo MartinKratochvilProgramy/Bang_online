@@ -129,11 +129,11 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   }
   
   function getChoiceCard(card) {
+    setCharacterUsable(false);
     if (character === "Kit Carlson") {
       socket.emit("get_choice_card_KC", {username, currentRoom, card});
     } else if (character === "Lucky Duke") {
       socket.emit("get_choice_card_LD", {username, currentRoom, card});
-      setCharacterUsable(false);
     }
   }
 
@@ -292,7 +292,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
       <br />
       {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
-      {selectPlayerTarget ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
+      {(selectPlayerTarget && currentPlayer === username) ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (
