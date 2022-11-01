@@ -133,6 +133,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       socket.emit("get_choice_card_KC", {username, currentRoom, card});
     } else if (character === "Lucky Duke") {
       socket.emit("get_choice_card_LD", {username, currentRoom, card});
+      setCharacterUsable(false);
     }
   }
 

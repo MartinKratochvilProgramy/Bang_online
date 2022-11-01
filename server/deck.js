@@ -78,7 +78,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Bang!",
+        name: "Prigione",
         rimColor: "yellow",
         digit: 5,
         type: "hearts",

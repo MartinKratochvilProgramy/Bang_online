@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Jesse Jones", "Kit Carlson"] // TODO: remove
+        const namesOfCharacters = ["Lucky Duke", "Kit Carlson"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -586,15 +586,13 @@ class Game {
         const drawnCard = this.deck[0];
         this.deck.shift();
         this.stack.push(drawnCard);
-
-        console.log("PLAYER: ", this.players[playerName].character.name);
         
         if (this.players[playerName].character.name === "Lucky Duke") {
             // Lucky Duke second card
             const secondDrawnCard = this.deck[0];
             this.deck.shift();
             this.stack.push(secondDrawnCard);
-            console.log(`Player ${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on barel`);
+            console.log(`Player ${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Barel`);
         }
 
         this.players[playerName].canUseBarel = false;
@@ -651,6 +649,26 @@ class Game {
         }
         
         if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
+            const currentPlayerName = this.getNameOfCurrentTurnPlayer();
+            if (this.players[currentPlayerName].character.name === "Lucky Duke") {
+                // populate create draw choice for Lucky Duke
+                this.drawChoice = [];
+                for (let i = 0; i < 2; i++) {
+                    const card = this.deck[0];
+                    this.drawChoice.push(card);
+                    this.deck.shift();
+                }
+                return;
+            } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {
+                // populate create draw choice for Kit Carlson
+                this.drawChoice = [];
+                for (let i = 0; i < 3; i++) {
+                    const card = this.deck[0];
+                    this.drawChoice.push(card);
+                    this.deck.shift();
+                }
+                return;
+            }
             // if not dynamite on table, allow use cards
             this.setAllPlayable(playerName);
             this.setMancatoBeerNotPlayable(playerName);
@@ -669,14 +687,42 @@ class Game {
         this.deck.shift();
         this.stack.push(drawnCard)
         console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on prison`);
+                
+        if (this.players[playerName].character.name === "Lucky Duke") {
+            // Lucky Duke second card
+            const secondDrawnCard = this.deck[0];
+            this.deck.shift();
+            this.stack.push(secondDrawnCard);
+            console.log(`Player ${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Prigione`);
+        }
 
         // remove from playerName table card object
         this.players[playerName].table = this.players[playerName].table.filter(function( tableCard ) {
              return (tableCard.name !== card.name || tableCard.digit !== card.digit || tableCard.type !== card.type);
         });
 
-        if (drawnCard.type === "hearts") {
+        if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
             if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
+                const currentPlayerName = this.getNameOfCurrentTurnPlayer();
+                if (this.players[currentPlayerName].character.name === "Lucky Duke") {
+                    // populate create draw choice for Lucky Duke
+                    this.drawChoice = [];
+                    for (let i = 0; i < 2; i++) {
+                        const card = this.deck[0];
+                        this.drawChoice.push(card);
+                        this.deck.shift();
+                    }
+                    return;
+                } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {
+                    // populate create draw choice for Kit Carlson
+                    this.drawChoice = [];
+                    for (let i = 0; i < 3; i++) {
+                        const card = this.deck[0];
+                        this.drawChoice.push(card);
+                        this.deck.shift();
+                    }
+                    return;
+                }
                 // if not dynamite on table, allow use cards
                 this.setAllPlayable(playerName);
                 this.setMancatoBeerNotPlayable(playerName);
@@ -1184,11 +1230,22 @@ class Game {
 
         this.setAllNotPlayable(previousPlayerName);
 
+        if (this.getPlayerHasDynamite(currentPlayerName) && this.getPlayerIsInPrison(currentPlayerName)) {
+            console.log("Activate dynamite: ", currentPlayerName);
+            this.players[currentPlayerName].hasDynamite = true;
+            this.setCardOnTablePlayable("Dynamite", currentPlayerName);
+            
+            console.log("Activate prison: ", currentPlayerName);
+            this.players[currentPlayerName].isInPrison = true;
+            this.setCardOnTablePlayable("Prigione", currentPlayerName);
+            return;
+        }
+        
         if (this.getPlayerHasDynamite(currentPlayerName)) {
             console.log("Activate dynamite: ", currentPlayerName);
             this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
-        
+            
         } else if (this.getPlayerIsInPrison(currentPlayerName)) {
             console.log("Activate prison: ", currentPlayerName);
             this.players[currentPlayerName].isInPrison = true;

@@ -125,7 +125,7 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
 
-    if (rooms[roomName].game.players[data.target].character.name = "Jourdonnais") {
+    if (rooms[roomName].game.players[data.target].character.name === "Jourdonnais") {
       io.to(roomName).emit("jourdonnais_can_use_barel");
     }
   })
@@ -245,7 +245,7 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
 
     for (const player of Object.keys(rooms[roomName].game.players)) {
-      if (rooms[roomName].game.players[player].character.name = "Jourdonnais") {
+      if (rooms[roomName].game.players[player].character.name === "Jourdonnais") {
         io.to(roomName).emit("jourdonnais_can_use_barel");
       }
     }
@@ -343,6 +343,17 @@ io.on("connection", (socket) => {
     rooms[roomName].game.useDynamite(data.username, data.card);
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
+
+    const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
+    if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
+      io.to(roomName).emit("update_draw_choices", "Kit Carlson");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Lucky Duke") {
+      io.to(roomName).emit("update_draw_choices", "Lucky Duke");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
+      io.to(roomName).emit("update_draw_choices", "Jesse Jones");
+    }
   })
   
   socket.on("use_prigione", (data) => {
@@ -351,6 +362,17 @@ io.on("connection", (socket) => {
     rooms[roomName].game.usePrigione(data.username, data.card);
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
+
+    const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
+    if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
+      io.to(roomName).emit("update_draw_choices", "Kit Carlson");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Lucky Duke") {
+      io.to(roomName).emit("update_draw_choices", "Lucky Duke");
+  
+    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
+      io.to(roomName).emit("update_draw_choices", "Jesse Jones");
+    }
   })
     
   socket.on("jesse_jones_target", (data) => {
