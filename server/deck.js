@@ -3,30 +3,32 @@ const deckTwoBarrelsVulcanic = [
         name: "Gatling",
         rimColor: "yellow",
         digit: 314,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     }, 
     {
         name: "Dynamite",
         rimColor: "blue",
         digit: 22,
-        type: "hearts",
+        type: "spades",
         class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
+    {
+        name: "Barilo",
+        rimColor: "blue",
+        digit: 2,
+        type: "barel",
+        class: "dynamite",
         isPlayable: false,
         actionReqOnStart: false,
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
-        digit: 101,
-        type: "hearts",
-        isPlayable: false
-    },  
-    {
-        name: "Mancato!",
-        rimColor: "yellow",
         digit: 1010,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
@@ -42,21 +44,21 @@ const deckTwoBarrelsVulcanic = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 102,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Gatling",
         rimColor: "yellow",
         digit: 102,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     }, 
     {
         name: "Vulcanic",
         rimColor: "blue",
         digit: 68,
-        type: "hearts",
+        type: "spades",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -65,7 +67,7 @@ const deckTwoBarrelsVulcanic = [
         name: "Vulcanic",
         rimColor: "blue",
         digit: 169,
-        type: "hearts",
+        type: "spades",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -74,42 +76,42 @@ const deckTwoBarrelsVulcanic = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 404,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Prigione",
         rimColor: "yellow",
         digit: 5,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Beer",
         rimColor: "yellow",
         digit: 6,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Beer",
         rimColor: "yellow",
         digit: 7,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Beer",
         rimColor: "yellow",
         digit: 8,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },  
     {
         name: "Vulcanic",
         rimColor: "blue",
         digit: 169,
-        type: "hearts",
+        type: "spades",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -118,7 +120,7 @@ const deckTwoBarrelsVulcanic = [
         name: "Remington",
         rimColor: "blue",
         digit: 1420,
-        type: "hearts",
+        type: "spades",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -127,7 +129,7 @@ const deckTwoBarrelsVulcanic = [
         name: "Mustang",
         rimColor: "blue",
         digit: 6999,
-        type: "hearts",
+        type: "spades",
         class: "horse",
         isPlayable: false,
         actionReqOnStart: false,
@@ -136,7 +138,7 @@ const deckTwoBarrelsVulcanic = [
         name: "Apaloosa",
         rimColor: "blue",
         digit: 420,
-        type: "hearts",
+        type: "spades",
         class: "horse",
         isPlayable: false,
         actionReqOnStart: false,
@@ -145,7 +147,7 @@ const deckTwoBarrelsVulcanic = [
         name: "Apaloosa",
         rimColor: "blue",
         digit: 421,
-        type: "hearts",
+        type: "spades",
         class: "horse",
         isPlayable: false,
         actionReqOnStart: false,
@@ -154,91 +156,91 @@ const deckTwoBarrelsVulcanic = [
         name: "Duel",
         rimColor: "yellow",
         digit: 1,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Cat Ballou",
         rimColor: "yellow",
         digit: 2,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 3,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 4,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 5,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Cat Ballou",
         rimColor: "yellow",
         digit: 9,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Diligenza",
         rimColor: "yellow",
         digit: 6,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Wells Fargo",
         rimColor: "yellow",
         digit: 10,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Panico",
         rimColor: "yellow",
         digit: 10,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 2,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },   
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 4,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },   
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 7,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     },
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 8,
-        type: "hearts",
+        type: "spades",
         isPlayable: false
     }   
 ]

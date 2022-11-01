@@ -27,9 +27,9 @@ const targetPlayerHand = [
 
 for (let i = 0; i < 2; i++) {
   const index = players["Joe"].table.findIndex(object => {
-    return (object.name === 'Apaloosa' || object.name === 'Mustang');
+    return (object.name === 'Halina');
   });
-  players["Joe"].table.splice(index, 1)
+  console.log(index);
 }
 
 console.log(players["Joe"].table);

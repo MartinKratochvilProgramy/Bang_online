@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Vulture Sam", "Calamity Janet", "Calamity Janet"] // TODO: remove
+        const namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Calamity Janet"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -124,16 +124,28 @@ class Game {
             this.setNotPlayable("Mancato!", target);
         }
         
-        if (this.players[playerName].character.name === "Slab the Killer" && this.players[target].character.name === "Calamity Janet") {
-            this.setPlayable("Bang!", target);
-            if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length < 2) {
-                this.setNotPlayable("Mancato!", target);
-                this.setNotPlayable("Bang!", target);
-            }
+        if (this.players[playerName].character.name === "Slab the Killer" && this.players[target].hand.filter(card => card.name === "Mancato!").length >= 1 && this.players[target].table.filter(card => card.name === "Barilo").length >= 1) {
+            // target has more than 1 Mancato! and Barilo
+            this.setNotPlayable("Mancato!", target);
         }
 
         if (this.players[target].canUseBarel) {
             this.setCardOnTablePlayable("Barilo", target);
+        }
+        
+        if (this.players[playerName].character.name === "Slab the Killer" && this.players[target].character.name === "Calamity Janet") {
+            if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length >= 2) {
+                this.setPlayable("Bang!", target);
+                this.setPlayable("Mancato!", target);
+            } else if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length ===1 && this.players[target].table.filter(card => (card.name === "Barilo")).length >= 1) {
+                this.setPlayable("Bang!", target);
+                this.setPlayable("Mancato!", target);
+
+            } else {
+                this.setNotPlayable("Mancato!", target);
+                this.setNotPlayable("Bang!", target);
+                this.setCardOnTableNotPlayable("Barilo", target)
+            }
         }
 
         this.setAllNotPlayable(playerName);
@@ -428,7 +440,15 @@ class Game {
             }
         }
 
-        if (card.name === "Vulcanic") this.bangCanBeUsed = true;
+        if (card.name === "Vulcanic") {
+            this.bangCanBeUsed = true;
+            // reset Bang!s in player hand to playable again
+            for (const card of this.players[playerName].hand) {
+                if (card.name === "Bang!") {
+                    card.isPlayable = true;
+                }
+            }
+        }
         
         // put on table
         card.isPlayable = false;
@@ -669,14 +689,40 @@ class Game {
             this.deck.shift();
             this.stack.push(secondDrawnCard);
             console.log(`Player ${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Barel`);
+        } else {
+            console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
         }
 
         this.players[playerName].canUseBarel = false;
         this.setCardOnTableNotPlayable("Barilo", playerName);
+        if (this.players[playerName].character.name === "Calamity Janet") {
+            this.setNotPlayable("Bang!", playerName)
+        }
 
         if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
+            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
+                // attacked by Slab the Killer
+                // discard Mancato!
+                const index = this.players[playerName].hand.findIndex(card => {
+                    return (card.name === 'Mancato!');
+                });
+                if (index >= 0) {
+                    // Mancato! found in hand
+                    const card = this.players[playerName].hand[index];
+                    this.discard(card.name, card.digit, card.type, playerName);
+                } else {
+                    // if no Mancato! found (playerName is CJ) -> discard Bang! instead
+                    const bangIndex = this.players[playerName].hand.findIndex(card => {
+                        return (card.name === 'Bang!');
+                    });
+                    const cardBang = this.players[playerName].hand[bangIndex];
+                    this.discard(cardBang.name, cardBang.digit, cardBang.type, playerName);
+                }
+            } 
+          
             this.setIsLosingHealth(false, playerName);
             this.setNotPlayable("Mancato!", playerName);
+
             this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
             this.setMancatoBeerNotPlayable(this.getNameOfCurrentTurnPlayer());
             if (!this.bangCanBeUsed) {
@@ -687,9 +733,7 @@ class Game {
                 }
             }
         }
-	    if (!this.players[playerName].character.name === "Lucky Duke") {
-            console.log(`Player ${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`);
-        }
+
     }
 
     useDynamite(playerName, card) {
