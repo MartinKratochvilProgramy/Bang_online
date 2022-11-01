@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Pedro Ramirez", "Paul Regret"] // TODO: remove
+        const namesOfCharacters = ["Rose Doolan", "Paul Regret"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -1036,6 +1036,11 @@ class Game {
 
         if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
             // if player has Apaloosa, increase range by 1
+            range += 1;
+        }
+
+        if (this.players[playerName].character.name === 'Rose Doolan') {
+            // Rose Doolan works as Apaloosa
             range += 1;
         }
         if  (range === "max" || range === "max_not_sheriffo") {
