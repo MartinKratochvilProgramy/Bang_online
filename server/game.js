@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Suzy Lafayette", "Calamity Janet"] // TODO: remove
+        const namesOfCharacters = ["Vulture Sam", "Calamity Janet", "Calamity Janet"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -862,7 +862,6 @@ class Game {
         }
         //El Gringo can draw when hit by Bang! or Gatling
         // Mancato! has also be in stack because of CJ
-        console.log("Card: ", this.getTopStackCard());
         if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
             this.draw(1, playerName);
             console.log("El Gringo was hit, so he draws 1 card");
@@ -877,7 +876,34 @@ class Game {
                     return;
                 }
             }
-            // TODO: LOSE GAME
+            // LOSE GAME
+            for (const player of Object.keys(this.players)) {
+                if (this.players[player].character.name === "Vulture Sam") {
+                    // if there is Vulture Sam, put dead player's hand to his hand
+                    console.log(`Vulture Sam received the hand of ${playerName}`)
+                    for (const card of this.players[playerName].hand) {
+                        if (player === this.getNameOfCurrentTurnPlayer()) {
+                            // inside VS turn
+                            if (!this.bangCanBeUsed && card.name === "Bang!") {
+                                // players turn and can use Bang!
+                                card.isPlayable = false;
+                            } else if (card.name === "Mancato!") {
+                                card.isPlayable = false;
+                            } else if (card.name === "Beer" && this.players[player].character.health === this.players[player].character.maxHealth) {
+                                card.isPlayable = false;
+                            } else {
+                                card.isPlayable = true;
+                            }
+                        } else {
+                            // outside VS turn
+                            card.isPlayable = false;
+                        }
+                        this.players[player].hand.push(card);
+                    }
+                    this.players[playerName].hand = [];
+                }
+                break;
+            }
         }
     }
 
