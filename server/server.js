@@ -408,9 +408,15 @@ io.on("connection", (socket) => {
 
     rooms[currentRoom].game.discard(data.card.name, data.card.digit, data.card.type, data.username);
     if (rooms[currentRoom].game.players[data.username].hand.length <= rooms[currentRoom].game.players[data.username].character.health) {
-      // if less of equal cards in hand -> endTurn
-      socket.emit("end_discard");
-      endTurn(io, currentRoom);
+      // special case for when SK is discarding
+      if (rooms[currentRoom].game.players[data.username].character.name !== "Sid Ketchum") {
+        console.log("HEre");
+        // if less of equal cards in hand -> endTurn
+        socket.emit("end_discard");
+        endTurn(io, currentRoom);
+      } else {
+        updateGameState(io, currentRoom)
+      }
     } else {
       updateGameState(io, currentRoom)
     }

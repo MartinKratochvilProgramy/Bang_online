@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Rose Doolan", "Paul Regret"] // TODO: remove
+        const namesOfCharacters = ["Sid Ketchum", "Paul Regret"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -15,6 +15,7 @@ class Game {
         this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
+        this.sidKetchumDiscarded = false;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -100,6 +101,15 @@ class Game {
         // place card on deck
         this.stack.push(cardToDiscard);
 
+        // SK special case for when discard 2 => gain life
+        if (this.players[playerName].character.name === "Sid Ketchum") {
+            if (this.sidKetchumDiscarded === true) {
+                this.players[playerName].character.health += 1
+                this.sidKetchumDiscarded = false;
+            } else {
+                this.sidKetchumDiscarded = true;
+            }
+        }
     }
 
     // ******************* USE CARDS *******************

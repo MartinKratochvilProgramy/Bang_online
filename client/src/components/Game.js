@@ -142,19 +142,26 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   }
 
   function activateCharacter() {
-    if (!characterUsable) return;
+    if (!characterUsable && character !== "Sid Ketchum") return;
+
     if (character === "Jesse Jones") {
       setSelectPlayerTarget(true);
       socket.emit("request_players_in_range", {range: "max", currentRoom, username});
     }
+
     if (character === "Jourdonnais") {
       setCharacterUsable(false);
       socket.emit("jourdonnais_barel", {currentRoom, username});
     }
+
     if (character === "Pedro Ramirez") {
       setCharacterUsable(false);
       socket.emit("get_stack_card_PR", {currentRoom, username});
-      socket.emit("get_stack_card_PR", {currentRoom, username});
+    }
+
+    if (character === "Sid Ketchum") {
+      console.log("Sid")
+      setDiscarding(true)
     }
   }
 
@@ -167,6 +174,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     if (myHand.length > myHealth) {
       setDiscarding(true);
     } else {
+      setDiscarding(false);
       socket.emit("end_turn", currentRoom);
     }
   }
@@ -247,7 +255,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
       <h2>My hand</h2>
       <p>Player name: {username}</p>
-      {characterUsable ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
+      {characterUsable || (currentPlayer === username && character === "Sid Ketchum") ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
       {allPlayersInfo.map(player => {
         if (player.name !== username) return(null); // display only my stats
         return (
@@ -298,6 +306,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       <br />
       {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}
       {(selectPlayerTarget && currentPlayer === username) ? <button style={{color: "red"}} onClick={cancelTargetSelect}>Cancel</button> : null}
+      {discarding ? <button style={{color: "red"}} onClick={() => setDiscarding(false)}>Cancel discarding</button> : null}
       {playersLosingHealth.map((player) => {
         if (player.name === username && player.isLosingHealth) {
           return (
