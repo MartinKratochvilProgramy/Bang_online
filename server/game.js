@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Slab the Killer", "Calamity Janet"] // TODO: remove
+        const namesOfCharacters = ["Suzy Lafayette", "Calamity Janet"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -169,9 +169,9 @@ class Game {
 
         this.players[playerName].canUseBarel = true;
 
-        this.setMancatoBeerNotPlayable(playerName);
         this.setCardOnTableNotPlayable("Barilo", playerName);
         this.setNotPlayable("Bang!", playerName);
+        this.setNotPlayable("Mancato!", playerName);
         
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
@@ -820,7 +820,10 @@ class Game {
         this.players[playerName].canUseBarel = true;
 
         this.setIsLosingHealth(false, playerName);
-        this.setMancatoBeerNotPlayable(playerName);
+        this.setNotPlayable("Mancato!", playerName);
+        if (this.players[playerName].character.name === "Calamity Janet") {
+            this.setNotPlayable("Bang!", playerName);
+        }
         this.setCardOnTableNotPlayable("Barilo", playerName)
         
         this.setAllPlayable(this.playerPlaceHolder);
@@ -1293,6 +1296,13 @@ class Game {
     endTurn() {
         //find who was previous player
         const previousPlayerName = this.getNameOfCurrentTurnPlayer()
+
+        if (this.players[previousPlayerName].character.name === "Suzy Lafayette" && this.players[previousPlayerName].hand.length === 0) {
+            // Suzy Lafayette draws a card on turn end if hand empty
+            console.log("Suzy Lafayette has hand empty, so she draws 1 card");
+            this.draw(1, previousPlayerName);
+        }
+
         for (let i = 0; i < this.numOfPlayers; i++) {
             // move playerRoundId forward
             this.playerRoundId += 1;
