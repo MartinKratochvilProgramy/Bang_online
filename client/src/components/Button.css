@@ -1,12 +1,4 @@
-.text-outline {
-    color: gray;
-    -webkit-text-fill-color: white;
-    /* Will override color (regardless of order) */
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: gray;
-}
-
-button {
+.button {
     font-size: 18px;
     font-family: "Rye";
     font-weight: bold;
@@ -18,7 +10,7 @@ button {
     box-shadow: 2px 2px 2px;
 }
 
-button:hover {
+.button:hover {
     color: #ef3e22;
     background-color: #4c2c14;
 }

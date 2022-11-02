@@ -1,7 +1,7 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
-import RoomInput from "./components/RoomInput";
+import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
 
@@ -32,7 +32,6 @@ function App() {
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
   const [characterUsable, setCharacterUsable] = useState(false);
 
-  const usernameRef = useRef();
   const newRoomRef = useRef();
 
   useEffect(() => {
@@ -179,16 +178,17 @@ function App() {
 
   return (
     <div className="App flex flex-col justify-start items-center h-screen">
-      <img className="w-max my-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
       {currentRoom === null ? 
-        <RoomInput 
-          usernameRef={usernameRef} 
-          newRoomRef={newRoomRef} 
-          setUsername={setUsername} 
-          createRoom={createRoom} 
-          username={username} 
-          rooms={rooms} 
-          joinRoom={joinRoom} />
+        <>
+          <img className="w-max my-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
+          <RoomSelect 
+            newRoomRef={newRoomRef} 
+            setUsername={setUsername} 
+            createRoom={createRoom} 
+            username={username} 
+            rooms={rooms} 
+            joinRoom={joinRoom} />
+        </>
       :
         <Room 
           users={users} 
