@@ -40,6 +40,10 @@ function App() {
       setRooms(rooms);
     })
 
+    socket.on("room_left", () => {
+    localStorage.setItem('room-name', JSON.stringify(null));
+    })
+
     socket.on("get_players", (users) => {
       setUsers(users);
     })

@@ -43,11 +43,30 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
-    for (var room in rooms) {
-      for (let i = 0; i < rooms[room].length; i++) {
+    for (var room of Object.keys(rooms)) {
+      // search rooms for player
+      for (let i = 0; i < rooms[room].players.length; i++) {
         if(rooms[room].players[i].id === socket.id) {
+          // tell game a player left if room exists
+          if (rooms[room].game) {
+            rooms[room].game.removePlayer(rooms[room].players[i].username);
+            // send info to client
+            updateGameState(io, room);
+            nextTurn(io, room);
+          }
+          socket.emit("room_left");
+          
           rooms[room].players.splice(i, 1);
-          io.to(room).emit("get_players", rooms[room].players);
+          if(rooms[room].players.length <= 0) {
+            // if room empty, delete it
+            delete rooms[room];
+            console.log("DELETE ROOM ", Object.keys(rooms));
+            io.emit("rooms", Object.keys(rooms));
+          } else {
+            // if players left in game, emit to them
+            io.to(room).emit("get_players", rooms[room].players);
+          }
+
           return;
         }
       }
@@ -56,12 +75,20 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
+    // leave socket
     socket.leave(roomName);
     rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
+
+    // tell game a player left
+    rooms[roomName].game.removePlayer(data.username);
+    // send info to client
+    updateGameState(io, roomName);
+    nextTurn(io, roomName);
 
     if(rooms[roomName].players.length <= 0) {
       // if room empty, delete it
       delete rooms[roomName];
+      socket.emit("rooms", Object.keys(rooms)); 
     } else {
       // if players left in game, emit to them
       io.to(roomName).emit("get_players", rooms[roomName].players);
@@ -459,6 +486,25 @@ function updateGameState(io, roomName) {
 
 function endTurn(io, currentRoom) {
   rooms[currentRoom].game.endTurn();
+
+  const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
+  
+  if (rooms[currentRoom].game.players[currentPlayer].character.name === "Kit Carlson") {
+    io.to(currentRoom).emit("update_draw_choices", "Kit Carlson");
+
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Lucky Duke") {
+    io.to(currentRoom).emit("update_draw_choices", "Lucky Duke");
+
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
+    io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
+  }
+
+  io.to(currentRoom).emit("current_player", currentPlayer);
+  io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
+  updateGameState(io, currentRoom)
+}
+
+function nextTurn(io, currentRoom) {
 
   const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
   

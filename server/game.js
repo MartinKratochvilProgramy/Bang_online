@@ -1483,6 +1483,15 @@ class Game {
         console.log("End of turn, next player: ", currentPlayerName);
 
     }
+
+    removePlayer(playerName) {
+        if (playerName === this.getNameOfCurrentTurnPlayer() && Object.key(this.players).length > 1) {
+            // if player turn and another player in game
+            // next turn
+            this.endTurn()
+        }
+        delete this.players[playerName];
+    }
 }
 
 module.exports = Game;
