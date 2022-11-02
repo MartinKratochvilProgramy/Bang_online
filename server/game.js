@@ -1485,7 +1485,7 @@ class Game {
     }
 
     removePlayer(playerName) {
-        if (playerName === this.getNameOfCurrentTurnPlayer() && Object.key(this.players).length > 1) {
+        if (playerName === this.getNameOfCurrentTurnPlayer() && Object.keys(this.players).length > 1) {
             // if player turn and another player in game
             // next turn
             this.endTurn()

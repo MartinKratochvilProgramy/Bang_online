@@ -5,11 +5,12 @@ import RoomInput from "./components/RoomInput";
 import Room from "./components/Room";
 import Game from "./components/Game";
 
-const socket = io.connect("http://localhost:3001");
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
+const socket = io.connect("http://localhost:3001");
 
 function App() {
+
   const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('current-room')));
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -119,33 +120,27 @@ function App() {
     })
 
     socket.on("update_players_with_action_required", (players) => {
-      console.log("PLAYERS WITH ACTION REQUIRED: ", players);
       setPlayersActionRequiredOnStart(players);
     })
 
     socket.on("update_all_players_info", (players) => {
       // returns array [{name, numberOfCards, health}]
       setAllPlayersInfo(players);
-      console.log("Players info: ", players);
     })
 
     socket.on("update_top_stack_card", (card) => {
-      console.log("Update top stack", card);
       setTopStackCard(card);
     })
 
     socket.on("duel_active", (state) => {
-      console.log("Duel state: ", state);
       setDuelActive(state);
     })
 
     socket.on("indiani_active", (state) => {
-      console.log("Indiani state: ", state);
       setIndianiActive(state);
     })
 
     socket.on("emporio_state", (state) => {
-      console.log("Emporio state: ", state);
       setEmporioState(state.cards);
       setNextEmporioTurn(state.nextEmporioTurn);
     })
