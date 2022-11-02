@@ -1,7 +1,7 @@
 import React from 'react';
 import './RoomSelect.css';
-import Button from './Button';
 import UsernameSelect from './UsernameSelect';
+import RoomCreate from './RoomCreate';
 
 export default function RoomSelect({ newRoomRef, setUsername, createRoom, username, rooms, joinRoom }) {
 
@@ -13,12 +13,10 @@ export default function RoomSelect({ newRoomRef, setUsername, createRoom, userna
     } else {
         return (
           <div>
-      
-              <br/>
-      
-              <h2 className='text-outline font-rye text-6xl text-white mb-6'>
-                  User: {username}
+              <h2 className='text-outline font-rye text-8xl text-white mb-6'>
+                  {username}
               </h2>
+                <RoomCreate createRoom={createRoom} />
       
               <h2>
                   Join existing room

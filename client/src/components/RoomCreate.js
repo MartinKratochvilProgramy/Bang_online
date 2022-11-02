@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react';
+import Button from './Button';
 
-export default function RoomCreate() {
-  return (
+export default function RoomCreate({ createRoom }) {
+  
+    const [roomInput, setRoomInput] = useState("");
+
+    function handleClick() {
+        createRoom(roomInput);
+        setRoomInput("");
+    }
+
+    return (
     <div>
-        <h2>
+        <label class="text-outline font-rye text-5xl text-white mb-6" for="username">
             Create new room
-        </h2>
+        </label>
+        <div className='mt-4'></div>
         <input
+            className='shadow appearance-none font-rye text-xl rounded bg-beige m-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             placeholder="Room name..."
-            ref={newRoomRef}
+            onChange={(e) => setRoomInput(e.target.value)}
+            value={roomInput}
         />
         <Button 
-            onClick={() => {createRoom(newRoomRef.current.value)}}
+            onClick={handleClick}
             value={"Create new room"} 
         />
     </div>

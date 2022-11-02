@@ -14,3 +14,9 @@
     color: #ef3e22;
     background-color: #4c2c14;
 }
+
+.button:focus {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: #4c2c14;
+}

@@ -152,9 +152,15 @@ function App() {
     setCurrentRoom(room);
     localStorage.setItem('room-name', JSON.stringify(room));
   };
-
+  
   const createRoom = (roomName) => {
     socket.emit("create_room", roomName);
+    
+    // join room after create
+    socket.emit("join_room", {currentRoom: roomName, username});
+    setCurrentRoom(roomName);
+    localStorage.setItem('room-name', JSON.stringify(roomName));
+    
   }
 
   const leaveRoom = () => {
@@ -180,7 +186,7 @@ function App() {
     <div className="App flex flex-col justify-start items-center h-screen">
       {currentRoom === null ? 
         <>
-          <img className="w-max my-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
+          <img className="w-max mt-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 
