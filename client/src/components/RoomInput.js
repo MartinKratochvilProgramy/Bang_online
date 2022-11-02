@@ -1,14 +1,22 @@
-import React from 'react'
+import React from 'react';
+import './RoomInput.css';
 
 export default function RoomInput({ usernameRef, newRoomRef, setUsername, createRoom, username, rooms, joinRoom }) {
   return (
     <div>
-        <h2>Set username</h2>
+        <h2 
+            className='text-outline font-rye text-6xl text-white mb-6'>
+            Select username:
+        </h2>
         <input
             placeholder="Username..."
             ref={usernameRef}
         />
-        <button onClick={() => {setUsername(usernameRef.current.value)}}>Set username</button>
+        <button 
+            className=''
+            onClick={() => {setUsername(usernameRef.current.value)}}>
+            Set username
+        </button>
         <br/>
         Username: {username}
         <h2>

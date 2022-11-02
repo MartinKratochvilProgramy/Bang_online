@@ -178,7 +178,8 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App flex flex-col justify-start items-center h-screen">
+      <img className="w-max my-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
       {currentRoom === null ? 
         <RoomInput 
           usernameRef={usernameRef} 
