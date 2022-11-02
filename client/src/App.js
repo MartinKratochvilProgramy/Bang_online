@@ -182,8 +182,6 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
-  console.log("currentRoom", currentRoom);
-
   return (
     <div className="App">
       {currentRoom === null ? 
