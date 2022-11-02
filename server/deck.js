@@ -25,7 +25,7 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Bang!",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 1010,
         type: "spades",
@@ -66,7 +66,7 @@ const deckTwoBarrelsVulcanic = [
     {
         name: "Vulcanic",
         rimColor: "blue",
-        digit: 169,
+        digit: 6,
         type: "spades",
         class: "gun",
         isPlayable: false,
@@ -75,7 +75,7 @@ const deckTwoBarrelsVulcanic = [
     {
         name: "Bang!",
         rimColor: "yellow",
-        digit: 404,
+        digit: 8,
         type: "spades",
         isPlayable: false
     },  

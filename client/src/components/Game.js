@@ -39,7 +39,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     for (const player of playersActionRequiredOnStart) {
       if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
-        setCharacterUsable(true);
+        setCharacterUsable(false);
         break;
       }
     }
@@ -175,6 +175,8 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       setDiscarding(true);
     } else {
       setDiscarding(false);
+      setSelectPlayerTarget(false);
+      setSelectCardTarget(false);
       socket.emit("end_turn", currentRoom);
     }
   }

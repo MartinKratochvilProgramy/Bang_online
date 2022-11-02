@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Calamity Janet"] // TODO: remove
+        const namesOfCharacters = ["Kit Carlson", "Calamity Janet", "Calamity Janet"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -11,6 +11,7 @@ class Game {
         this.bangCanBeUsed = true;
         this.duelActive = false;
         this.indianiActive = false;
+        this.gatlingActive = false;
         this.duelPlayers = null;
         this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
@@ -164,14 +165,19 @@ class Game {
     
     useBangAsCJ(playerName, cardDigit, cardType) {
         if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-            // Calamity Janet discard 2 Mancato! or Bang!
-            for (let i = 0; i < 2; i++) {
-                const index = this.players[playerName].hand.findIndex(card => {
-                    return (card.name === 'Mancato!' || card.name === "Bang!");
-                });
-                const card = this.players[playerName].hand[index];
-                this.discard(card.name, card.digit, card.type, playerName);
-                console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+            if (!this.gatlingActive) {
+                // Calamity Janet discard 2 Mancato! or Bang!
+                for (let i = 0; i < 2; i++) {
+                    const index = this.players[playerName].hand.findIndex(card => {
+                        return (card.name === 'Mancato!' || card.name === "Bang!");
+                    });
+                    const card = this.players[playerName].hand[index];
+                    this.discard(card.name, card.digit, card.type, playerName);
+                    console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+                }
+            } else {
+                this.discard("Bang!", cardDigit, cardType, playerName);
+                this.gatlingActive = false;
             }
         } else {
             // normally discard 1 card
@@ -238,27 +244,30 @@ class Game {
     }
 
     useMancato(playerName, cardDigit, cardType) {
-        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-            if (this.players[playerName].character.name === "Calamity Janet") {
-                // Calamity Janet discard 2 Mancato! or Bang!
-                for (let i = 0; i < 2; i++) {
-                    const index = this.players[playerName].hand.findIndex(card => {
-                        return (card.name === 'Mancato!' || card.name === "Bang!");
-                    });
-                    const card = this.players[playerName].hand[index];
-                    this.discard(card.name, card.digit, card.type, playerName);
-                    console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+        if (!this.gatlingActive) {
+            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
+                if (this.players[playerName].character.name === "Calamity Janet") {
+    
+                    // Calamity Janet discard 2 Mancato! or Bang!
+                    for (let i = 0; i < 2; i++) {
+                        const index = this.players[playerName].hand.findIndex(card => {
+                            return (card.name === 'Mancato!' || card.name === "Bang!");
+                        });
+                        const card = this.players[playerName].hand[index];
+                        this.discard(card.name, card.digit, card.type, playerName);
+                        console.log(`Player ${playerName} discarded 2 ${card.name} on Slab the Killer`);
+                    }
+                } else {
+                    // on Slab the Killer, discard two Mancato!
+                    for (let i = 0; i < 2; i++) {
+                        const index = this.players[playerName].hand.findIndex(card => {
+                            return (card.name === 'Mancato!');
+                        });
+                        const card = this.players[playerName].hand[index];
+                        this.discard(card.name, card.digit, card.type, playerName);
+                    }
+                      console.log(`Player ${playerName} discarded 2 Mancato! on Slab the Killer`);
                 }
-            } else {
-                // on Slab the Killer, discard two Mancato!
-                for (let i = 0; i < 2; i++) {
-                    const index = this.players[playerName].hand.findIndex(card => {
-                        return (card.name === 'Mancato!');
-                    });
-                    const card = this.players[playerName].hand[index];
-                    this.discard(card.name, card.digit, card.type, playerName);
-                }
-                  console.log(`Player ${playerName} discarded 2 Mancato! on Slab the Killer`);
             }
         } else {
             // normally discard one Mancato!
@@ -283,6 +292,7 @@ class Game {
         for (const player of this.getPlayersLosingHealth()) {
             if (player.isLosingHealth) return;
         }
+        this.gatlingActive = false;
         this.setAllPlayable(this.playerPlaceHolder);
         this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         
@@ -630,6 +640,10 @@ class Game {
         this.discard("Gatling", cardDigit, cardType, playerName);
         console.log(`Player ${playerName} used Gatling`);
 
+        if (this.players[playerName].character.name === "Slab the Killer") {
+            this.gatlingActive = true;
+        }
+
         for (const target of Object.keys(this.players)) {
             // put hit on all players, except playerName and dead players
             if (target !== playerName && this.players[target].character.health > 0) {
@@ -751,6 +765,14 @@ class Game {
         if (drawnCard.type === "spades" && (2 <= drawnCard.digit && drawnCard.digit <= 9)) {
             console.log("Dynamite exploded!");
             this.players[playerName].character.health -= 3; // lose 3 HP
+            if (this.players[playerName].character.health <= 3) {
+              // player DIED
+                this.setAllNotPlayable(playerName);
+                this.setAllCardsOnTableNotPlayable(playerName);
+                // endTurn() is handled in the server
+                console.log(`Player ${playerName} has died!`)  
+                return;
+            } 
         } else {
             // find next alive player
             let currentPlayerId = this.playerRoundId + 1;
@@ -921,6 +943,10 @@ class Game {
                 }
             }
             // LOSE GAME
+            this.setAllNotPlayable(playerName);
+            this.setAllCardsOnTableNotPlayable(playerName);
+            this.endTurn();
+            console.log(`Player ${playerName} has died!`)
             for (const player of Object.keys(this.players)) {
                 if (this.players[player].character.name === "Vulture Sam") {
                     // if there is Vulture Sam, put dead player's hand to his hand

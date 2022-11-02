@@ -348,6 +348,10 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game.useDynamite(data.username, data.card);
     updateGameState(io, roomName);
+    if (rooms[roomName].game.players[data.username].character.health <= 0) {
+      endTurn(io, roomName);
+      return;
+    }
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
 
     const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
