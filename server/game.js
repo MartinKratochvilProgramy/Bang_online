@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Kit Carlson", "Calamity Janet", "Calamity Janet"] // TODO: remove
+        const namesOfCharacters = ["Kit Carlson", "Calamity Janet", "Sid Ketchum"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -268,6 +268,10 @@ class Game {
                     }
                       console.log(`Player ${playerName} discarded 2 Mancato! on Slab the Killer`);
                 }
+            } else {
+                // normally discard one Mancato!
+                this.discard("Mancato!", cardDigit, cardType, playerName);
+                console.log(`Player ${playerName} used Mancato!`);
             }
         } else {
             // normally discard one Mancato!
@@ -945,7 +949,6 @@ class Game {
             // LOSE GAME
             this.setAllNotPlayable(playerName);
             this.setAllCardsOnTableNotPlayable(playerName);
-            this.endTurn();
             console.log(`Player ${playerName} has died!`)
             for (const player of Object.keys(this.players)) {
                 if (this.players[player].character.name === "Vulture Sam") {
@@ -973,6 +976,10 @@ class Game {
                     this.players[playerName].hand = [];
                 }
                 break;
+            }
+            if (playerName === this.getNameOfCurrentTurnPlayer()) {
+                // if is current players' turn and he dies, end his turn
+                this.endTurn();
             }
         }
     }
