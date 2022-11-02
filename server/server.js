@@ -49,6 +49,7 @@ io.on("connection", (socket) => {
         if(rooms[room].players[i].id === socket.id) {
           // tell game a player left if room exists
           if (rooms[room].game) {
+            // if game exists, remove player from game
             rooms[room].game.removePlayer(rooms[room].players[i].username);
             // send info to client
             updateGameState(io, room);
@@ -77,6 +78,7 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
     // leave socket
     socket.leave(roomName);
+    // remove player from players
     rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
 
     // tell game a player left
