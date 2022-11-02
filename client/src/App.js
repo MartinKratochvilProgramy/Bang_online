@@ -10,7 +10,7 @@ const socket = io.connect("http://localhost:3001");
 // SRC: https://github.com/machadop1407/socket-io-react-example
 
 function App() {
-  const [currentRoom, setCurrentRoom] = useState(null);
+  const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('current-room')));
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -35,6 +35,7 @@ function App() {
   const newRoomRef = useRef();
 
   useEffect(() => {
+
     socket.on("rooms", (rooms) => {
       setRooms(rooms);
     })
@@ -151,6 +152,7 @@ function App() {
     const room = e.target.id;
     socket.emit("join_room", {currentRoom: room, username});
     setCurrentRoom(room);
+    localStorage.setItem('room-name', JSON.stringify(room));
   };
 
   const createRoom = (roomName) => {
@@ -161,6 +163,7 @@ function App() {
     socket.emit("leave_room", {username, currentRoom});
     setGameStarted(false);
     setCurrentRoom(null);
+    localStorage.setItem('room-name', JSON.stringify(null));
   }
 
   const sendMessage = (message) => {
@@ -175,9 +178,11 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
+  console.log("currentRoom", currentRoom);
+
   return (
     <div className="App">
-      {!currentRoom ? 
+      {currentRoom === null ? 
         <RoomInput 
           usernameRef={usernameRef} 
           newRoomRef={newRoomRef} 

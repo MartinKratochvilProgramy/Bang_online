@@ -1,8 +1,15 @@
-const arr = [1, 2]
-const arr1 = [3, 4]
-
-for (const e of arr1) {
-    arr.push(e)
+let rooms = {
+  "room": {
+    players: [],
+    messages: [],
+    game: null
+  },
+  "test": {
+    players: [],
+    messages: [],
+    game: null
+  },
 }
 
-console.log(arr);
+delete rooms["room"];
+console.log(rooms);

@@ -56,8 +56,17 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", data => {
     const roomName = data.currentRoom;
+    socket.leave(roomName);
     rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
-    io.to(roomName).emit("get_players", rooms[roomName].players);
+
+    if(rooms[roomName].players.length <= 0) {
+      // if room empty, delete it
+      delete rooms[roomName];
+    } else {
+      // if players left in game, emit to them
+      io.to(roomName).emit("get_players", rooms[roomName].players);
+    }
+    socket.emit("rooms", Object.keys(rooms));
   });
 
   socket.on("create_room", roomName => {
@@ -82,6 +91,8 @@ io.on("connection", (socket) => {
   // ********** GAME LOGIC **********
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
+
+    console.log("players: ", data.players);
     
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
