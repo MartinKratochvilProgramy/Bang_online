@@ -26,7 +26,7 @@ let rooms = {
 }
 
 io.on("connection", (socket) => {
-  socket.emit("rooms", Object.keys(rooms));
+  socket.emit("rooms", getRoomsInfo());
 
   socket.on("join_room", (data) => {
     socket.join(data.currentRoom);
@@ -61,8 +61,7 @@ io.on("connection", (socket) => {
           if(rooms[room].players.length <= 0) {
             // if room empty, delete it
             delete rooms[room];
-            console.log("DELETE ROOM ", Object.keys(rooms));
-            io.emit("rooms", Object.keys(rooms));
+            io.emit("rooms", getRoomsInfo());
           } else {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
@@ -85,7 +84,7 @@ io.on("connection", (socket) => {
     if(rooms[roomName].players.length <= 0) {
       // if room empty, delete it
       delete rooms[roomName];
-      socket.emit("rooms", Object.keys(rooms)); 
+      socket.emit("rooms", getRoomsInfo()); 
     } else {
       // tell game a player left
       rooms[roomName].game.removePlayer(data.username);
@@ -95,7 +94,7 @@ io.on("connection", (socket) => {
       // if players left in game, emit to them
       io.to(roomName).emit("get_players", rooms[roomName].players);
     }
-    socket.emit("rooms", Object.keys(rooms));
+    socket.emit("rooms", getRoomsInfo());
   });
 
   socket.on("create_room", roomName => {
@@ -104,7 +103,7 @@ io.on("connection", (socket) => {
       messages: []
     };
 
-    io.emit("rooms", Object.keys(rooms));
+    io.emit("rooms", getRoomsInfo());
   })
 
   socket.on("send_message", data => {
@@ -523,4 +522,19 @@ function nextTurn(io, currentRoom) {
   io.to(currentRoom).emit("current_player", currentPlayer);
   io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
   updateGameState(io, currentRoom)
+}
+
+function getRoomsInfo() {
+  // return all rooms in an array
+  // [{roomName, numOfPlayers, gameActive}]
+  const res = []
+  for (const room of Object.keys(rooms)) {
+    const roomInfo = {
+      name: room,
+      numOfPlayers: rooms[room].players.length,
+      gameActive: rooms[room].game === null ? false : true
+    }
+    res.push(roomInfo);
+  }
+return res;
 }

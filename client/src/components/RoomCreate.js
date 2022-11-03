@@ -12,7 +12,7 @@ export default function RoomCreate({ createRoom }) {
 
     return (
     <div>
-        <label class="text-outline font-rye text-5xl text-white mb-6" for="username">
+        <label className="text-outline font-rye text-5xl text-white mb-6">
             Create new room
         </label>
         <div className='mt-4'></div>

@@ -3,13 +3,12 @@ import './RoomSelect.css';
 import UsernameSelect from './UsernameSelect';
 import RoomCreate from './RoomCreate';
 
-export default function RoomSelect({ newRoomRef, setUsername, createRoom, username, rooms, joinRoom }) {
+export default function RoomSelect({ setUsername, createRoom, username, rooms, joinRoom }) {
 
     if (username === "") {
         return(
             <UsernameSelect setUsername={setUsername} />
-
-        )
+            )
     } else {
         return (
           <div>
@@ -18,19 +17,20 @@ export default function RoomSelect({ newRoomRef, setUsername, createRoom, userna
               </h2>
                 <RoomCreate createRoom={createRoom} />
       
-              <h2>
+              <h2 className='text-outline font-rye text-5xl text-white mb-6'>
                   Join existing room
               </h2>
               <br/>
               Rooms:
               {rooms.map(room => {
+                console.log("Room: ", room);
                   return (
                   <button 
-                      key={room}
-                      id={room}
+                      key={room.name}
+                      id={room.name}
                       onClick={joinRoom}
                   >
-                      {room}
+                      {room.name}
                   </button>
                   )
               })}

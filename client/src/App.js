@@ -154,8 +154,15 @@ function App() {
   };
   
   const createRoom = (roomName) => {
-    socket.emit("create_room", roomName);
+    // don't allow already existing room to be created
+    for (const room of rooms) {
+      if (room.name === roomName) {
+        return;
+      }
+    }
     
+    socket.emit("create_room", roomName);
+
     // join room after create
     socket.emit("join_room", {currentRoom: roomName, username});
     setCurrentRoom(roomName);
@@ -186,7 +193,7 @@ function App() {
     <div className="App flex flex-col justify-start items-center h-screen">
       {currentRoom === null ? 
         <>
-          <img className="w-max mt-12" src={require('./img/bang-logo.png')} alt="" srcset="" />
+          <img className="w-max mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 

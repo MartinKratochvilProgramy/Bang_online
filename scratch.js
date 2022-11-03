@@ -1,15 +1,29 @@
 let rooms = {
   "room": {
-    players: [],
+    players: ["Sbeve", "Joe"],
     messages: [],
     game: null
   },
   "test": {
-    players: [],
+    players: ["Joe"],
     messages: [],
     game: null
   },
 }
 
-delete rooms["room"];
-console.log(rooms);
+function getRoomInfo() {
+  // return all rooms in an array
+  // [{roomName, numOfPlayers, gameActive}]
+  const res = []
+  for (const room of Object.keys(rooms)) {
+    const roomInfo = {
+      roomName: room,
+      numOfPlayers: rooms[room].players.length,
+      gameActive: rooms[room].game === null ? false : true
+    }
+    res.push(roomInfo);
+  }
+return res;
+}
+
+console.log(getRoomInfo());

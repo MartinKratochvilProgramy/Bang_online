@@ -1476,7 +1476,7 @@ class Game {
             } else {
                 this.draw(2, currentPlayerName);
             }
-            this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+            this.setAllPlayable(currentPlayerName);     
             this.setMancatoBeerNotPlayable(currentPlayerName);
         }
 
