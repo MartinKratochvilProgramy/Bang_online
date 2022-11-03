@@ -45,13 +45,17 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
+    // search rooms for player
     for (var room of Object.keys(rooms)) {
-      
-      // search rooms for player
+      // iterate throught players inside room
       for (let i = 0; i < rooms[room].players.length; i++) {
+        // if player === player who disconnected, splice him
         if(rooms[room].players[i].id === socket.id) {
+          rooms[room].players.splice(i, 1);
+          io.emit("rooms", getRoomsInfo());
+
           // tell game a player left if room exists
-          if (rooms[room].game && rooms[room].players.length > 2) {
+          if (rooms[room].game && rooms[room].players.length >= 2) {
             // if game exists, remove player from game
             rooms[room].game.removePlayer(rooms[room].players[i].username);
             // send info to client
@@ -60,7 +64,7 @@ io.on("connection", (socket) => {
           }
           socket.emit("room_left");
           
-          rooms[room].players.splice(i, 1);
+
           if(rooms[room].players.length <= 0) {
             // if room empty, delete it
             delete rooms[room];
@@ -68,9 +72,8 @@ io.on("connection", (socket) => {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
           }
-          io.emit("rooms", getRoomsInfo());
+          break;
         }
-        break;
       }
     }
   })
