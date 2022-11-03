@@ -160,7 +160,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 2,
         type: "spades",
@@ -188,7 +188,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 9,
         type: "spades",

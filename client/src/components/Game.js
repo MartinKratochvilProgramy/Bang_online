@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
+import PlayerTable from './PlayerTable';
 
 export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable }) { 
   
@@ -76,7 +77,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     } else if (activeCard.name === "Duel") {
       socket.emit("play_duel", {target, currentRoom, cardDigit, cardType});
 
-    } else if (activeCard.name === "Cat Ballou") {
+    } else if (activeCard.name === "Cat Balou") {
       socket.emit("play_cat_ballou", {target, currentRoom, cardDigit, cardType});
 
     } else if (activeCard.name === "Panico") {
@@ -97,7 +98,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     if(!selectCardTarget) return;
     setSelectPlayerTarget(false);
     setSelectCardTarget(false);
-    if (activeCard.name === "Cat Ballou") {
+    if (activeCard.name === "Cat Balou") {
       socket.emit("play_cat_ballou_on_table_card", { activeCard, username, target: cardName, currentRoom, cardDigit, cardType });
     } else if (activeCard.name === "Panico") {
       socket.emit("play_panico_on_table_card", { activeCard, username, target: cardName, currentRoom, cardDigit, cardType });
@@ -285,25 +286,21 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       })}
       
       <p>Hand:</p>
-      {myHand.map(card => {
-        return(
-          <Card 
-              socket={socket}
-              card={card}
-              key={card.digit + card.type}
-              setSelectPlayerTarget={setSelectPlayerTarget}
-              setSelectCardTarget={setSelectCardTarget}
-              currentRoom={currentRoom}
-              setActiveCard={setActiveCard}
-              username={username}
-              currentPlayer={currentPlayer}
-              duelActive={duelActive}
-              indianiActive={indianiActive}
-              discarding={discarding}
-              character={character}
-              />
-        )
-      })}
+      <PlayerTable
+        myHand={myHand}
+        setSelectPlayerTarget={setSelectPlayerTarget}
+        setSelectCardTarget={setSelectCardTarget}
+        currentRoom={currentRoom}
+        setActiveCard={setActiveCard}
+        username={username}
+        currentPlayer={currentPlayer}
+        duelActive={duelActive}
+        indianiActive={indianiActive}
+        discarding={discarding}
+        character={character}
+      
+      />
+
 
       <br />
       {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) ? <button style={{color: "red"}} onClick={endTurn}>End turn</button> : null}

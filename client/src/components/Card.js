@@ -77,7 +77,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         setSelectPlayerTarget(true);
         socket.emit("request_players_in_range", {range: "max", currentRoom, username});
 
-      } else if (cardName === "Cat Ballou") {
+      } else if (cardName === "Cat Balou") {
         setActiveCard(card);
         setSelectPlayerTarget(true);
         setSelectCardTarget(true);
@@ -107,7 +107,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       styles = {color: "red", border: "solid 1px red"}
     } 
 
-    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '') + ".png");
+    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");
 
   return (
     <button 

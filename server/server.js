@@ -416,7 +416,10 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
 
+    
     const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
+    io.to(roomName).emit("current_player", currentPlayer);
+
     if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
       io.to(roomName).emit("update_draw_choices", "Kit Carlson");
   

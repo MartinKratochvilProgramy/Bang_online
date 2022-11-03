@@ -17,7 +17,7 @@ export default function Chat({ sendMessage, messages, width }) {
     }, [messages])
 
   return (
-    <div className={`mt-8 w-[${width}px]`}>
+    <div className={`mt-8 w-[260px] md:w-[360px]`}>
 
         <div 
             id="text" 
@@ -28,7 +28,7 @@ export default function Chat({ sendMessage, messages, width }) {
         >
             {messages.map(message => {
                 return(
-                    <div className='flex flex-row w-full'>
+                    <div className='flex flex-row w-full text-start'>
                         <div className=''>
                             {message.username}:
                         </div>
