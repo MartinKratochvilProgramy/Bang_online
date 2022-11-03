@@ -16,6 +16,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
+  const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [character, setCharacter] = useState("");
 
@@ -177,10 +178,11 @@ function App() {
             setCurrentRoom={setCurrentRoom} 
             username={username} 
             rooms={rooms} 
-            
+            setAdmin={setAdmin}
           />
         </>
       :
+      !gameStarted &&
         <Room 
           users={users} 
           messages={messages} 
@@ -189,6 +191,7 @@ function App() {
           sendMessage={sendMessage}
           startGame={startGame}
           gameStarted={gameStarted}
+          admin={admin}
           />
       }
       {gameStarted ? 

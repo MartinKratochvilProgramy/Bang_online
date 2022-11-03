@@ -17,13 +17,7 @@ const io = new Server(server, {
 const PORT = 3001;
 app.use(cors());
 
-let rooms = {
-  "room": {
-    players: [],
-    messages: [],
-    game: null
-  }
-}
+let rooms = {}
 
 io.on("connection", (socket) => {
   socket.emit("rooms", getRoomsInfo());

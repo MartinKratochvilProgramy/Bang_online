@@ -1,13 +1,13 @@
 import React from 'react';
-import './RoomSelect.css';
 import UsernameSelect from './UsernameSelect';
 import RoomCreate from './RoomCreate';
 import RoomInfo from './RoomInfo';
 
-export default function RoomSelect({ setUsername, socket, setCurrentRoom, username, rooms }) {
+export default function RoomSelect({ setUsername, socket, setCurrentRoom, username, rooms, setAdmin }) {
 
     const createRoom = (roomName) => {
         // don't allow already existing room to be created
+        setAdmin(true);
         for (const room of rooms) {
         if (room.name === roomName) {
             return;

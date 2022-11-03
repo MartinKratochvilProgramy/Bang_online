@@ -10,6 +10,7 @@ module.exports = {
       },
       colors: {
         beige: "#F8CDAA",
+        darkBeige: "#e3ad81",
       }
 
     },
