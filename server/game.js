@@ -31,7 +31,7 @@ class Game {
                     return(
                         this.name = namesOfCharacters[i],
                         this.role = null,
-                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 8 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
@@ -356,8 +356,8 @@ class Game {
 
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: this only works on cards in hand, not table
-        this.discard("Cat Ballou", cardDigit, cardType, playerName);
-        console.log(`Player ${playerName} used Cat Ballou`);
+        this.discard("Cat Balou", cardDigit, cardType, playerName);
+        console.log(`Player ${playerName} used Cat Balou`);
 
         // get random card from target hand
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
@@ -367,8 +367,8 @@ class Game {
     }
 
     useCatBallouOnTableCard(activeCard, target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
-        this.discard("Cat Ballou", activeCard.digit, activeCard.type, playerName);
-        console.log(`Player ${playerName} used Cat Ballou`);
+        this.discard("Cat Balou", activeCard.digit, activeCard.type, playerName);
+        console.log(`Player ${playerName} used Cat Balou`);
         
         for (let player of Object.keys(this.players)) {
             // remove from table object where name === target
@@ -1437,11 +1437,13 @@ class Game {
             console.log("Activate dynamite: ", currentPlayerName);
             this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
+            return;
             
         } else if (this.getPlayerIsInPrison(currentPlayerName)) {
             console.log("Activate prison: ", currentPlayerName);
             this.players[currentPlayerName].isInPrison = true;
             this.setCardOnTablePlayable("Prigione", currentPlayerName);
+            return;
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
             null
@@ -1476,7 +1478,7 @@ class Game {
             } else {
                 this.draw(2, currentPlayerName);
             }
-            this.setAllPlayable(currentPlayerName);     //TODO: dynamite, prison?
+            this.setAllPlayable(currentPlayerName);     
             this.setMancatoBeerNotPlayable(currentPlayerName);
         }
 
@@ -1485,7 +1487,7 @@ class Game {
     }
 
     removePlayer(playerName) {
-        if (playerName === this.getNameOfCurrentTurnPlayer() && Object.key(this.players).length > 1) {
+        if (playerName === this.getNameOfCurrentTurnPlayer() && Object.keys(this.players).length > 1) {
             // if player turn and another player in game
             // next turn
             this.endTurn()

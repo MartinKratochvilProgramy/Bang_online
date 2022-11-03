@@ -17,16 +17,10 @@ const io = new Server(server, {
 const PORT = 3001;
 app.use(cors());
 
-let rooms = {
-  "room": {
-    players: [],
-    messages: [],
-    game: null
-  }
-}
+let rooms = {}
 
 io.on("connection", (socket) => {
-  socket.emit("rooms", Object.keys(rooms));
+  socket.emit("rooms", getRoomsInfo());
 
   socket.on("join_room", (data) => {
     socket.join(data.currentRoom);
@@ -37,18 +31,25 @@ io.on("connection", (socket) => {
     };
     rooms[roomName].players.push(newUser);
 
+    io.emit("rooms", getRoomsInfo());
+    
     io.to(data.currentRoom).emit("get_players", rooms[roomName].players);
     io.to(data.currentRoom).emit("get_messages", rooms[roomName].messages);
   });
 
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
+    // search rooms for player
     for (var room of Object.keys(rooms)) {
-      // search rooms for player
+      // iterate throught players inside room
       for (let i = 0; i < rooms[room].players.length; i++) {
+        // if player === player who disconnected, splice him
         if(rooms[room].players[i].id === socket.id) {
+          rooms[room].players.splice(i, 1);
+          io.emit("rooms", getRoomsInfo());
+
           // tell game a player left if room exists
-          if (rooms[room].game) {
+          if (rooms[room].game && rooms[room].players.length >= 2) {
             // if game exists, remove player from game
             rooms[room].game.removePlayer(rooms[room].players[i].username);
             // send info to client
@@ -57,18 +58,15 @@ io.on("connection", (socket) => {
           }
           socket.emit("room_left");
           
-          rooms[room].players.splice(i, 1);
+
           if(rooms[room].players.length <= 0) {
             // if room empty, delete it
             delete rooms[room];
-            console.log("DELETE ROOM ", Object.keys(rooms));
-            io.emit("rooms", Object.keys(rooms));
           } else {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
           }
-
-          return;
+          break;
         }
       }
     }
@@ -81,30 +79,34 @@ io.on("connection", (socket) => {
     // remove player from players
     rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
 
-    // tell game a player left
-    rooms[roomName].game.removePlayer(data.username);
-    // send info to client
-    updateGameState(io, roomName);
-    nextTurn(io, roomName);
-
+    
     if(rooms[roomName].players.length <= 0) {
       // if room empty, delete it
       delete rooms[roomName];
-      socket.emit("rooms", Object.keys(rooms)); 
+      socket.emit("rooms", getRoomsInfo()); 
     } else {
-      // if players left in game, emit to them
-      io.to(roomName).emit("get_players", rooms[roomName].players);
+      if (rooms[roomName].game !== null) {
+        // if game exists
+        // tell game a player left
+        rooms[roomName].game.removePlayer(data.username);
+        // send info to client
+        updateGameState(io, roomName);
+        nextTurn(io, roomName);
+        // if players left in game, emit to them
+        io.to(roomName).emit("get_players", rooms[roomName].players);
+      }
     }
-    socket.emit("rooms", Object.keys(rooms));
+    io.emit("rooms", getRoomsInfo());
   });
 
   socket.on("create_room", roomName => {
     rooms[roomName] = {
       players: [],
-      messages: []
+      messages: [],
+      game: null
     };
 
-    io.emit("rooms", Object.keys(rooms));
+    io.emit("rooms", getRoomsInfo());
   })
 
   socket.on("send_message", data => {
@@ -121,10 +123,11 @@ io.on("connection", (socket) => {
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
 
-    console.log("players: ", data.players);
-    
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
+    
+    // emit so Join Room could not be displayed
+    io.emit("rooms", getRoomsInfo());
     
     let characters = []
     for (var player of Object.keys(rooms[roomName].game.players)) {
@@ -413,7 +416,10 @@ io.on("connection", (socket) => {
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
 
+    
     const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
+    io.to(roomName).emit("current_player", currentPlayer);
+
     if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
       io.to(roomName).emit("update_draw_choices", "Kit Carlson");
   
@@ -491,6 +497,13 @@ function endTurn(io, currentRoom) {
 
   const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
   
+    io.to(currentRoom).emit("current_player", currentPlayer);
+    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
+    updateGameState(io, currentRoom)
+
+  if (rooms[currentRoom].game.getPlayerIsInPrison(currentPlayer)) return;
+  if (rooms[currentRoom].game.getPlayerHasDynamite(currentPlayer)) return;
+  
   if (rooms[currentRoom].game.players[currentPlayer].character.name === "Kit Carlson") {
     io.to(currentRoom).emit("update_draw_choices", "Kit Carlson");
 
@@ -500,10 +513,6 @@ function endTurn(io, currentRoom) {
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
   }
-
-  io.to(currentRoom).emit("current_player", currentPlayer);
-  io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
-  updateGameState(io, currentRoom)
 }
 
 function nextTurn(io, currentRoom) {
@@ -523,4 +532,19 @@ function nextTurn(io, currentRoom) {
   io.to(currentRoom).emit("current_player", currentPlayer);
   io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
   updateGameState(io, currentRoom)
+}
+
+function getRoomsInfo() {
+  // return all rooms in an array
+  // [{roomName, numOfPlayers, gameActive}]
+  const res = []
+  for (const room of Object.keys(rooms)) {
+    const roomInfo = {
+      name: room,
+      numOfPlayers: rooms[room].players.length,
+      gameActive: rooms[room].game === null ? false : true
+    }
+    res.push(roomInfo);
+  }
+return res;
 }

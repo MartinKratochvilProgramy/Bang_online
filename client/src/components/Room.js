@@ -1,50 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Button from './Button';
+import Chat from './Chat';
 
-export default function Room({ users, messages, roomName, leaveRoom, sendMessage, startGame, gameStarted }) {
-  const [messageInput, setMessageInput] = useState("");
+export default function Room({ users, messages, sendMessage, roomName, leaveRoom, startGame, admin }) {
 
   return (
-    <div>
-        <h1>{roomName}</h1>
-        <button onClick={leaveRoom} >Disconnect</button>
-        <h2>Users</h2>
-        {users.map(user => {
-            return (
-                <div key={user.id}>
-                    {user.username}
-                </div>
-            )
+    <div className=''>
+        <div className='text-outline font-rye text-8xl text-white my-4'>{roomName}</div>
+        <Button size={1.8} value={"Disconnect"} onClick={leaveRoom} />
+        <div className='text-outline font-rye text-6xl text-white my-2'>Players ({users.length}/6)</div>
+
+        {users.map((user) => {
+          return (
+            <div className='text-outline font-rye text-4xl text-white my-2'>{user.username}</div>
+          )
         })}
-
-        {/* <h2>Messages</h2>
-        <form onSubmit={(e) =>{
-          e.preventDefault();
-          setMessageInput("");
-          sendMessage(messageInput);
-        }}>
-          <label>
-            Send message:
-            <input 
-              placeholder="Submit"
-              autoFocus
-              onChange={(e) => setMessageInput(e.target.value)} 
-              value={messageInput} />
-            <button type="submit">Send</button>
-          </label>
-        </form>
-
-        {messages.map(message => {
-            return (
-                <div key={message.id}>
-                    {message.username}: {message.message}
-                </div>
-            )
-        })} */}
-        {!gameStarted ? 
-          <button onClick={() => startGame()}>Start game</button>
-        :
-        null
+  
+        {(admin && users.length >= 2) && // TODO: change to 4 for dev
+          <Button onClick={() => startGame()} value={"Start game"} size={2} />
         }
+
+        <div className='flex justify-center'>
+          <Chat sendMessage={sendMessage} messages={messages} width={480} />
+        </div>
     </div>
   )
 }

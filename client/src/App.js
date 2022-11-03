@@ -1,20 +1,22 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
-import RoomInput from "./components/RoomInput";
+import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
 
-const socket = io.connect("http://localhost:3001");
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
+const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('current-room')));
+
+  const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
+  const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [character, setCharacter] = useState("");
 
@@ -31,7 +33,6 @@ function App() {
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
   const [characterUsable, setCharacterUsable] = useState(false);
 
-  const usernameRef = useRef();
   const newRoomRef = useRef();
 
   useEffect(() => {
@@ -119,52 +120,36 @@ function App() {
     })
 
     socket.on("update_players_with_action_required", (players) => {
-      console.log("PLAYERS WITH ACTION REQUIRED: ", players);
       setPlayersActionRequiredOnStart(players);
     })
 
     socket.on("update_all_players_info", (players) => {
       // returns array [{name, numberOfCards, health}]
       setAllPlayersInfo(players);
-      console.log("Players info: ", players);
     })
 
     socket.on("update_top_stack_card", (card) => {
-      console.log("Update top stack", card);
       setTopStackCard(card);
     })
 
     socket.on("duel_active", (state) => {
-      console.log("Duel state: ", state);
       setDuelActive(state);
     })
 
     socket.on("indiani_active", (state) => {
-      console.log("Indiani state: ", state);
       setIndianiActive(state);
     })
 
     socket.on("emporio_state", (state) => {
-      console.log("Emporio state: ", state);
       setEmporioState(state.cards);
       setNextEmporioTurn(state.nextEmporioTurn);
     })
 
   }, [username, currentRoom, character])
-
-  const joinRoom = (e) => {
-    const room = e.target.id;
-    socket.emit("join_room", {currentRoom: room, username});
-    setCurrentRoom(room);
-    localStorage.setItem('room-name', JSON.stringify(room));
-  };
-
-  const createRoom = (roomName) => {
-    socket.emit("create_room", roomName);
-  }
-
+  
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
+    setAdmin(false);
     setGameStarted(false);
     setCurrentRoom(null);
     localStorage.setItem('room-name', JSON.stringify(null));
@@ -182,20 +167,25 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
-  console.log("currentRoom", currentRoom);
+  console.log(JSON.parse(localStorage.getItem('room-name')));
 
   return (
-    <div className="App">
+    <div className="App flex flex-col justify-start items-center h-screen">
       {currentRoom === null ? 
-        <RoomInput 
-          usernameRef={usernameRef} 
-          newRoomRef={newRoomRef} 
-          setUsername={setUsername} 
-          createRoom={createRoom} 
-          username={username} 
-          rooms={rooms} 
-          joinRoom={joinRoom} />
+        <>
+          <img className="w-max mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
+          <RoomSelect 
+            newRoomRef={newRoomRef} 
+            setUsername={setUsername} 
+            socket={socket} 
+            setCurrentRoom={setCurrentRoom} 
+            username={username} 
+            rooms={rooms} 
+            setAdmin={setAdmin}
+          />
+        </>
       :
+      !gameStarted &&
         <Room 
           users={users} 
           messages={messages} 
@@ -204,9 +194,11 @@ function App() {
           sendMessage={sendMessage}
           startGame={startGame}
           gameStarted={gameStarted}
+          admin={admin}
           />
       }
       {gameStarted ? 
+      <>
         <Game 
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
@@ -226,7 +218,10 @@ function App() {
           nextEmporioTurn={nextEmporioTurn}
           characterUsable={characterUsable}
           setCharacterUsable={setCharacterUsable}
+          sendMessage={sendMessage}
+          messages={messages}
         />
+      </>
       :
        null
       }

@@ -1,0 +1,21 @@
+.button {
+    font-family: "Rye";
+    font-weight: bold;
+    color: #4c2c14;
+    background-color: #ef3e22;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px;
+}
+
+.button:hover {
+    color: #ef3e22;
+    background-color: #4c2c14;
+}
+
+.button:focus {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: #4c2c14;
+}

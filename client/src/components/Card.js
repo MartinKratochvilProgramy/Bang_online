@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, currentPlayer, duelActive, indianiActive, discarding, character }) {
+export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, currentPlayer, duelActive, indianiActive, discarding, character, onClick }) {
 
     // TODO: this is not necessary
     const isPlayable = card.isPlayable
@@ -9,6 +9,11 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     const cardType = card.type;
 
     function handleClick() {
+
+      if (onClick !== undefined) {
+        onClick();
+        return;
+      }
       
       if (discarding) {
         socket.emit("discard", {username, currentRoom, card});
@@ -72,7 +77,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         setSelectPlayerTarget(true);
         socket.emit("request_players_in_range", {range: "max", currentRoom, username});
 
-      } else if (cardName === "Cat Ballou") {
+      } else if (cardName === "Cat Balou") {
         setActiveCard(card);
         setSelectPlayerTarget(true);
         setSelectCardTarget(true);
@@ -96,15 +101,21 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
 
     let styles;
     if (isPlayable) {
-      styles = {color: "red"}
+      styles = {color: "red", border: "solid 1px red"}
     } 
     if (discarding) {
       styles = {color: "red", border: "solid 1px red"}
     } 
 
+    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");
+
   return (
-    <button onClick={handleClick} style={styles}>
-        {cardName} <br /> {cardDigit} {cardType}
+    <button 
+      onClick={handleClick} 
+      style={styles} 
+      className='w-[80px]'>
+      <img src={cardSource} alt="" />
+        {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>
   )
 }

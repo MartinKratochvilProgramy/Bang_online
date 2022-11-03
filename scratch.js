@@ -1,15 +1,4 @@
-let rooms = {
-  "room": {
-    players: [],
-    messages: [],
-    game: null
-  },
-  "test": {
-    players: [],
-    messages: [],
-    game: null
-  },
-}
+const str = "exclam!";
 
-delete rooms["room"];
-console.log(rooms);
+
+console.log(`res ${str.replace(/!/, '')}`);

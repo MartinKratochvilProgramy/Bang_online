@@ -603,10 +603,10 @@ test('use Panico on table', t => {
   assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Panico"), false);
 })
 
-test('use Cat Ballou on player', t => {
+test('use Cat Balou on player', t => {
   const panicoDeck = [    
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 1,
         type: "hearts",
@@ -647,13 +647,13 @@ test('use Cat Ballou on player', t => {
   game.players["Joe"].character.startingHandSize = 1;
   game.startGame();
   game.useCatBallou("Joe", 1, "hearts", "Sbeve");
-  assert.strictEqual(game.stack.some(card => card.name === "Cat Ballou"), true)                // on stack
+  assert.strictEqual(game.stack.some(card => card.name === "Cat Balou"), true)                // on stack
   assert.strictEqual(game.players["Sbeve"].hand.some(card => card.digit === 1), false)      // not in hand
   assert.strictEqual(game.players["Sbeve"].hand.length, 3)      // card in hand
   assert.strictEqual(game.players["Joe"].hand.length, 0)      // card in hand
 })
 
-test('use Cat Ballou on table', t => {
+test('use Cat Balou on table', t => {
   const panicoDeck = [    
       {
         name: "Barilo",
@@ -672,7 +672,7 @@ test('use Cat Ballou on table', t => {
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 3,
         type: "hearts",
@@ -730,7 +730,7 @@ test('use Cat Ballou on table', t => {
     }, "Sbeve");
   game.endTurn();
   game.useCatBallouOnTableCard(    {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 3,
         type: "hearts",
@@ -738,7 +738,7 @@ test('use Cat Ballou on table', t => {
     }, "Barilo", 1, "hearts", "Joe");
   assert.strictEqual(game.players["Sbeve"].table.some(card => card.name === "Barilo"), false);
   assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Barilo"), false);
-  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Cat Ballou"), false);
+  assert.strictEqual(game.players["Joe"].hand.some(card => card.name === "Cat Balou"), false);
 })
 
 test('use prison, draw on prison and suceed', t => {
@@ -760,7 +760,7 @@ test('use prison, draw on prison and suceed', t => {
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 3,
         type: "hearts",
@@ -834,7 +834,7 @@ test('use prison, draw on prison and fail', t => {
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 3,
         type: "hearts",
@@ -908,7 +908,7 @@ test('use dynamite', t => {
         isPlayable: false
     },
     {
-        name: "Cat Ballou",
+        name: "Cat Balou",
         rimColor: "yellow",
         digit: 3,
         type: "hearts",
