@@ -17,11 +17,11 @@ export default function Chat({ sendMessage, messages, width }) {
     }, [messages])
 
   return (
-    <div className={`mt-8 w-[260px] md:w-[360px]`}>
+    <div className={`mt-8 w-[220px] md:w-[280px]`}>
 
         <div 
             id="text" 
-            className={`bg-beige ml-0 rounded p-2 overflow-auto w-full h-[200px] font-rye`}
+            className={`bg-beige ml-0 rounded p-2 overflow-auto w-full h-[220px] font-rye`}
             cols="37" 
             rows="10" 
             value={messagesOutput}

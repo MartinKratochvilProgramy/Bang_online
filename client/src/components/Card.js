@@ -115,7 +115,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       style={styles} 
       className='w-[80px]'>
       <img src={cardSource} alt="" />
-        {cardName} <br /> {cardDigit} {cardType}
+        {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>
   )
 }

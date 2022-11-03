@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
-import Chat from "./components/Chat";
 
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
@@ -218,10 +217,8 @@ function App() {
           characterUsable={characterUsable}
           setCharacterUsable={setCharacterUsable}
           sendMessage={sendMessage}
+          messages={messages}
         />
-        <div className='fixed left-1 bottom-1'>
-          <Chat sendMessage={sendMessage} messages={messages} width={260} />
-        </div>
       </>
       :
        null

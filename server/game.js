@@ -31,7 +31,7 @@ class Game {
                     return(
                         this.name = namesOfCharacters[i],
                         this.role = null,
-                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
+                        this.maxHealth = 8 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
                         this.startingHandSize = this.maxHealth
                     )
