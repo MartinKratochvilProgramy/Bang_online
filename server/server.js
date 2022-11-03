@@ -36,9 +36,9 @@ io.on("connection", (socket) => {
       id: socket.id
     };
     rooms[roomName].players.push(newUser);
-    
-    console.log(rooms[roomName]);
 
+    io.emit("rooms", getRoomsInfo());
+    
     io.to(data.currentRoom).emit("get_players", rooms[roomName].players);
     io.to(data.currentRoom).emit("get_messages", rooms[roomName].messages);
   });
@@ -46,11 +46,12 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     // user disconnected by closing the browser
     for (var room of Object.keys(rooms)) {
+      
       // search rooms for player
       for (let i = 0; i < rooms[room].players.length; i++) {
         if(rooms[room].players[i].id === socket.id) {
           // tell game a player left if room exists
-          if (rooms[room].game) {
+          if (rooms[room].game && rooms[room].players.length > 2) {
             // if game exists, remove player from game
             rooms[room].game.removePlayer(rooms[room].players[i].username);
             // send info to client
@@ -63,14 +64,13 @@ io.on("connection", (socket) => {
           if(rooms[room].players.length <= 0) {
             // if room empty, delete it
             delete rooms[room];
-            io.emit("rooms", getRoomsInfo());
           } else {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
           }
-
-          return;
+          io.emit("rooms", getRoomsInfo());
         }
+        break;
       }
     }
   })
@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
         io.to(roomName).emit("get_players", rooms[roomName].players);
       }
     }
-    socket.emit("rooms", getRoomsInfo());
+    io.emit("rooms", getRoomsInfo());
   });
 
   socket.on("create_room", roomName => {
@@ -126,10 +126,11 @@ io.on("connection", (socket) => {
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
 
-    console.log("players: ", data.players);
-    
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
     rooms[roomName].game.startGame();
+    
+    // emit so Join Room could not be displayed
+    io.emit("rooms", getRoomsInfo());
     
     let characters = []
     for (var player of Object.keys(rooms[roomName].game.players)) {

@@ -28,6 +28,9 @@ export default function RoomSelect({ setUsername, socket, setCurrentRoom, userna
         localStorage.setItem('room-name', JSON.stringify(room));
     };
 
+    let gridStyle ;
+    rooms.length >= 6 ? gridStyle = "grid-cols-2" : gridStyle = "grid-cols-1";
+
     if (username === "") {
         return(
             <UsernameSelect setUsername={setUsername} />
@@ -42,7 +45,7 @@ export default function RoomSelect({ setUsername, socket, setCurrentRoom, userna
               <h2 className='text-outline font-rye text-5xl text-white my-6'>
                   Join existing room
               </h2>
-              <div className='grid justify-center items-center'>
+              <div className={`inline-grid gap-6 justify-center items-center ${gridStyle}`}>
                 {rooms.map(room => {
                     return (
                         <RoomInfo room={room} joinRoom={() => joinRoom(room.name)} />
