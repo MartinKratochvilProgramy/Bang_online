@@ -101,7 +101,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
 
     let styles;
     if (isPlayable) {
-      styles = {color: "red"}
+      styles = {color: "red", border: "solid 1px red"}
     } 
     if (discarding) {
       styles = {color: "red", border: "solid 1px red"}

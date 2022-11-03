@@ -11,7 +11,7 @@ const socket = io.connect("http://localhost:3001");
 
 function App() {
 
-  const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('current-room')));
+  const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -166,6 +166,8 @@ function App() {
     })
     socket.emit("start_game", {players, currentRoom})
   }
+
+  console.log(JSON.parse(localStorage.getItem('room-name')));
 
   return (
     <div className="App flex flex-col justify-start items-center h-screen">

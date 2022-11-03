@@ -497,6 +497,13 @@ function endTurn(io, currentRoom) {
 
   const currentPlayer = rooms[currentRoom].game.getNameOfCurrentTurnPlayer(); // get current player
   
+    io.to(currentRoom).emit("current_player", currentPlayer);
+    io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
+    updateGameState(io, currentRoom)
+
+  if (rooms[currentRoom].game.getPlayerIsInPrison(currentPlayer)) return;
+  if (rooms[currentRoom].game.getPlayerHasDynamite(currentPlayer)) return;
+  
   if (rooms[currentRoom].game.players[currentPlayer].character.name === "Kit Carlson") {
     io.to(currentRoom).emit("update_draw_choices", "Kit Carlson");
 
@@ -506,10 +513,6 @@ function endTurn(io, currentRoom) {
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
   }
-
-  io.to(currentRoom).emit("current_player", currentPlayer);
-  io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
-  updateGameState(io, currentRoom)
 }
 
 function nextTurn(io, currentRoom) {
