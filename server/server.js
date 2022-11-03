@@ -36,6 +36,8 @@ io.on("connection", (socket) => {
       id: socket.id
     };
     rooms[roomName].players.push(newUser);
+    
+    console.log(rooms[roomName]);
 
     io.to(data.currentRoom).emit("get_players", rooms[roomName].players);
     io.to(data.currentRoom).emit("get_messages", rooms[roomName].messages);
@@ -86,13 +88,16 @@ io.on("connection", (socket) => {
       delete rooms[roomName];
       socket.emit("rooms", getRoomsInfo()); 
     } else {
-      // tell game a player left
-      rooms[roomName].game.removePlayer(data.username);
-      // send info to client
-      updateGameState(io, roomName);
-      nextTurn(io, roomName);
-      // if players left in game, emit to them
-      io.to(roomName).emit("get_players", rooms[roomName].players);
+      if (rooms[roomName].game !== null) {
+        // if game exists
+        // tell game a player left
+        rooms[roomName].game.removePlayer(data.username);
+        // send info to client
+        updateGameState(io, roomName);
+        nextTurn(io, roomName);
+        // if players left in game, emit to them
+        io.to(roomName).emit("get_players", rooms[roomName].players);
+      }
     }
     socket.emit("rooms", getRoomsInfo());
   });
@@ -100,7 +105,8 @@ io.on("connection", (socket) => {
   socket.on("create_room", roomName => {
     rooms[roomName] = {
       players: [],
-      messages: []
+      messages: [],
+      game: null
     };
 
     io.emit("rooms", getRoomsInfo());

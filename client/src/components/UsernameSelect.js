@@ -28,6 +28,7 @@ export default function UsernameSelect({ setUsername }) {
             <Button 
                 onClick={handleClick}
                 value={"Set Username"} 
+                size={2}
             />
         </div>
     </div>

@@ -5,14 +5,15 @@ export default function RoomCreate({ createRoom }) {
   
     const [roomInput, setRoomInput] = useState("");
 
+    
     function handleClick() {
         createRoom(roomInput);
         setRoomInput("");
     }
 
     return (
-    <div>
-        <label className="text-outline font-rye text-5xl text-white mb-6">
+    <div className='mt-8'>
+        <label className="text-outline font-rye text-5xl text-white my-6">
             Create new room
         </label>
         <div className='mt-4'></div>
@@ -25,6 +26,7 @@ export default function RoomCreate({ createRoom }) {
         <Button 
             onClick={handleClick}
             value={"Create new room"} 
+            size={2}
         />
     </div>
   )

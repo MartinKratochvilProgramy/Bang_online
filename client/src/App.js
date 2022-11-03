@@ -145,31 +145,7 @@ function App() {
     })
 
   }, [username, currentRoom, character])
-
-  const joinRoom = (e) => {
-    const room = e.target.id;
-    socket.emit("join_room", {currentRoom: room, username});
-    setCurrentRoom(room);
-    localStorage.setItem('room-name', JSON.stringify(room));
-  };
   
-  const createRoom = (roomName) => {
-    // don't allow already existing room to be created
-    for (const room of rooms) {
-      if (room.name === roomName) {
-        return;
-      }
-    }
-    
-    socket.emit("create_room", roomName);
-
-    // join room after create
-    socket.emit("join_room", {currentRoom: roomName, username});
-    setCurrentRoom(roomName);
-    localStorage.setItem('room-name', JSON.stringify(roomName));
-    
-  }
-
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
     setGameStarted(false);
@@ -197,10 +173,12 @@ function App() {
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 
-            createRoom={createRoom} 
+            socket={socket} 
+            setCurrentRoom={setCurrentRoom} 
             username={username} 
             rooms={rooms} 
-            joinRoom={joinRoom} />
+            
+          />
         </>
       :
         <Room 
