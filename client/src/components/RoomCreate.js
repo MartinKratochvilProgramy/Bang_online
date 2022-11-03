@@ -6,6 +6,7 @@ export default function RoomCreate({ createRoom }) {
     const [roomInput, setRoomInput] = useState("");
     
     function handleClick() {
+        if (roomInput === "") return;
         createRoom(roomInput);
         setRoomInput("");
     }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Card from './cards/Card';
+import Card from './Card';
 
 export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable }) { 
   

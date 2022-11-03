@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
+import Chat from "./components/Chat";
 
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
@@ -149,6 +150,7 @@ function App() {
   
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
+    setAdmin(false);
     setGameStarted(false);
     setCurrentRoom(null);
     localStorage.setItem('room-name', JSON.stringify(null));
@@ -195,6 +197,7 @@ function App() {
           />
       }
       {gameStarted ? 
+      <>
         <Game 
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
@@ -214,7 +217,12 @@ function App() {
           nextEmporioTurn={nextEmporioTurn}
           characterUsable={characterUsable}
           setCharacterUsable={setCharacterUsable}
+          sendMessage={sendMessage}
         />
+        <div className='fixed left-1 bottom-1'>
+          <Chat sendMessage={sendMessage} messages={messages} width={260} />
+        </div>
+      </>
       :
        null
       }

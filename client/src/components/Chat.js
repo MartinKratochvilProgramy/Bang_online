@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Button from './Button'
 
-export default function Chat({ sendMessage, messages, width, height }) {
+export default function Chat({ sendMessage, messages, width }) {
     
     const [messageInput, setMessageInput] = useState("");
     const [messagesOutput, setMessagesOutput] = useState("");
@@ -16,13 +16,12 @@ export default function Chat({ sendMessage, messages, width, height }) {
         textArea.scrollTop = textArea.scrollHeight;
     }, [messages])
 
-    
   return (
-    <div className='mt-8'>
+    <div className={`mt-8 w-[${width}px]`}>
 
         <div 
             id="text" 
-            className={`bg-beige ml-0 rounded p-2 overflow-auto w-[${width}px] h-[240px] font-rye`}
+            className={`bg-beige ml-0 rounded p-2 overflow-auto w-full h-[200px] font-rye`}
             cols="37" 
             rows="10" 
             value={messagesOutput}
@@ -42,14 +41,14 @@ export default function Chat({ sendMessage, messages, width, height }) {
         </div>
 
         <form 
-            className={`flex justify-between w-[${width}px]`}
+            className={`flex justify-between w-full`}
             onSubmit={(e) =>{
                 e.preventDefault();
                 setMessageInput("");
                 sendMessage(messageInput);
                 }}
         >
-        <div className="flex my-2 w-full">
+        <div className="flex mt-2 w-full">
             <input
                 className='shadow appearance-none h-[32px] w-full font-rye text-xl rounded bg-beige mr-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder="Message..."
