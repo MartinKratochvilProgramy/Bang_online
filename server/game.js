@@ -880,10 +880,12 @@ class Game {
                     }
                     return;
                 }
-                // if not dynamite on table, allow use cards
-                this.setAllPlayable(playerName);
-                this.setMancatoBeerNotPlayable(playerName);
-                this.draw(2, playerName);
+                // if not dynamite on table, allow use cards except Jesse Jones
+                if (this.players[playerName].character.name !== "Jesse Jones") {
+                    this.setAllPlayable(playerName);
+                    this.setMancatoBeerNotPlayable(playerName);
+                    this.draw(2, playerName);
+                }            
             }
         } else {
             // next player round

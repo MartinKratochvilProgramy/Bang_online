@@ -104,7 +104,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
 
           <div className='flex flex-col justify-start h-full w-[120px] p-1 space-y-2'>
             {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) && <Button onClick={endTurn} value={"End turn"} size={1.2} />}
-            {(selectPlayerTarget && currentPlayer === username) && <Button onClick={cancelTargetSelect} value={"Cancel"} size={1.2} /> }
+            {(selectPlayerTarget && nextTurn && currentPlayer === username) && <Button onClick={cancelTargetSelect} value={"Cancel"} size={1.2} /> }
             {discarding && <Button onClick={() => setDiscarding(false)} value={"Cancel"} size={1.2} />}
             {playersLosingHealth.map((player) => {
                 if (player.name === username && player.isLosingHealth) {

@@ -44,22 +44,42 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     setNextTurn(true);
     // disable next turn button if dynamite, prison or action req from current player
     for (const player of playersActionRequiredOnStart) {
-      if (player.name === username && (player.hasDynamite || player.isInPrison)) {
+      if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
         setCharacterUsable(false);
         break;
       }
-      console.log("_ ", player.actionRequired);
-      if (player.name === username && player.actionRequired && character === "Jesse Jones") {
-        setNextTurn(false);
-        setCharacterUsable(true);
-        break;
-      }
+      // if (player.name === username && player.actionRequired && character === "Jesse Jones") {
+      //   setNextTurn(false);
+      //   setCharacterUsable(true);
+      //   break;
+      // }
     }
   }, [playersActionRequiredOnStart, username, setCharacterUsable, character])
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
+  })
+
+  socket.on("update_draw_choices", (characterName) => {
+    console.log("Username", username);
+    console.log("currentRoom", currentRoom);
+    if (username === "") return;
+    if (currentRoom === null) return;
+    if (characterName === character) {
+
+      if (characterName === "Jesse Jones") {
+        setSelectPlayerTarget(true);
+        setDeckActive(true);
+        socket.emit("request_players_in_range", {range: "max", currentRoom, username});
+
+      } else if (characterName === "Pedro Ramirez") {
+        setCharacterUsable(true);
+
+      } else {
+        socket.emit("get_my_draw_choice", {username, currentRoom, character});
+      }
+    }
   })
 
   socket.on("end_discard", () => {
@@ -134,14 +154,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
 
   function activateCharacter() {
-    console.log("got here", characterUsable);
     if (!characterUsable && character !== "Sid Ketchum") return;
-
-    if (character === "Jesse Jones") {
-      setSelectPlayerTarget(true);
-      setDeckActive(true);
-      socket.emit("request_players_in_range", {range: "max", currentRoom, username});
-    }
 
     if (character === "Jourdonnais") {
       setCharacterUsable(false);

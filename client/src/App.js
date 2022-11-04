@@ -96,26 +96,6 @@ function App() {
       socket.emit("get_my_hand", {username, currentRoom});
     })
 
-    socket.on("update_draw_choices", (characterName) => {
-      console.log("Username", username);
-      console.log("currentRoom", currentRoom);
-      if (username === "") return;
-      if (currentRoom === null) return;
-      if (characterName === character) {
-
-        if (characterName === "Jesse Jones") {
-          console.log("Usable?");
-          setCharacterUsable(true);
-
-        } else if (characterName === "Pedro Ramirez") {
-          setCharacterUsable(true);
-
-        } else {
-          socket.emit("get_my_draw_choice", {username, currentRoom, character});
-        }
-      }
-    })
-
     socket.on("update_players_losing_health", (players) => {
       setPlayersLosingHealth(players);
     })
