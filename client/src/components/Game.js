@@ -187,9 +187,12 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
           username={username}
           selectCardTarget={selectCardTarget}
           confirmCardTarget={confirmCardTarget}
+          selectPlayerTarget={selectPlayerTarget}
           currentPlayer={currentPlayer}
           characterUsable={characterUsable}
           myHealth={myHealth}
+          playersInRange={playersInRange}
+          confirmPlayerTarget={confirmPlayerTarget}
         />
       </div>
       <p>Current player: {currentPlayer}</p>

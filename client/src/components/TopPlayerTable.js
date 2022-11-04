@@ -1,30 +1,28 @@
 import React from 'react';
 import getCharacterDescription from '../utils/getCharacterDescritption';
-import CardOnTable from './CardOnTable';
+import OponentCardOnTable from './OponentCardOnTable';
 
-export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, activateCharacter, selectCardTarget, username, currentPlayer, 
-     character, characterUsable, myHealth, confirmCardTarget}) {
+export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
+     character, myHealth, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
 
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/, '') + ".png");
 
   let characterStyles = {};
-  if (oponentName === currentPlayer) {
+  if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
     characterStyles = {color: "red", border: "solid 1px red", cursor: "pointer"};
   }
 
   function handleCharacterClick() {
-    if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum"))) {
-      activateCharacter()
-    }
+    confirmPlayerTarget(oponentName);
   }
 
   return (
-    <div className='max-w-[900px] w-full rotate-180'>
+    <div className='rotate-180'>
       <div className='space-x-2 rotate-180 mb-2'>
         {table.map(card => {
           return(
-            <CardOnTable 
+            <OponentCardOnTable 
               socket={socket}
               username={username}
               selectCardTarget={selectCardTarget}
