@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Kit Carlson", "Calamity Janet", "Sid Ketchum"] // TODO: remove
+        const namesOfCharacters = ["Jesse Jones", "Calamity Janet", "Sid Ketchum"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -17,6 +17,7 @@ class Game {
         this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
         this.sidKetchumDiscarded = false;
+        this.awaitJesseJones = false;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -84,6 +85,10 @@ class Game {
 
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+
+        if (this.players[playerName].character.name === "Jesse Jones") {
+            this.awaiJesseJones = false;
+        }
 
         if (numToDraw === 1) {
             console.log(`Player ${playerName} drew ${numToDraw} card`);
@@ -1007,6 +1012,8 @@ class Game {
         this.draw(1, playerName);
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+
+        this.awaiJesseJones = false;
     }
 
     jourdonnaisBarel(playerName){
@@ -1182,7 +1189,7 @@ class Game {
                 if (this.getPlayerIsInPrison(player)) {
                     prisonFound = true;
                 }
-                if (this.players[player].character.name === "Jesse Jones") {
+                if (this.players[player].character.name === "Jesse Jones" && this.awaiJesseJones) {
                     actionRequired = true;
                 }
             }
@@ -1358,7 +1365,7 @@ class Game {
             }
             
         } else if (this.players[firstPlayerName].character.name === "Jesse Jones") {
-            null
+            this.awaitJesseJones = true;
 
         } else if (this.players[firstPlayerName].character.name === "Kit Carlson") {
             // populate create draw choice for Kit Carlson
@@ -1446,7 +1453,7 @@ class Game {
             return;
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
-            null
+            this.awaiJesseJones = true;
         
         } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez") {
             null

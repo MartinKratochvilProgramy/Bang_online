@@ -14,39 +14,48 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   const [selectPlayerTarget, setSelectPlayerTarget] = useState(false);
   const [selectCardTarget, setSelectCardTarget] = useState(false);
   const [discarding, setDiscarding] = useState(false);
+
+  const [deckActive, setDeckActive] = useState(false);
   
   useEffect(() => {
     setNextTurn(true);
     // disable next turn button if health decision req on other players
     for (const player of playersLosingHealth) {
       if (player.isLosingHealth) {
+
         setNextTurn(false);
         break;
       }
     }
   }, [playersLosingHealth])
-
+  
   useEffect(() => {
     for (const player of allPlayersInfo) {
       if (player.name === username) {
         setMyHealth(player.health)
       }
     }
-  
+    
   }, [allPlayersInfo, username])
   
-
+  
   useEffect(() => {
     setNextTurn(true);
     // disable next turn button if dynamite, prison or action req from current player
     for (const player of playersActionRequiredOnStart) {
-      if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
+      if (player.name === username && (player.hasDynamite || player.isInPrison)) {
         setNextTurn(false);
         setCharacterUsable(false);
         break;
       }
+      console.log("_ ", player.actionRequired);
+      if (player.name === username && player.actionRequired && character === "Jesse Jones") {
+        setNextTurn(false);
+        setCharacterUsable(true);
+        break;
+      }
     }
-  }, [playersActionRequiredOnStart, username, setCharacterUsable])
+  }, [playersActionRequiredOnStart, username, setCharacterUsable, character])
 
   socket.on("players_in_range", players => {
     setPlayersInRange(players);
@@ -92,6 +101,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       // no active card and Jese jones
       socket.emit("jesse_jones_target", {username, target, currentRoom});
       setCharacterUsable(false);
+      setDeckActive(false);
     }
     setActiveCard({});
   }
@@ -106,20 +116,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       socket.emit("play_panico_on_table_card", { activeCard, username, target: cardName, currentRoom, cardDigit, cardType });
     }
     setActiveCard({});
-  }
-
-
-  function playCardOnTable(card) {
-    if (!card.isPlayable) return;
-    if (card.name === "Barilo") {
-      socket.emit("use_barel", {username, currentRoom});
-    }
-    if (card.name === "Dynamite") {
-      socket.emit("use_dynamite", {username, currentRoom, card});
-    }
-    if (card.name === "Prigione") {
-      socket.emit("use_prigione", {username, currentRoom, card});
-    }
   }
 
   function getEmporioCard(card) {
@@ -137,10 +133,12 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
 
 
   function activateCharacter() {
+    console.log("got here", characterUsable);
     if (!characterUsable && character !== "Sid Ketchum") return;
 
     if (character === "Jesse Jones") {
       setSelectPlayerTarget(true);
+      setDeckActive(true);
       socket.emit("request_players_in_range", {range: "max", currentRoom, username});
     }
 
@@ -155,7 +153,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
     }
 
     if (character === "Sid Ketchum") {
-      console.log("Sid")
       setDiscarding(true)
     }
   }
@@ -163,6 +160,8 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   function drawFromDeck() {
     socket.emit("draw_from_deck", {currentRoom, username})
     setCharacterUsable(false);
+    setSelectPlayerTarget(false);
+    setDeckActive(false);
   }
   
   return (
@@ -210,7 +209,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
             {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
         </button>        
       }
-      {((character === "Jesse Jones" || character === "Pedro Ramirez") && characterUsable) ? 
+      {deckActive ? 
         <button onClick={() => drawFromDeck()} style={{color: "red"}} type="">Deck <br/>..</button>
         :
         <button  type="">Deck <br/>..</button>
@@ -248,21 +247,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
             <div>
               Health: {player.health}
             </div>
-            <div>
-              Table: <br />
-              {player.table.map(card => {
-                  let tableCardColorStyles = {color: "black"};
-                  if (card.isPlayable) {
-                      tableCardColorStyles = {color: "red"}
-                  }
-                return (
-                  <button style={tableCardColorStyles} key={card.digit + card.type} onClick={() => playCardOnTable(card)}>
-                    {card.name} <br /> {card.digit} {card.type}
-                  </button>
-                )
-              })}
-            </div>
-          
+        
           </div>
         )
       })}
@@ -271,10 +256,12 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         <PlayerTable
           socket={socket}
           myHand={myHand}
+          table={allPlayersInfo.filter(player => {return(player.name === username)})[0].table}
           setSelectPlayerTarget={setSelectPlayerTarget}
           setSelectCardTarget={setSelectCardTarget}
           currentRoom={currentRoom}
           setActiveCard={setActiveCard}
+          activateCharacter={activateCharacter}
           username={username}
           currentPlayer={currentPlayer}
           duelActive={duelActive}

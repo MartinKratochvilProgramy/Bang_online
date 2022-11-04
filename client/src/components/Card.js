@@ -113,7 +113,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     <button 
       onClick={handleClick} 
       style={styles} 
-      className='w-[80px]'>
+      className='w-[80px] hover:w-[82px] transition'>
       <img src={cardSource} alt="" />
         {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>

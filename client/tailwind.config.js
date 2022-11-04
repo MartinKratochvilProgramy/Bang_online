@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         beige: "#F8CDAA",
         darkBeige: "#e3ad81",
+        transparentBlack: "rgba(0, 0, 0, 0.6)"
       }
 
     },

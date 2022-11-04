@@ -97,13 +97,14 @@ function App() {
     })
 
     socket.on("update_draw_choices", (characterName) => {
+      console.log("Username", username);
+      console.log("currentRoom", currentRoom);
       if (username === "") return;
       if (currentRoom === null) return;
-      console.log("character: ", character);
-      console.log("characterName: ", characterName);
       if (characterName === character) {
 
         if (characterName === "Jesse Jones") {
+          console.log("Usable?");
           setCharacterUsable(true);
 
         } else if (characterName === "Pedro Ramirez") {

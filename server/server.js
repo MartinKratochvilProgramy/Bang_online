@@ -420,6 +420,8 @@ io.on("connection", (socket) => {
     const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
     io.to(roomName).emit("current_player", currentPlayer);
 
+    if (rooms[roomName].game.getPlayerIsInPrison(currentPlayer) || rooms[roomName].game.getPlayerHasDynamite(currentPlayer)) return;
+
     if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
       io.to(roomName).emit("update_draw_choices", "Kit Carlson");
   
@@ -436,6 +438,7 @@ io.on("connection", (socket) => {
 
     rooms[roomName].game.jesseJonesTarget(data.target);
     updateGameState(io, roomName);
+    io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   })
     
   socket.on("draw_from_deck", (data) => {
@@ -443,6 +446,7 @@ io.on("connection", (socket) => {
 
     rooms[roomName].game.drawFromDeck(2, data.username);
     updateGameState(io, roomName);
+    io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   })
     
   socket.on("jourdonnais_barel", (data) => {
@@ -512,6 +516,9 @@ function endTurn(io, currentRoom) {
 
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
+  
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Jesse Jones") {
+    io.to(currentRoom).emit("update_draw_choices", "Jesse Jones");
   }
 }
 
@@ -527,6 +534,9 @@ function nextTurn(io, currentRoom) {
 
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
+
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Jesse Jones") {
+    io.to(currentRoom).emit("update_draw_choices", "Jesse Jones");
   }
 
   io.to(currentRoom).emit("current_player", currentPlayer);
