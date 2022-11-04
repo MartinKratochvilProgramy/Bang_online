@@ -1,9 +1,12 @@
 import React from 'react'
 
-export default function CardOnTable({ socket, username, currentRoom, card }) {
+export default function CardOnTable({ socket, username, selectCardTarget, currentRoom, card, confirmCardTarget }) {
 
       
     function playCardOnTable() {
+        if (selectCardTarget) {
+          confirmCardTarget(card.name, card.digit, card.type)
+        }
         if (!card.isPlayable) return;
         if (card.name === "Barilo") {
         socket.emit("use_barel", {username, currentRoom});
@@ -17,7 +20,7 @@ export default function CardOnTable({ socket, username, currentRoom, card }) {
     }
 
     let styles = {cursor: "auto"};
-    if (card.isPlayable) {
+    if (card.isPlayable || selectCardTarget) {
       styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
     } 
 

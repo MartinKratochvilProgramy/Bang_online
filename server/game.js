@@ -1129,11 +1129,12 @@ class Game {
 
     // ******************* GETERS *******************
     getAllPlayersInfo() {
-        // returns array [{name, numberOfCards, health, table}]
+        // returns array [{name, character numberOfCards, health, table}]
         let state = [];
         for (var player of Object.keys(this.players)) {
             state.push({
                 name: player,
+                character: this.players[player].character.name, // TODO: this could be sent once at the start of game
                 numberOfCards: this.players[player].hand.length,
                 health: this.players[player].character.health,
                 table: this.players[player].table

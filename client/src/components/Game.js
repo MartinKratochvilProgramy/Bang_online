@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PlayerTable from './PlayerTable';
+import Oponents from './Oponents';
 import Chat from './Chat';
 import Console from './Console';
 import StackDeck from './StackDeck';
@@ -49,11 +50,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         setCharacterUsable(false);
         break;
       }
-      // if (player.name === username && player.actionRequired && character === "Jesse Jones") {
-      //   setNextTurn(false);
-      //   setCharacterUsable(true);
-      //   break;
-      // }
     }
   }, [playersActionRequiredOnStart, username, setCharacterUsable, character])
 
@@ -180,7 +176,22 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   
   return (
     <div id='game'>
-      <h1>Game</h1>
+
+      <div>
+        <Oponents
+          socket={socket}
+          myHand={myHand}
+          allPlayersInfo={allPlayersInfo}
+          currentRoom={currentRoom}
+          activateCharacter={activateCharacter}
+          username={username}
+          selectCardTarget={selectCardTarget}
+          confirmCardTarget={confirmCardTarget}
+          currentPlayer={currentPlayer}
+          characterUsable={characterUsable}
+          myHealth={myHealth}
+        />
+      </div>
       <p>Current player: {currentPlayer}</p>
       
       <h2>Other players:</h2>
@@ -252,20 +263,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         )
       })}
 
-      <h2>My hand</h2>
-      <p>Player name: {username}</p>
-      {(characterUsable && character !== "Kit Carlson") || (currentPlayer === username && character === "Sid Ketchum") ? <p>Character: <button style={{color: "red"}} onClick={() => activateCharacter()}>{character}</button></p> : <p>Character: <button type="">{character}</button></p>}
-      {allPlayersInfo.map(player => {
-        if (player.name !== username) return(null); // display only my stats
-        return (
-          <div key={player.name}>
-            <div>
-              Health: {player.health}
-            </div>
-        
-          </div>
-        )
-      })}
       <div className='fixed flex justify-between items-end bottom-0 left-0 right-0'>
         <Chat sendMessage={sendMessage} messages={messages} width={260} />
         <PlayerTable
