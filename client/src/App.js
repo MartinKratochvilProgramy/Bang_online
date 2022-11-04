@@ -26,7 +26,7 @@ function App() {
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [playersActionRequiredOnStart, setPlayersActionRequiredOnStart] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
-  const [topStackCard, setTopStackCard] = useState({});
+  const [topStackCard, setTopStackCard] = useState(null);
   const [duelActive, setDuelActive] = useState(false);
   const [indianiActive, setIndianiActive] = useState(false);
   const [emporioState, setEmporioState] = useState([]);

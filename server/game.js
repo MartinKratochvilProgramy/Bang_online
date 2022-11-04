@@ -694,7 +694,8 @@ class Game {
     playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: special case for Sheriffo
         // put prison in other players' table
-        this.discard("Prigione", card.digit, card.type, playerName);
+        const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type));
+        this.players[playerName].hand.splice(cardIndex, 1)[0];
         console.log(`Player ${playerName} put ${target} in prison`);
 
         card.isPlayable = false;
@@ -823,10 +824,12 @@ class Game {
                 }
                 return;
             }
-            // if not dynamite on table, allow use cards
-            this.setAllPlayable(playerName);
-            this.setMancatoBeerNotPlayable(playerName);
-            this.draw(2, playerName);
+            // if not dynamite on table, allow use cards except Jesse Jones
+            if (this.players[playerName].character.name !== "Jesse Jones") {
+                this.setAllPlayable(playerName);
+                this.setMancatoBeerNotPlayable(playerName);
+                this.draw(2, playerName);
+            }
         }
     }
 

@@ -16,9 +16,9 @@ export default function CardOnTable({ socket, username, currentRoom, card }) {
         }
     }
 
-    let styles;
+    let styles = {cursor: "auto"};
     if (card.isPlayable) {
-      styles = {color: "red", border: "solid 1px red"}
+      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
     } 
 
 
@@ -28,7 +28,7 @@ const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').repl
     <button 
       onClick={() => playCardOnTable()} 
       style={styles} 
-      className='w-[80px] hover:w-[100px] transition'>
+      className='w-[80px]'>
       <img src={cardSource} alt="" />
         {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>

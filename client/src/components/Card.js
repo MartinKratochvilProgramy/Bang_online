@@ -99,9 +99,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       }
     }
 
-    let styles;
+    let styles = {cursor: "auto"};
     if (isPlayable) {
-      styles = {color: "red", border: "solid 1px red"}
+      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
     } 
     if (discarding) {
       styles = {color: "red", border: "solid 1px red"}
@@ -113,7 +113,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
     <button 
       onClick={handleClick} 
       style={styles} 
-      className='w-[80px] hover:w-[82px] transition'>
+      className='w-[80px]'>
       <img src={cardSource} alt="" />
         {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>

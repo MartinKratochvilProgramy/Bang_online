@@ -1,11 +1,25 @@
 import React from 'react';
 import Card from './Card';
 
-export default function StackDeck({ socket, username, currentRoom, currentPlayer, topStackCard, character, characterUsable, drawFromDeck}) {
-  return (
-    <div>
+export default function StackDeck({ socket, username, currentRoom, currentPlayer, topStackCard, deckActive, drawFromDeck}) {
+  console.log(topStackCard === null);
 
-      {topStackCard && 
+  function handleClick() {
+    if (!deckActive) return;
+    drawFromDeck();
+  }
+
+  let cardstyles = {};
+  if (deckActive) {
+    cardstyles = {border: "solid 1px red", cursor: "pointer"}
+  }
+
+  console.log("topStackCard ", topStackCard);
+  
+    return (
+    <div className='flex space-x-4'>
+
+        {topStackCard !== null && 
         <Card 
             socket={socket}
             card={topStackCard}
@@ -14,12 +28,14 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
             username={username}
             currentPlayer={currentPlayer}
         />       
-      }
-      {((character === "Jesse Jones" || character === "Pedro Ramirez") && characterUsable) ? 
-        <button onClick={() => drawFromDeck()} style={{color: "red"}} type="">Deck <br/>..</button>
-        :
-        <button  type="">Deck <br/>..</button>
-      }
+        }
+        <img 
+            className='w-[80px]'
+            style={cardstyles}
+            src={require("../img/gfx/cards/back-playing.png")} 
+            alt="deck card"
+            onClick={() => handleClick()} 
+        />
     </div>
   )
 }

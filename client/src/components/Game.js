@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PlayerTable from './PlayerTable';
 import Chat from './Chat';
 import Console from './Console';
+import StackDeck from './StackDeck';
 
 export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
   indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
@@ -165,7 +166,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   }
   
   return (
-    <div>
+    <div id='game'>
       <h1>Game</h1>
       <p>Current player: {currentPlayer}</p>
       
@@ -203,18 +204,19 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         )
       })}
 
-      <h2>Stack</h2>
-      {topStackCard && 
-        <button> 
-            {topStackCard.name} <br /> {topStackCard.digit} {topStackCard.type}
-        </button>        
-      }
-      {deckActive ? 
-        <button onClick={() => drawFromDeck()} style={{color: "red"}} type="">Deck <br/>..</button>
-        :
-        <button  type="">Deck <br/>..</button>
-      }
       <br />
+      <div className='fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+        <StackDeck 
+          socket={socket} 
+          username={username} 
+          currentRoom={currentRoom} 
+          currentPlayer={currentPlayer}
+          topStackCard={topStackCard}
+          deckActive={deckActive}
+          drawFromDeck={drawFromDeck}
+        />
+      </div>
+
       {emporioState.length > 0 ? <p>Emporio:</p> : null}
       {emporioState.map(card => {
         let emporioStyles = {color: "black"};

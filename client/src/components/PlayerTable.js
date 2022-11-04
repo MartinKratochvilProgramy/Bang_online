@@ -59,7 +59,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[280px] xl:h-[180px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[260px] xl:h-[180px] bg-beige rounded p-2 relative'
       >
         <div className='flex flex-col items-start font-rye'>
           <div>{username}</div>
