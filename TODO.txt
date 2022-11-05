@@ -1,4 +1,5 @@
-Jesse Jones si nutně nemusí vybírat na začátku kola
+emporio
+výběr karty na začátku
 
 maybe graphically distinguish discardable from playable
 

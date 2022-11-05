@@ -195,43 +195,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
           confirmPlayerTarget={confirmPlayerTarget}
         />
       </div>
-      <p>Current player: {currentPlayer}</p>
-      
-      <h2>Other players:</h2>
-      {allPlayersInfo.map(player => {
-        if (player.name === username) return(null); // don't display my hand size
-        let playerColorStyles;
-        let tableCardColorStyles;
-        if (playersInRange.includes(player.name)) {
-          if (selectPlayerTarget) {
-            // display players in range
-            playerColorStyles = {color: "red"}
-          }
-          if (selectCardTarget) {
-            // display cards in range
-            tableCardColorStyles = {color: "red"}
-          }
-        } else {
-          playerColorStyles = {color: "black"}
-        }
-        return (
-          <div key={player.name}>
-            <div style={playerColorStyles}>
-                Name: {player.name} Hand size: {player.numberOfCards} Health: {player.health} <button onClick={() => confirmPlayerTarget(player.name)}>Select</button>
-                <br />
-            </div>
-            {player.table.map(card => {
-              return (
-                <button style={tableCardColorStyles} onClick={() => confirmCardTarget(card.name, card.digit, card.type)}>
-                  {card.name} <br /> {card.digit} {card.type}
-                </button>
-              )
-            })}
-          </div>
-        )
-      })}
 
-      <br />
       <div className='fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
         <StackDeck 
           socket={socket} 

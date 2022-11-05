@@ -19,8 +19,8 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
   }
 
   return (
-    <div className='rotate-90'>
-      <div id='table' className='space-x-2 mb-2 translate-y-[-10px]'>
+    <div className='w-[400px]'>
+      <div id='table' className='space-x-2 mb-0 md:mb-2 translate-y-[0] md:translate-y-[-5px]'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
