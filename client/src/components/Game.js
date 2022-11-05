@@ -60,6 +60,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   socket.on("update_draw_choices", (characterName) => {
     console.log("Username", username);
     console.log("currentRoom", currentRoom);
+    console.log("character", character);
     if (username === "") return;
     if (currentRoom === null) return;
     if (characterName === character) {

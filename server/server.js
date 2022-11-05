@@ -415,7 +415,7 @@ io.on("connection", (socket) => {
     rooms[roomName].game.usePrigione(data.username, data.card);
     updateGameState(io, roomName);
     io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
-
+    console.log("Actions: ", rooms[roomName].game.getPlayersWithActionRequired());
     
     const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer();
     io.to(roomName).emit("current_player", currentPlayer);

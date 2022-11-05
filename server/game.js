@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Jesse Jones", "Calamity Janet", "Sid Ketchum", "Sid Ketchum"] // TODO: remove
+        const namesOfCharacters = ["Jesse Jones", "Kit Carlson", "Sid Ketchum", "Sid Ketchum"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -87,7 +87,7 @@ class Game {
         this.setMancatoBeerNotPlayable(playerName);
 
         if (this.players[playerName].character.name === "Jesse Jones") {
-            this.awaiJesseJones = false;
+            this.awaitJesseJones = false;
         }
 
         if (numToDraw === 1) {
@@ -879,6 +879,8 @@ class Game {
                         this.deck.shift();
                     }
                     return;
+                } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
+                    this.awaitJesseJones = true;
                 }
                 // if not dynamite on table, allow use cards except Jesse Jones
                 if (this.players[playerName].character.name !== "Jesse Jones") {
@@ -1018,7 +1020,7 @@ class Game {
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
 
-        this.awaiJesseJones = false;
+        this.awaitJesseJones = false;
     }
 
     jourdonnaisBarel(playerName){
@@ -1195,7 +1197,7 @@ class Game {
                 if (this.getPlayerIsInPrison(player)) {
                     prisonFound = true;
                 }
-                if (this.players[player].character.name === "Jesse Jones" && this.awaiJesseJones) {
+                if (this.players[player].character.name === "Jesse Jones" && this.awaitJesseJones) {
                     actionRequired = true;
                 }
             }
@@ -1459,7 +1461,7 @@ class Game {
             return;
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
-            this.awaiJesseJones = true;
+            this.awaitJesseJones = true;
         
         } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez") {
             null
