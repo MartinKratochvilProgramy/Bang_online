@@ -9,7 +9,7 @@ module.exports = {
         rye: ["Rye", "sans-serif"]
       },
       colors: {
-        beige: "#F8CDAA",
+        beige: "rgba(248, 205, 170, 0.8)",
         darkBeige: "#e3ad81",
         transparentBlack: "rgba(0, 0, 0, 0.6)"
       }

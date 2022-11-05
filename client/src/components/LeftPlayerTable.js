@@ -35,7 +35,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[160px] xs:h-[260px] bg-beige rounded p-2 relative' 
+        className='flex justify-between items-end mx-4 h-[160px] xs:h-[220px] bg-beige rounded p-2 relative' 
       >
         <div className='flex flex-col items-start font-rye'>
           <div>{oponentName}</div>

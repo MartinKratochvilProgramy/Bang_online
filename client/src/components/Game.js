@@ -4,6 +4,7 @@ import Oponents from './Oponents';
 import Chat from './Chat';
 import Console from './Console';
 import StackDeck from './StackDeck';
+import DrawChoice from './DrawChoice';
 
 export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
   indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
@@ -196,7 +197,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         />
       </div>
 
-      <div className='fixed top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+      <div className='fixed flex flex-col items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
         <StackDeck 
           socket={socket} 
           username={username} 
@@ -206,6 +207,9 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
           deckActive={deckActive}
           drawFromDeck={drawFromDeck}
         />
+        <div className='absolute mt-8'>
+          {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
+        </div>
       </div>
 
       {emporioState.length > 0 ? <p>Emporio:</p> : null}
@@ -223,7 +227,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       <br />
       {myDrawChoice.length > 0 ? <p>{character}'s card choice:</p> : null}
       {myDrawChoice.map(card => {
-        console.log("choice card: ", card);
         return (
           <button style={{color: "red", zIndex: 100}} onClick={() => getChoiceCard(card)}>
             {card.name} <br /> {card.digit} {card.type}
