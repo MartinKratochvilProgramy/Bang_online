@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Jesse Jones", "Calamity Janet", "Sid Ketchum"] // TODO: remove
+        const namesOfCharacters = ["Jesse Jones", "Calamity Janet", "Sid Ketchum", "Sid Ketchum"] // TODO: remove
         this.deck = deck;
         this.stack = [];
         this.emporio = [];

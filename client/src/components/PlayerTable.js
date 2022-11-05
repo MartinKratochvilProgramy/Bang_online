@@ -61,7 +61,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
       <div 
         className='flex justify-between items-end mx-4 h-[260px] xl:h-[180px] bg-beige rounded p-2 relative'
       >
-        <div className='flex flex-col items-start font-rye'>
+        <div className='flex flex-col items-start font-rye min-w-[124px]'>
           <div>{username}</div>
           <div>HP: {myHealth}</div>
           <div className='relative flex justify-center group'>

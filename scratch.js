@@ -1,4 +1,1 @@
-const str = "exclam!";
-
-
-console.log(`res ${str.replace(/!/, '')}`);
+console.log(3 % 4);
