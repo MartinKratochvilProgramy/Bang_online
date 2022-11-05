@@ -14,8 +14,6 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
     cardstyles = {border: "solid 1px red", cursor: "pointer"}
   }
 
-  console.log("topStackCard ", topStackCard);
-  
     return (
     <div className='flex space-x-4'>
 

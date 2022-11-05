@@ -24,7 +24,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
 
     if (oponentsInfo.length === 1) {
         return (
-          <div className='min-w-[420px] md:min-w-[600px] w-full'>
+          <div className='min-w-[420px] md:min-w-[600px] w-full z-50'>
               <TopPlayerTable
                 socket={socket}
                 cardsInHand={new Array(oponentsInfo[0].numberOfCards).fill(0)}
@@ -50,7 +50,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
     if (oponentsInfo.length === 3) {
         return (
             <div className=''>
-                <div className='fixed flex items-center justify-center z-10 w-[490px] h-full left-[-165px] xs:left-[-135px] top-[-100px] rotate-90 '>
+                <div className='fixed flex items-end justify-center w-[490px] h-full left-[219px] xs:left-[220px] top-[-100px] rotate-90 '>
                     <LeftPlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -70,8 +70,8 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         confirmPlayerTarget={confirmPlayerTarget}
                     />
                 </div>
-                <div className='w-full flex justify-center fixed top-0 left-0 right-0 mx-auto'>
-                    <div className='min-w-[420px] xl:min-w-[600px]'>                        
+                <div className='w-full flex justify-center fixed top-0 left-0 right-0 mx-auto z-50'>
+                    <div className='min-w-[420px] xl:min-w-[620px]'>                        
                     <TopPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -92,7 +92,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-center justify-center z-10 w-[490px] h-full right-[-165px] xs:right-[-135px] top-[-100px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-center w-[490px] h-full right-[219px] xs:right-[220px] top-[-100px] rotate-[270deg]'>
                     <RightPlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

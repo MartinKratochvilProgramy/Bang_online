@@ -18,23 +18,9 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   }
 
   return (
-    <div className='rotate-180'>
-      <div className='space-x-2 rotate-180 mb-2'>
-        {table.map(card => {
-          return(
-            <OponentCardOnTable 
-              socket={socket}
-              username={username}
-              selectCardTarget={selectCardTarget}
-              confirmCardTarget={confirmCardTarget}
-              currentRoom={currentRoom}
-              card={card}
-            />
-          )
-        })}
-      </div>
+    <div className=''>
       <div 
-        className='flex justify-between items-start mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative rotate-180  '
+        className='flex justify-between items-start mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
       >
         <div className='flex flex-col-reverse items-start font-rye'>
           <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
@@ -67,6 +53,20 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           })}
 
         </div>
+      </div>
+      <div className='space-x-2 rotate-0 mt-2 flex justify-center z-20'>
+        {table.map(card => {
+          return(
+            <OponentCardOnTable 
+              socket={socket}
+              username={username}
+              selectCardTarget={selectCardTarget}
+              confirmCardTarget={confirmCardTarget}
+              currentRoom={currentRoom}
+              card={card}
+            />
+          )
+        })}
       </div>
     </div>
   )

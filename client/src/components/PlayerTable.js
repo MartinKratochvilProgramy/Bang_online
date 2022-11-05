@@ -46,7 +46,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
 
   return (
     <div className='max-w-[900px] w-full'>
-      <div className='space-x-2'>
+      <div className='mb-2 space-x-2 flex justify-center'>
         {table.map(card => {
           return(
             <CardOnTable 
@@ -59,9 +59,9 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[120px] xs:h-[170px] bg-beige rounded p-2 relative'
       >
-        <div className='flex flex-col text-sm items-start font-rye min-w-[124px]'>
+        <div className='flex flex-col text-sm items-start font-rye'>
           <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
             <div>{username}</div>
             <div>HP: {myHealth}</div>
@@ -82,7 +82,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
 
         </div>
 
-        <div className='max-h-full w-full overflow-x-auto'>
+        <div className='max-h-full w-full overflow-x-auto flex justify-center'>
           {myHand.map(card => {
               return(
               <Card 

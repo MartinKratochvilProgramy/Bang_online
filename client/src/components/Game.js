@@ -197,7 +197,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         />
       </div>
 
-      <div className='fixed flex flex-col items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+      <div className='fixed flex flex-col items-center z-50 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
         <StackDeck 
           socket={socket} 
           username={username} 
@@ -220,15 +220,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         }
         return (
           <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
-            {card.name} <br /> {card.digit} {card.type}
-          </button>
-        )
-      })}
-      <br />
-      {myDrawChoice.length > 0 ? <p>{character}'s card choice:</p> : null}
-      {myDrawChoice.map(card => {
-        return (
-          <button style={{color: "red", zIndex: 100}} onClick={() => getChoiceCard(card)}>
             {card.name} <br /> {card.digit} {card.type}
           </button>
         )
