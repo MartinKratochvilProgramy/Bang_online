@@ -34,10 +34,10 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
         })}
       </div>
       <div 
-        className='flex justify-between items-center mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative rotate-180  '
+        className='flex justify-between items-start mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative rotate-180  '
       >
         <div className='flex flex-col-reverse items-start font-rye'>
-          <div className='flex flex-row space-x-2 xs:flex-col items-start'>
+          <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
             <div>{username}</div>
             <div>HP: {myHealth}</div>
           </div>

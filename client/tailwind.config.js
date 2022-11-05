@@ -13,7 +13,9 @@ module.exports = {
         darkBeige: "#e3ad81",
         transparentBlack: "rgba(0, 0, 0, 0.6)"
       }
-
+    },
+    screens: {
+      'xs': '1300px'
     },
     theme: {
     }

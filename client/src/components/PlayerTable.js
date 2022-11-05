@@ -59,10 +59,10 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-center mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
       >
         <div className='flex flex-col text-sm items-start font-rye min-w-[124px]'>
-          <div className='flex flex-row space-x-2 xs:flex-col items-start'>
+          <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
             <div>{username}</div>
             <div>HP: {myHealth}</div>
           </div>

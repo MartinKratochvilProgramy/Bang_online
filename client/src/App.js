@@ -154,7 +154,7 @@ function App() {
     <div className="App flex flex-col justify-start items-center h-screen">
       {currentRoom === null ? 
         <>
-          <img className="w-[300px] xs:w-max mt-2 xs:mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
+          <img className="w-[300px] xs:w-max mt-2 md:mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 
