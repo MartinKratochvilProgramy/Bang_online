@@ -223,8 +223,9 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
       <br />
       {myDrawChoice.length > 0 ? <p>{character}'s card choice:</p> : null}
       {myDrawChoice.map(card => {
+        console.log("choice card: ", card);
         return (
-          <button style={{color: "red"}} onClick={() => getChoiceCard(card)}>
+          <button style={{color: "red", zIndex: 100}} onClick={() => getChoiceCard(card)}>
             {card.name} <br /> {card.digit} {card.type}
           </button>
         )
