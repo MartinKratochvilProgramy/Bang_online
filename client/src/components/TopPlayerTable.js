@@ -34,13 +34,16 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
         })}
       </div>
       <div 
-        className='flex justify-between items-start mx-4 h-[180px] bg-beige rounded p-2 relative rotate-180  '
+        className='flex justify-between items-center mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative rotate-180  '
       >
         <div className='flex flex-col-reverse items-start font-rye'>
-          <div>{oponentName}</div>
-          <div>HP: {myHealth}</div>
+          <div className='flex flex-row space-x-2 xs:flex-col items-start'>
+            <div>{username}</div>
+            <div>HP: {myHealth}</div>
+          </div>
           <div className='relative flex justify-center group'>
-            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} className='w-[80px] ml-2 mr-4' alt="Player character">
+            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 
+            className='w-[58px] xs:w-[80px] ml-2 mr-4' alt="Player character">
             </img>
             <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[106px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>

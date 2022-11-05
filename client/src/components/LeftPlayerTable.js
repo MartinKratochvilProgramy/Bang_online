@@ -19,8 +19,8 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
   }
 
   return (
-    <div className='w-[400px]'>
-      <div id='table' className='space-x-2 mb-0 md:mb-2 translate-y-[0] md:translate-y-[-5px]'>
+    <div className='w-[300px] xs:w-[400px]'>
+      <div id='table' className='space-x-2 mb-0 md:mb-2 translate-y-[0] md:translate-y-[-px]'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
@@ -35,7 +35,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[180px] xl:h-[260px] bg-beige rounded p-2 relative' 
+        className='flex justify-between items-end mx-4 h-[160px] xs:h-[260px] bg-beige rounded p-2 relative' 
       >
         <div className='flex flex-col items-start font-rye'>
           <div>{oponentName}</div>
@@ -45,7 +45,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
               src={characterSource} 
               style={characterStyles} 
               onClick={() => handleCharacterClick()} 
-              className='w-[80px] ml-2 mr-4' 
+              className='w-[60px] xs:w-[80px] ml-2 mr-4' 
               alt="Player character">
             </img>
             <div className='hidden p-1 z-10 rotate-[-90deg] rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-146px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
@@ -65,7 +65,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
               return(
                 // unknown card
                 <img
-                  className='w-[80px]' 
+                  className='w-[60px] xs:w-[80px]' 
                   src={require("../img/gfx/cards/back-playing.png")} alt="" />
               )
           })}

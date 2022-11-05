@@ -14,7 +14,7 @@ const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').repl
     <button 
       onClick={() => confirmCardTarget(card.name, card.digit, card.type)} 
       style={styles} 
-      className='w-[80px]'>
+      className='w-[60px] xs:w-[80px]'>
       <img src={cardSource} alt="" />
         {/* {cardName} <br /> {cardDigit} {cardType} */}
     </button>

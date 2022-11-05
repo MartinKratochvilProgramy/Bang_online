@@ -45,7 +45,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
 
   return (
-    <div className='max-w-[900px] w-full '>
+    <div className='max-w-[900px] w-full'>
       <div className='space-x-2'>
         {table.map(card => {
           return(
@@ -59,13 +59,16 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[220px] xl:h-[180px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-center mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
       >
-        <div className='flex flex-col items-start font-rye min-w-[124px]'>
-          <div>{username}</div>
-          <div>HP: {myHealth}</div>
+        <div className='flex flex-col text-sm items-start font-rye min-w-[124px]'>
+          <div className='flex flex-row space-x-2 xs:flex-col items-start'>
+            <div>{username}</div>
+            <div>HP: {myHealth}</div>
+          </div>
           <div className='relative flex justify-center group'>
-            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} className='w-[80px] ml-2 mr-4' alt="Player character">
+            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 
+              className='w-[60px] xs:w-[80px] mr-4' alt="Player character">
             </img>
             <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-76px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>
