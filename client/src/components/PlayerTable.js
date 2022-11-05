@@ -59,14 +59,14 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[120px] xs:h-[170px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[145px] xs:h-[180px] bg-beige rounded p-2 pt-3 relative'
       >
-        <div className='flex flex-col text-sm items-start font-rye'>
-          <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
-            <div>{username}</div>
-            <div>HP: {myHealth}</div>
+        <div className='flex w-[100px] flex-col text-sm items-start font-rye'>
+          <div className='flex flex-col justify-start items-start'>
+            <div className='overflow-visible'>{username}</div>
+            <div className=''>HP: {myHealth}</div>
           </div>
-          <div className='relative flex justify-center group'>
+          <div className='relative group'>
             <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 
               className='w-[60px] xs:w-[80px] mr-4' alt="Player character">
             </img>

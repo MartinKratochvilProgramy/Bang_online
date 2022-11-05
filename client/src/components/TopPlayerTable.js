@@ -20,11 +20,11 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   return (
     <div className=''>
       <div 
-        className='flex justify-between items-start mx-4 h-[120px] xs:h-[180px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-start mx-4 h-[145px] xs:h-[180px] bg-beige rounded p-2 relative'
       >
-        <div className='flex flex-col-reverse items-start font-rye'>
-          <div className='flex flex-row xs:space-x-0 space-x-2 xs:flex-col items-start'>
-            <div>{username}</div>
+        <div className='flex w-[100px] text-sm flex-col-reverse items-start font-rye'>
+          <div className='flex flex-col items-start'>
+            <div className='overflow-visible'>{oponentName}</div>
             <div>HP: {myHealth}</div>
           </div>
           <div className='relative flex justify-center group'>
@@ -47,7 +47,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           {cardsInHand.map(() => {
               return(
                 <img
-                  className='w-[80px]' 
+                  className='w-[58px] xs:w-[80px]' 
                   src={require("../img/gfx/cards/back-playing.png")} alt="" />
               )
           })}

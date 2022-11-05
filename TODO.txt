@@ -1,6 +1,8 @@
 emporio
 výběr karty na začátku
 
+sid ketchum should have separate discard from ability
+
 maybe graphically distinguish discardable from playable
 
 

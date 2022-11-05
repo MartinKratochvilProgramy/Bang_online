@@ -21,7 +21,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
 
   return (
     <div className='w-[300px] xs:w-[400px]'>
-      <div id='table' className='space-x-2 flex justify-center mb-0 xs:mb-2 translate-y-[0] xs:translate-y-[-5px]'>
+      <div id='table' className='space-x-2 flex justify-center mb-1 xs:mb-2 translate-y-[0] xs:translate-y-[-5px]'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
@@ -36,10 +36,10 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[160px] xs:h-[220px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[145px] xs:h-[170px] bg-beige rounded p-2 relative'
       >
-        <div className='flex flex-col items-start font-rye'>
-          <div>{oponentName}</div>
+        <div className='flex w-[100px] text-sm flex-col items-start font-rye'>
+          <div className='overflow-visible'>{oponentName}</div>
           <div>HP: {myHealth}</div>
           <div className='relative flex justify-center group'>
             <img 

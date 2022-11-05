@@ -109,7 +109,7 @@ class Game {
 
         // SK special case for when discard 2 => gain life
         if (this.players[playerName].character.name === "Sid Ketchum") {
-            if (this.sidKetchumDiscarded === true) {
+            if (this.sidKetchumDiscarded === true && this.players[playerName].character.health < this.players[playerName].character.maxHealth) {
                 this.players[playerName].character.health += 1
                 this.sidKetchumDiscarded = false;
             } else {
@@ -884,9 +884,9 @@ class Game {
                 }
                 // if not dynamite on table, allow use cards except Jesse Jones
                 if (this.players[playerName].character.name !== "Jesse Jones") {
+                    this.draw(2, playerName);
                     this.setAllPlayable(playerName);
                     this.setMancatoBeerNotPlayable(playerName);
-                    this.draw(2, playerName);
                 }            
             }
         } else {
