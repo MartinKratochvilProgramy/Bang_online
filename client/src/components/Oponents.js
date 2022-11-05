@@ -19,7 +19,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
     const oponentsInfo = allPlayersInfo.filter(player => {
         return (player.name !== username);
     });
-    console.log("oponentsInfo: ", oponentsInfo[0].table);
+    console.log("oponentsInfo: ", oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)]);
 
 
     if (oponentsInfo.length === 1) {
@@ -70,27 +70,29 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         confirmPlayerTarget={confirmPlayerTarget}
                     />
                 </div>
-                <div className='min-w-[900px] w-full flex justify-center fixed top-0 left-0 right-0 mx-auto'>
-                    <TopPlayerTable
-                        socket={socket}
-                        cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
-                        table={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].table}
-                        oponentName={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name}
-                        currentRoom={currentRoom}
-                        activateCharacter={activateCharacter}
-                        selectCardTarget={selectCardTarget}
-                        selectPlayerTarget={selectPlayerTarget}
-                        confirmCardTarget={confirmCardTarget}
-                        currentPlayer={currentPlayer}
-                        username={username}
-                        character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
-                        characterUsable={characterUsable}
-                        myHealth={myHealth}
-                        playersInRange={playersInRange}
-                        confirmPlayerTarget={confirmPlayerTarget}
-                    />
+                <div className='w-full flex justify-center fixed top-0 left-0 right-0 mx-auto'>
+                    <div className='min-w-[600px]'>
+                        <TopPlayerTable
+                            socket={socket}
+                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                            table={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].table}
+                            oponentName={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name}
+                            currentRoom={currentRoom}
+                            activateCharacter={activateCharacter}
+                            selectCardTarget={selectCardTarget}
+                            selectPlayerTarget={selectPlayerTarget}
+                            confirmCardTarget={confirmCardTarget}
+                            currentPlayer={currentPlayer}
+                            username={username}
+                            character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
+                            characterUsable={characterUsable}
+                            myHealth={myHealth}
+                            playersInRange={playersInRange}
+                            confirmPlayerTarget={confirmPlayerTarget}
+                        />
+                    </div>
                 </div>
-                <div className='fixed w-[590px] right-[-205px] xl:right-[-166px] top-[240px] xl:top-[200px]'>
+                <div className='fixed w-[590px] right-[-205px] xl:right-[-166px] top-[240px] xl:top-[80px]'>
                     <RightPlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

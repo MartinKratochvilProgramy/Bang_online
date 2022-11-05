@@ -13,13 +13,15 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
     characterStyles = {color: "red", border: "solid 1px red", cursor: "pointer"};
   }
 
+  console.log(table);
+
   function handleCharacterClick() {
     confirmPlayerTarget(oponentName);
   }
 
   return (
-    <div className=''>
-      <div className='space-x-2 mb-2'>
+    <div className=' rotate-[270deg]'>
+      <div id='table' className='space-x-2 mb-2'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
@@ -34,7 +36,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[180px] xl:h-[260px] bg-beige rounded p-2 relative rotate-[270deg]'
+        className='flex justify-between items-end mx-4 h-[180px] xl:h-[260px] bg-beige rounded p-2 relative'
       >
         <div className='flex flex-col items-start font-rye'>
           <div>{oponentName}</div>
@@ -70,10 +72,6 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
           })}
 
         </div>
-
-          <div className='flex flex-col justify-start h-full w-[120px] p-1 space-y-2'>
-
-          </div>
 
       </div>
     </div>

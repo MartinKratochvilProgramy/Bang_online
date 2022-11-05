@@ -70,11 +70,6 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
               )
           })}
         </div>
-
-          <div className='flex flex-col justify-start h-full w-[120px] p-1 space-y-2'>
-
-          </div>
-
       </div>
     </div>
   )
