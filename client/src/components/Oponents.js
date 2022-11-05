@@ -50,7 +50,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
     if (oponentsInfo.length === 3) {
         return (
             <div className=''>
-                <div className='fixed flex items-end justify-center w-[490px] h-full left-[219px] xs:left-[220px] top-[-100px] rotate-90 '>
+                <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] left-[-70px] top-[100px] xs:top-[200px] rotate-90 '>
                     <LeftPlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -92,7 +92,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-center w-[490px] h-full right-[219px] xs:right-[220px] top-[-100px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] right-[-70px] top-[100px] xs:top-[200px] rotate-[270deg]'>
                     <RightPlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
