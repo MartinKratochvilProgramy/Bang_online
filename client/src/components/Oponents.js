@@ -86,7 +86,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                             username={username}
                             character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
                             characterUsable={characterUsable}
-                            myHealth={myHealth}
+                            health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
                         />

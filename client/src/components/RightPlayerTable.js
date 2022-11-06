@@ -6,7 +6,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
      character, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
 
 
-  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/, '') + ".png");
+  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
@@ -46,7 +46,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
               src={characterSource} 
               style={characterStyles} 
               onClick={() => handleCharacterClick()} 
-              className='w-[60px] xs:w-[80px] ml-2 mr-4' 
+              className='w-[60px] xs:w-[80px] rounded-md ml-2 mr-4' 
               alt="Player character">
             </img>
             <div className='hidden p-1 rotate-[90deg] rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-146px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>

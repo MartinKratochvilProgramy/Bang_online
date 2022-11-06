@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["El Gringo", "El Gringo", "El Gringo", "El Gringo", "El Gringo"] 
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = ["El Gringo", "El Gringo", "El Gringo", "El Gringo", "El Gringo"] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];

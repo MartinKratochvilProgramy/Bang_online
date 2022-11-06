@@ -28,7 +28,7 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
         />       
         }
         <img 
-            className='w-[60px] xs:w-[80px]'
+            className='w-[60px] xs:w-[80px] rounded-md'
             style={cardstyles}
             src={require("../img/gfx/cards/back-playing.png")} 
             alt="deck card"

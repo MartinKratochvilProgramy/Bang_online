@@ -31,7 +31,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
     }
   }
 
-  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/, '') + ".png");
+  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 
   let characterStyles = {};
   if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum"))) {
@@ -67,8 +67,11 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
             <div className=''>HP: {myHealth}</div>
           </div>
           <div className='relative group'>
-            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 
-              className='w-[60px] xs:w-[80px] mr-4' alt="Player character">
+            <img 
+              src={characterSource} 
+              style={characterStyles} 
+              onClick={() => handleCharacterClick()} 
+              className='w-[60px] xs:w-[80px] rounded-md mr-4' alt="Player character">
             </img>
             <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-76px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>

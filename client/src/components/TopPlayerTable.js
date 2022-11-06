@@ -28,8 +28,11 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
             <div>HP: {health}</div>
           </div>
           <div className='relative flex justify-center group'>
-            <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 
-            className='w-[58px] xs:w-[80px] ml-2 mr-4' alt="Player character">
+            <img 
+              src={characterSource} 
+              style={characterStyles} 
+              onClick={() => handleCharacterClick()} 
+              className='w-[60px] xs:w-[80px]  rounded-md ml-2 mr-4' alt="Player character">
             </img>
             <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[106px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>

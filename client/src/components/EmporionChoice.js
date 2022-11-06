@@ -22,7 +22,7 @@ export default function EmporionChoice({ cards, getEmporioCard, username, nextEm
                     <button 
                         onClick={() => getEmporioCard(card)} 
                         style={emporioStyles}
-                        className='w-[60px] xs:w-[80px]'>
+                        className='w-[60px] xs:w-[80px] rounded-md'>
                         <img src={cardSource} alt="" />
                     </button>
                 )

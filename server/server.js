@@ -134,7 +134,6 @@ io.on("connection", (socket) => {
     
     rooms[roomName].game.players[data.username].character.name = data.character;
     
-    console.log("Start!", rooms[roomName].game.getAllPlayersChoseCharacter());
     if (rooms[roomName].game.getAllPlayersChoseCharacter()) {
       // if all char choices went through, start
       startGame(io, roomName);
