@@ -136,20 +136,25 @@ io.on("connection", (socket) => {
     
     if (rooms[roomName].game.getAllPlayersChoseCharacter()) {
       // if all char choices went through, start
+      rooms[roomName].game.initRoles();
       startGame(io, roomName);
     }
+  });
 
+  socket.on("get_my_role", data => {
+    const roomName = data.currentRoom;
+    socket.emit("my_role", rooms[roomName].game.players[data.username].character.role);
   });
 
   socket.on("get_my_hand", data => {
     const roomName = data.currentRoom;
     socket.emit("my_hand", rooms[roomName].game.getPlayerHand(data.username));
-  })
+  });
 
   socket.on("get_my_draw_choice", data => {
     const roomName = data.currentRoom;
     socket.emit("my_draw_choice", rooms[roomName].game.drawChoice);
-  })
+  });
 
   socket.on("play_bang", (data) => {
     const roomName = data.currentRoom;

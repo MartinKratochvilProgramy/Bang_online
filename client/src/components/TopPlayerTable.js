@@ -6,7 +6,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
      character, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
 
 
-  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/, '') + ".png");
+  const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {

@@ -13,6 +13,7 @@ function App() {
 
   const [myCharacterChoice, setMyCharacterChoice] = useState([]);
   const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
+  const [role, setRole] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -67,6 +68,7 @@ function App() {
       setCharacterChoiceInProgress(false);
       setGameStarted(true);
       if (currentRoom !== null) {
+        socket.emit("get_my_role", {username, currentRoom});
         socket.emit("get_my_hand", {username, currentRoom});
       }
       console.log("all hands: ", data);
@@ -88,6 +90,11 @@ function App() {
       if (currentRoom === null) return;
       setCurrentPlayer(playerName);
       socket.emit("get_my_hand", {username, currentRoom});
+    })
+
+    socket.on("my_role", role => {
+      console.log("my role: ", role); // TODO: this runs multiple times??? 
+      setRole(role);
     })
 
     socket.on("my_hand", hand => {

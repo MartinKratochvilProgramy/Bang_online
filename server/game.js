@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 4}, {name: "El Gringo", health: 4}] 
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 4}, {name: "El Gringo", health: 4}] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -29,12 +29,9 @@ class Game {
                 isLosingHealth: false,
                 canUseBarel: true,
                 hasDynamite: false,
-                character: new function () {
-                    return(
-                        // this.name = namesOfCharacters[i],
-                        this.name = null,
-                        this.role = null
-                    )
+                character: {
+                    name: null,
+                    role: null
                 }
             }
         }
@@ -1134,7 +1131,7 @@ class Game {
     }
 
     setCharacter(playerName, characterName) {
-        // sets player character and resolves his health
+        // sets player character and resolves his health and starting hand size
         this.players[playerName].character.name = characterName;
 
         let startingHealth = 4;
@@ -1547,7 +1544,7 @@ class Game {
             for (let i = 0; i < 2; i++) {
                 const randIndex = Math.floor(Math.random() * this.namesOfCharacters.length);
                 // add to player choice
-                playerChoice.push(this.namesOfCharacters[randIndex].name);
+                playerChoice.push(this.namesOfCharacters[randIndex]);
                 // remove from namesOfCharacters
                 this.namesOfCharacters.splice(randIndex, 1);
             }
@@ -1556,7 +1553,26 @@ class Game {
         return res;
     }
 
-    initRoles() {}
+    initRoles() {
+        // if less than 4 players, leave roles as null
+        if (this.numOfPlayers < 4) return;
+
+        let roles;
+        if (this.numOfPlayers === 4) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit"]
+        } else if (this.numOfPlayers === 5) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit", "Vice"]
+        } else if (this.numOfPlayers === 6) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit", "Bandit", "Vice"]
+        }
+        for (let player of Object.keys(this.players)) {
+            // get random role, splice from roles
+            const randIndex = Math.floor(Math.random() * roles.length);
+            const role = roles.splice(randIndex, 1);
+            // add role to player
+            this.players[player].character.role = role;
+        }
+    }
 }
 
 module.exports = Game;
