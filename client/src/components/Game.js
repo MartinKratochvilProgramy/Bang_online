@@ -180,7 +180,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   
   return (
     <div id='game'>
-      <div>
         <Oponents
           socket={socket}
           myHand={myHand}
@@ -197,7 +196,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
           playersInRange={playersInRange}
           confirmPlayerTarget={confirmPlayerTarget}
         />
-      </div>
 
       <div className='fixed flex flex-col items-center z-50 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
         <StackDeck 

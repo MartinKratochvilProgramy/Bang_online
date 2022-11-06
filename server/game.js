@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Lucky Duke", "Kit Carlson", "Sid Ketchum", "Sid Ketchum"] // TODO: remove
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Sizy Lafayette", "Vulture Sam", "Willy the Kid"] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -30,7 +30,7 @@ class Game {
                 hasDynamite: false,
                 character: new function () {
                     return(
-                        this.name = namesOfCharacters[i],
+                        // this.name = namesOfCharacters[i],
                         this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
@@ -1507,6 +1507,22 @@ class Game {
             this.endTurn()
         }
         delete this.players[playerName];
+    }
+
+    genCharacterChoices() {
+        let res = [];
+        for (let i = 0; i < this.numOfPlayers; i++) {
+            let playerChoice = []
+            for (let i = 0; i < 2; i++) {
+                const randIndex = Math.floor(Math.random() * this.namesOfCharacters.length);
+                // add to player choice
+                playerChoice.push(this.namesOfCharacters[randIndex]);
+                // remove from namesOfCharacters
+                this.namesOfCharacters.splice(randIndex, 1);
+            }
+            res.push(playerChoice)
+        }
+        return res;
     }
 }
 
