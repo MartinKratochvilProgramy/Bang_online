@@ -217,19 +217,6 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         </div>
       </div>
 
-        {emporioState.length > 0 ? <p>Emporio:</p> : null}
-        {emporioState.map(card => {
-          let emporioStyles = {color: "black"};
-          if (nextEmporioTurn === username) {
-            emporioStyles = {color: "red"}
-          }
-          return (
-            <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
-              {card.name} <br /> {card.digit} {card.type}
-            </button>
-          )
-        })}
-
       <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-20'>
         <Chat sendMessage={sendMessage} messages={messages} width={260} />
         <PlayerTable
