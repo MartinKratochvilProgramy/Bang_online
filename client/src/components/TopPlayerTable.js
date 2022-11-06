@@ -3,7 +3,7 @@ import getCharacterDescription from '../utils/getCharacterDescritption';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, myHealth, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
+     character, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
 
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/, '') + ".png");
@@ -25,7 +25,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
         <div className='flex w-[100px] text-sm flex-col-reverse items-start font-rye'>
           <div className='flex flex-col items-start'>
             <div className='overflow-visible'>{oponentName}</div>
-            <div>HP: {myHealth}</div>
+            <div>HP: {health}</div>
           </div>
           <div className='relative flex justify-center group'>
             <img src={characterSource} style={characterStyles} onClick={() => handleCharacterClick()} 

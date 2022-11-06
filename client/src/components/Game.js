@@ -184,13 +184,18 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   return (
     <div id='game'>
       {characterChoiceInProgress ? 
-        <CharacterChoice 
-          socket={socket} 
-          currentRoom={currentRoom}
-          username={username} 
-          character={character}
-          setCharacter={setCharacter} 
-          myCharacterChoice={myCharacterChoice} /> 
+        <div 
+          className='fixed flex flex-col items-center justify-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'
+          id="character-choice">
+          <CharacterChoice 
+            socket={socket} 
+            currentRoom={currentRoom}
+            username={username} 
+            character={character}
+            setCharacter={setCharacter} 
+            myCharacterChoice={myCharacterChoice} /> 
+          <Chat sendMessage={sendMessage} messages={messages} width={260} />
+        </div>
       : 
         <>
           <Oponents

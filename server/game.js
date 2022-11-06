@@ -1,7 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["El Gringo", "El Gringo", "El Gringo", "El Gringo", "El Gringo"] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -942,10 +943,16 @@ class Game {
                 this.setMancatoBeerNotPlayable(currentPlayer);
             }
         }
-        //El Gringo can draw when hit by Bang! or Gatling
+        //El Gringo can draw from oponent when hit by Bang! or Gatling
         // Mancato! has also be in stack because of CJ
         if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
-            this.draw(1, playerName);
+            const playerHandLenght = this.players[this.getNameOfCurrentTurnPlayer()].hand.length;
+            if (playerHandLenght === 0) return;
+
+            const randomCardIndex = Math.floor(Math.random() * playerHandLenght);
+            const randomCard = this.players[this.getNameOfCurrentTurnPlayer()].hand.shift(randomCardIndex, 1);
+            randomCard.isPlayable = false;
+            this.players[playerName].hand.push(randomCard);
             console.log("El Gringo was hit, so he draws 1 card");
         }
 

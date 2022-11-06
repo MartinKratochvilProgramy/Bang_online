@@ -3,7 +3,7 @@ import getCharacterDescription from '../utils/getCharacterDescritption';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function RightPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, myHealth, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
+     character, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
 
   console.log("table: ", table);
 
@@ -39,7 +39,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
       >
         <div className='flex w-[100px] text-sm flex-col items-start font-rye'>
           <div className='overflow-visible'>{oponentName}</div>
-          <div>HP: {myHealth}</div>
+          <div>HP: {health}</div>
           <div className='relative flex justify-center group'>
             <img 
               src={characterSource} 

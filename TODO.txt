@@ -1,10 +1,11 @@
-emporio
+
 výběr karty na začátku
 
 sid ketchum should have separate discard from ability
 
 maybe graphically distinguish discardable from playable
 
+end game
 
 this.playerPlaceholder is not necessary as playerName returns name 
 of current player anyway

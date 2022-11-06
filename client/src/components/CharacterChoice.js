@@ -9,11 +9,11 @@ export default function CharacterChoice({ socket, currentRoom, username, charact
 
   
   return (
-    <div className='fixed flex flex-col items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+    <div>
       <div className='text-3xl xs:text-6xl font-rye my-6 text-white'>
-        {character === "" ? "Pick a character" : character}
+        {character === "" ? "Pick a character" : "Waiting for other players..."}
       </div>
-      <div className='flex space-x-4'>
+      <div className='flex justify-center space-x-4'>
         {myCharacterChoice.map((card) => {
           const characterSource = require("../img/gfx/characters/" + card.replace(/\s/g, '') + ".png");
           let styles;
@@ -22,7 +22,7 @@ export default function CharacterChoice({ socket, currentRoom, username, charact
           }
           return (
               <img 
-                className='w-[185px] xs:w-[260px] cursor-pointer'
+                className='w-[185px] xs:w-[260px] hover:shadow-2xl cursor-pointer'
                 src={characterSource} 
                 key={card}
                 style={styles}

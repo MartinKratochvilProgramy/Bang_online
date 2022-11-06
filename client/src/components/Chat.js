@@ -48,7 +48,7 @@ export default function Chat({ sendMessage, messages, width }) {
         >
         <div className="flex mt-2 w-full">
             <input
-                className='shadow appearance-none h-[32px] w-full font-rye text-md xs:text-xl rounded bg-beige mr-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                className='shadow appearance-none h-[32px] w-full font-rye text-sm xs:text-md rounded bg-beige mr-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder="Message..."
                 onChange={(e) => setMessageInput(e.target.value)}
                 value={messageInput}

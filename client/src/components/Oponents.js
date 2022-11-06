@@ -39,7 +39,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                 username={username}
                 character={oponentsInfo[0].character}
                 characterUsable={characterUsable}
-                myHealth={myHealth}
+                health={oponentsInfo[0].health}
                 playersInRange={playersInRange}
                 confirmPlayerTarget={confirmPlayerTarget}
               />
@@ -65,7 +65,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         username={username}
                         character={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].character}
                         characterUsable={characterUsable}
-                        myHealth={myHealth}
+                        health={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
                     />
@@ -107,7 +107,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         username={username}
                         character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
                         characterUsable={characterUsable}
-                        myHealth={myHealth}
+                        health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
                     />
