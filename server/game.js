@@ -1,7 +1,7 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Sizy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -31,6 +31,7 @@ class Game {
                 character: new function () {
                     return(
                         // this.name = namesOfCharacters[i],
+                        this.name = null,
                         this.role = null,
                         this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
                         this.health = this.maxHealth,
@@ -1339,6 +1340,17 @@ class Game {
         return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
     }
 
+    getAllPlayersChoseCharacter() {
+        // returns true if all players have character
+        // else return false
+        for (const player of Object.keys(this.players)) {
+            if (this.players[player].character.name === null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // ******************* GAME FLOW *******************
     putStackIntoDeck() {
         this.deck = this.stack;
@@ -1510,7 +1522,9 @@ class Game {
     }
 
     genCharacterChoices() {
-        let res = [];
+        let res = {};
+        const playerNames = Object.keys(this.players);
+
         for (let i = 0; i < this.numOfPlayers; i++) {
             let playerChoice = []
             for (let i = 0; i < 2; i++) {
@@ -1520,7 +1534,7 @@ class Game {
                 // remove from namesOfCharacters
                 this.namesOfCharacters.splice(randIndex, 1);
             }
-            res.push(playerChoice)
+            res[playerNames[i]] = playerChoice;
         }
         return res;
     }

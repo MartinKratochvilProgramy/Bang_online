@@ -11,6 +11,8 @@ const socket = io.connect("http://localhost:3001");
 
 function App() {
 
+  const [myCharacterChoice, setMyCharacterChoice] = useState([]);
+  const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -36,13 +38,19 @@ function App() {
   const newRoomRef = useRef();
 
   useEffect(() => {
+    socket.on("get_character_choices", (characters) => {
+      // receive two chars to pick from
+      console.log("Got", characters[username]);
+      setGameStarted(true);
+      setMyCharacterChoice(characters[username]);
+    })
 
     socket.on("rooms", (rooms) => {
       setRooms(rooms);
     })
 
     socket.on("room_left", () => {
-    localStorage.setItem('room-name', JSON.stringify(null));
+      localStorage.setItem('room-name', JSON.stringify(null));
     })
 
     socket.on("get_players", (users) => {
@@ -55,9 +63,10 @@ function App() {
 
     // GAME LOGIC
     socket.on("game_started", data => {
+      console.log("emit game start");
+      setCharacterChoiceInProgress(false);
       setGameStarted(true);
       if (currentRoom !== null) {
-        console.log("emit game start");
         socket.emit("get_my_hand", {username, currentRoom});
       }
       console.log("all hands: ", data);
@@ -141,7 +150,6 @@ function App() {
   }
 
   function startGame() {
-    // TODO: check if players >= 4
     const players = users.map((user) => {
       return user.username
     })
@@ -181,6 +189,9 @@ function App() {
       {gameStarted ? 
       <>
         <Game 
+          myCharacterChoice={myCharacterChoice}
+          characterChoiceInProgress={characterChoiceInProgress}
+          setCharacter={setCharacter}
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
           setAllPlayersInfo={setAllPlayersInfo}

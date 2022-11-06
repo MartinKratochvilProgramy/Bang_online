@@ -3,8 +3,10 @@ const deck = require('./deck.js')
 
 const game = new Game(["Sbeve", "Joe"], deck);
 
-game.numOfPlayers = 4;
-console.log(game.genCharacterChoices());
+const choices = game.genCharacterChoices()
+
+console.log(choices["Sbeve"].playerChoice);
+
 
 // game.startGame();
 // console.log(game.getPlayerHand("Sbeve"));

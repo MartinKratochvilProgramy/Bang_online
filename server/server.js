@@ -122,34 +122,24 @@ io.on("connection", (socket) => {
   // ********** GAME LOGIC **********
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
-
+    
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
-    rooms[roomName].game.startGame();
+
+    io.to(roomName).emit("get_character_choices", rooms[roomName].game.genCharacterChoices());
+
+  });
+
+  socket.on("character_choice", (data) => {
+    const roomName = data.currentRoom;
     
-    // emit so Join Room could not be displayed
-    io.emit("rooms", getRoomsInfo());
+    rooms[roomName].game.players[data.username].character.name = data.character;
     
-    let characters = []
-    for (var player of Object.keys(rooms[roomName].game.players)) {
-      characters.push({playerName: player, character: rooms[roomName].game.players[player].character.name})
-    }
-    io.to(roomName).emit("characters", characters);
-    io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
-    
-    const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer(); // get current player
-  
-    if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
-      io.to(roomName).emit("update_draw_choices", "Kit Carlson");
-  
-    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Lucky Duke") {
-      io.to(roomName).emit("update_draw_choices", "Lucky Duke");
-  
-    } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
-      io.to(roomName).emit("update_draw_choices", "Jesse Jones");
-  
+    console.log("Start!", rooms[roomName].game.getAllPlayersChoseCharacter());
+    if (rooms[roomName].game.getAllPlayersChoseCharacter()) {
+      // if all char choices went through, start
+      startGame(io, roomName);
     }
 
-    io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
   });
 
   socket.on("get_my_hand", data => {
@@ -557,4 +547,33 @@ function getRoomsInfo() {
     res.push(roomInfo);
   }
 return res;
+}
+
+function startGame(io, roomName) {
+  rooms[roomName].game.startGame();
+  
+  // emit so Join Room could not be displayed
+  io.emit("rooms", getRoomsInfo());
+  
+  let characters = []
+  for (var player of Object.keys(rooms[roomName].game.players)) {
+    characters.push({playerName: player, character: rooms[roomName].game.players[player].character.name})
+  }
+  io.to(roomName).emit("characters", characters);
+  io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
+  
+  const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer(); // get current player
+
+  if (rooms[roomName].game.players[currentPlayer].character.name === "Kit Carlson") {
+    io.to(roomName).emit("update_draw_choices", "Kit Carlson");
+
+  } else if (rooms[roomName].game.players[currentPlayer].character.name === "Lucky Duke") {
+    io.to(roomName).emit("update_draw_choices", "Lucky Duke");
+
+  } else if (rooms[roomName].game.players[currentPlayer].character.name === "Jesse Jones") {
+    io.to(roomName).emit("update_draw_choices", "Jesse Jones");
+
+  }
+
+  io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
 }
