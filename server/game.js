@@ -1554,6 +1554,9 @@ class Game {
     }
 
     initRoles() {
+        // gives a role to each player
+        // if roles is Sheriff, maxHP +1
+
         // if less than 4 players, leave roles as null
         if (this.numOfPlayers < 4) return;
 
@@ -1568,9 +1571,16 @@ class Game {
         for (let player of Object.keys(this.players)) {
             // get random role, splice from roles
             const randIndex = Math.floor(Math.random() * roles.length);
-            const role = roles.splice(randIndex, 1);
+            const role = roles.splice(randIndex, 1)[0];
             // add role to player
             this.players[player].character.role = role;
+
+            // sherif +1 HP
+            if (role === "Sheriff") {
+                this.players[player].character.maxHealth += 1;
+                this.players[player].character.health += 1;
+                this.players[player].character.startingHandSize += 1;
+            }
         }
     }
 }
