@@ -2,8 +2,8 @@ import React from 'react';
 import getCharacterDescription from '../utils/getCharacterDescritption';
 import OponentCardOnTable from './OponentCardOnTable';
 
-export default function RightPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
+export default function SidePlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
+     character, health, confirmCardTarget, playersInRange, confirmPlayerTarget, rotateDescription }) {
 
   console.log("table: ", table);
 
@@ -48,7 +48,9 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
               className='w-[60px] xs:w-[80px] rounded-md ml-2 mr-4' 
               alt="Player character">
             </img>
-            <div className='hidden p-1 z-10 rotate-[-90deg] rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-146px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
+            <div 
+              style={{rotate: `${rotateDescription}deg`}}
+              className={`hidden p-1 z-10 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-146px] w-[200px] mx-auto bg-transparentBlack text-white absolute`}>
               <div className='text-xl'>
                 {character} 
               </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import TopPlayerTable from './TopPlayerTable';
-import LeftPlayerTable from './LeftPlayerTable';
-import RightPlayerTable from './RightPlayerTable';
+import SidePlayerTable from './SidePlayerTable';
 import clamp from '../utils/clamp';
 
 export default function Oponents({ socket, allPlayersInfo, currentRoom, activateCharacter, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
@@ -51,7 +50,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
         return (
             <div className=''>
                 <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] left-[-70px] top-[50px] xs:top-[200px] rotate-90 '>
-                    <LeftPlayerTable
+                    <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
                         table={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].table}
@@ -68,6 +67,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         health={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
+                        rotateDescription={-90}
                     />
                 </div>
                 <div className='w-full flex justify-center fixed top-0 left-0 right-0 mx-auto z-50'>
@@ -93,7 +93,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                     </div>
                 </div>
                 <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] right-[-70px] top-[50px] xs:top-[200px] rotate-[270deg]'>
-                    <RightPlayerTable
+                    <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
                         table={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].table}
@@ -110,6 +110,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
+                        rotateDescription={90}
                     />
                 </div>
             </div>
