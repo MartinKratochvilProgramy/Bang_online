@@ -538,14 +538,13 @@ class Game {
             // find next alive player
             for (let i = 0; i < this.numOfPlayers; i++) {
                 currentEmporioTurnPlayerIndex += 1;
-                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentEmporioTurnPlayerIndex);
-                if (this.players[nextPlayer].character.health > 0) {
-                    this.players[nextPlayer].table.push(card);
-                    break;
-                }
-                // clamp player ID
                 if (currentEmporioTurnPlayerIndex >= this.numOfPlayers) {
                     currentEmporioTurnPlayerIndex = 0;
+                }
+                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentEmporioTurnPlayerIndex);
+                if (this.players[nextPlayer].character.health > 0) {
+                    //this.players[nextPlayer].table.push(card);
+                    break;
                 }
             }
         this.nextEmporioTurn = playerNames[currentEmporioTurnPlayerIndex];

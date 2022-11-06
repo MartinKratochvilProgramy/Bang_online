@@ -5,6 +5,7 @@ import Chat from './Chat';
 import Console from './Console';
 import StackDeck from './StackDeck';
 import DrawChoice from './DrawChoice';
+import EmporionChoice from './EmporionChoice';
 
 export default function Game({ myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
   indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
@@ -138,6 +139,7 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
   }
 
   function getEmporioCard(card) {
+    console.log("Git");
     socket.emit("get_emporio_card", {username, currentRoom, card});
   }
   
@@ -210,20 +212,23 @@ export default function Game({ myHand, allPlayersInfo, username, character, sock
         <div className='absolute mt-8'>
           {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
         </div>
+        <div className='absolute mt-8'>
+          {emporioState.length > 0 && <EmporionChoice cards={emporioState} getEmporioCard={getEmporioCard} username={username} nextEmporioTurn={nextEmporioTurn} />}
+        </div>
       </div>
 
-      {emporioState.length > 0 ? <p>Emporio:</p> : null}
-      {emporioState.map(card => {
-        let emporioStyles = {color: "black"};
-        if (nextEmporioTurn === username) {
-          emporioStyles = {color: "red"}
-        }
-        return (
-          <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
-            {card.name} <br /> {card.digit} {card.type}
-          </button>
-        )
-      })}
+        {emporioState.length > 0 ? <p>Emporio:</p> : null}
+        {emporioState.map(card => {
+          let emporioStyles = {color: "black"};
+          if (nextEmporioTurn === username) {
+            emporioStyles = {color: "red"}
+          }
+          return (
+            <button style={emporioStyles} onClick={() => getEmporioCard(card)}>
+              {card.name} <br /> {card.digit} {card.type}
+            </button>
+          )
+        })}
 
       <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-20'>
         <Chat sendMessage={sendMessage} messages={messages} width={260} />

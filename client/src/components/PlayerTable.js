@@ -59,7 +59,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[145px] xs:h-[180px] bg-beige rounded p-2 pt-3 relative'
+        className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 pt-3 relative'
       >
         <div className='flex w-[100px] flex-col text-sm items-start font-rye'>
           <div className='flex flex-col justify-start items-start'>
@@ -105,7 +105,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
 
         </div>
 
-          <div className='flex flex-col justify-start h-full w-[120px] p-1 space-y-2'>
+          <div className='flex flex-col justify-start h-full w-[120px] px-1 py-0 space-y-2'>
             {(currentPlayer === username && nextTurn && !characterUsable && emporioState.length === 0 && !(myDrawChoice.length > 0)) && <Button onClick={endTurn} value={"End turn"} size={1.2} />}
             {(selectPlayerTarget && nextTurn && currentPlayer === username) && <Button onClick={cancelTargetSelect} value={"Cancel"} size={1.2} /> }
             {discarding && <Button onClick={() => setDiscarding(false)} value={"Cancel"} size={1.2} />}

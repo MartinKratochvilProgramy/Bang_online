@@ -36,7 +36,7 @@ export default function RightPlayerTable({ socket, cardsInHand, table, oponentNa
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[145px] xs:h-[170px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative'
       >
         <div className='flex w-[100px] text-sm flex-col items-start font-rye'>
           <div className='overflow-visible'>{oponentName}</div>
