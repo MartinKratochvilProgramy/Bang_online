@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["El Gringo", "El Gringo", "El Gringo", "El Gringo", "El Gringo"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 4}, {name: "El Gringo", health: 4}] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -33,10 +33,7 @@ class Game {
                     return(
                         // this.name = namesOfCharacters[i],
                         this.name = null,
-                        this.role = null,
-                        this.maxHealth = 2 + (this.role === "Sheriffo" ? 1 : 0),
-                        this.health = this.maxHealth,
-                        this.startingHandSize = this.maxHealth
+                        this.role = null
                     )
                 }
             }
@@ -1136,6 +1133,19 @@ class Game {
         }
     }
 
+    setCharacter(playerName, characterName) {
+        // sets player character and resolves his health
+        this.players[playerName].character.name = characterName;
+
+        let startingHealth = 4;
+        if (characterName === "El Gringo") startingHealth = 3;
+        if (characterName === "Paul Regret") startingHealth = 3;
+
+        this.players[playerName].character.maxHealth = startingHealth;
+        this.players[playerName].character.health = startingHealth;
+        this.players[playerName].character.startingHandSize = startingHealth;
+    }
+
     // ******************* GETERS *******************
     getAllPlayersInfo() {
         // returns array [{name, character numberOfCards, health, table}]
@@ -1537,7 +1547,7 @@ class Game {
             for (let i = 0; i < 2; i++) {
                 const randIndex = Math.floor(Math.random() * this.namesOfCharacters.length);
                 // add to player choice
-                playerChoice.push(this.namesOfCharacters[randIndex]);
+                playerChoice.push(this.namesOfCharacters[randIndex].name);
                 // remove from namesOfCharacters
                 this.namesOfCharacters.splice(randIndex, 1);
             }
@@ -1545,6 +1555,8 @@ class Game {
         }
         return res;
     }
+
+    initRoles() {}
 }
 
 module.exports = Game;

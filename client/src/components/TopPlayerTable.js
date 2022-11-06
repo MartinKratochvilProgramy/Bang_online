@@ -50,7 +50,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           {cardsInHand.map(() => {
               return(
                 <img
-                  className='w-[58px] xs:w-[80px]' 
+                  className='w-[60px] xs:w-[80px]' 
                   src={require("../img/gfx/cards/back-playing.png")} alt="" />
               )
           })}

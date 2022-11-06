@@ -132,7 +132,7 @@ io.on("connection", (socket) => {
   socket.on("character_choice", (data) => {
     const roomName = data.currentRoom;
     
-    rooms[roomName].game.players[data.username].character.name = data.character;
+    rooms[roomName].game.setCharacter(data.username, data.character);
     
     if (rooms[roomName].game.getAllPlayersChoseCharacter()) {
       // if all char choices went through, start
