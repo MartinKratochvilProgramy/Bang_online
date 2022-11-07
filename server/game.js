@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["Calamity Janet", "Black Jack", "Pedro Ramirez", "El Gringo"] 
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = ["Calamity Janet", "Black Jack", "Pedro Ramirez", "El Gringo"] 
         this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
@@ -821,7 +821,7 @@ class Game {
                 return;
             }
             // if not dynamite on table, allow use cards except Jesse Jones
-            if (this.players[playerName].character.name !== "Jesse Jones") {
+            if (this.players[playerName].character.name !== "Jesse Jones" && (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length <= 0)) {
                 this.draw(2, playerName);
                 this.setAllPlayable(playerName);
                 this.setMancatoBeerNotPlayable(playerName);
@@ -879,7 +879,7 @@ class Game {
                     this.awaitJesseJones = true;
                 }
                 // if not dynamite on table, allow use cards except Jesse Jones
-                if (this.players[playerName].character.name !== "Jesse Jones") {
+                if (this.players[playerName].character.name !== "Jesse Jones" && (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length <= 0)) {
                     this.draw(2, playerName);
                     this.setAllPlayable(playerName);
                     this.setMancatoBeerNotPlayable(playerName);
@@ -1260,7 +1260,8 @@ class Game {
             // Rose Doolan works as Apaloosa
             range += 1;
         }
-        if  (range === "max" || range === "max_not_sheriffo") {
+
+        if  (range === "max" || range === "max_not_sheriff") {
             // ******** MAX RANGE ********
             let result = [];
             for (const player of playerNames) {
@@ -1270,8 +1271,8 @@ class Game {
                     if (range === "max") {
                         result.push(player);
     
-                    } else if (range === "max_not_sheriffo") {
-                        if (player !== playerName && this.players[player].character.role !== "Sheriffo") {
+                    } else if (range === "max_not_sheriff") {
+                        if (player !== playerName && this.players[player].character.role !== "Sheriff") {
                             result.push(player);
                         }
     
@@ -1388,11 +1389,11 @@ class Game {
     // ******************* GAME FLOW *******************
     putStackIntoDeck() {
         this.deck = this.stack;
-        this.stack = []
-     
-        console.log("Stack shuffled into deck");
+        this.stack = [this.deck[this.deck.length - 1]]
      
         this.shuffleDeck();
+        
+        console.log("Stack shuffled into deck");
     }
 
     setIsLosingHealth(bool, player) {

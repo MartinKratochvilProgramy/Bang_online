@@ -22,6 +22,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   }
 
   function handleCharacterClick() {
+    if (!playersInRange.includes(oponentName)) return;
     confirmPlayerTarget(oponentName);
   }
 

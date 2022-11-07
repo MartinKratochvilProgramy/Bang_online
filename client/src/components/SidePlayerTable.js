@@ -22,6 +22,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
   }
 
   function handleCharacterClick() {
+    if (!playersInRange.includes(oponentName)) return;
     confirmPlayerTarget(oponentName);
   }
 

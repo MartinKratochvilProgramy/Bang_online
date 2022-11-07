@@ -76,6 +76,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
         socket.emit("request_players_in_range", {range: "max", currentRoom, username});
         
       } else if (characterName === "Pedro Ramirez") {
+        console.log("char usable");
         setDeckActive(true);
         setCharacterUsable(true);
 

@@ -1,8 +1,6 @@
-PR cant draw from deck
+is 1v1 first player random?
 
 sid ketchum should have separate discard from ability
-
-maybe graphically distinguish discardable from playable
 
 end game
 

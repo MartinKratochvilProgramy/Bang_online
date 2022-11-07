@@ -9,7 +9,7 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Gatling",
+        name: "Indiani",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",
@@ -31,6 +31,15 @@ const deckTwoBarrelsVulcanic = [
         type: "hearts",
         isPlayable: false
     },  
+    {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 2222222,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, 
     {
         name: "Barilo",
         rimColor: "blue",
