@@ -8,7 +8,7 @@ import DrawChoice from './DrawChoice';
 import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
 
-export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
+export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
   indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
   
 
@@ -250,6 +250,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               indianiActive={indianiActive}
               discarding={discarding}
               character={character}
+              role={role}
               nextTurn={nextTurn}
               characterUsable={characterUsable}
               myDrawChoice={myDrawChoice}

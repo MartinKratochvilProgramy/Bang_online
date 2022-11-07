@@ -1,11 +1,12 @@
 import React from 'react';
 import Card from './Card';
 import Button from './Button';
-import getCharacterDescription from '../utils/getCharacterDescritption';
+import getCharacterDescription from '../utils/getCharacterDescription';
+import getRoleDescription from '../utils/getRoleDescription';
 import CardOnTable from './CardOnTable';
 
 export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarget, setSelectCardTarget, currentRoom, setActiveCard, activateCharacter, username, currentPlayer, duelActive, 
-    indianiActive, discarding, character, nextTurn, characterUsable, myDrawChoice, emporioState, myHealth,
+    indianiActive, discarding, character, role, nextTurn, characterUsable, myDrawChoice, emporioState, myHealth,
     selectPlayerTarget, setDiscarding, playersLosingHealth}) {
 
       console.log("Table: ", table);
@@ -32,6 +33,13 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
+  // after character choice th client sends req to server to get random role
+  // while waiting for the role, it is "", so require() would not load
+  // this is hacky, I'm sorry
+  let roleSource;
+  if (role !== "") {
+    roleSource = require("../img/gfx/roles/" + role.replace(/\s/g, '') + ".png");
+  }
 
   let characterStyles = {};
   if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum"))) {
@@ -59,9 +67,9 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
         })}
       </div>
       <div 
-        className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 pt-3 relative'
+        className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 pt-3 relative font-rye'
       >
-        <div className='flex w-[100px] flex-col text-sm items-start font-rye'>
+        <div className='flex w-[120px] flex-col text-sm items-start'>
           <div className='flex flex-col justify-start items-start'>
             <div className='overflow-visible'>{username}</div>
             <div className=''>HP: {myHealth}</div>
@@ -73,7 +81,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
               onClick={() => handleCharacterClick()} 
               className='w-[60px] xs:w-[80px] rounded-md mr-4' alt="Player character">
             </img>
-            <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-76px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
+            <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-86px] left-[-50px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>
                 {character} 
               </div>
@@ -82,8 +90,24 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
               </div>
             </div>
           </div>
-
         </div>
+
+        {role !== "" && 
+          <div className='flex w-[120px] relative group'>
+            <img 
+              className='w-[60px] xs:w-[80px]'
+              src={roleSource} alt="">
+            </img>
+            <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-70px] left-[-40px] w-[160px] mx-auto bg-transparentBlack text-white absolute'>
+                <div className='text-xl'>
+                  {role} 
+                </div>
+                <div className='text-xs'>
+                  {getRoleDescription(role)}
+                </div>
+              </div>
+          </div>
+        }
 
         <div className='max-h-full w-full overflow-x-auto flex justify-center'>
           {myHand.map(card => {

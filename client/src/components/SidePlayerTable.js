@@ -1,5 +1,5 @@
 import React from 'react';
-import getCharacterDescription from '../utils/getCharacterDescritption';
+import getCharacterDescription from '../utils/getCharacterDescription';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function SidePlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 

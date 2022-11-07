@@ -13,7 +13,6 @@ function App() {
 
   const [myCharacterChoice, setMyCharacterChoice] = useState([]);
   const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
-  const [role, setRole] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -21,6 +20,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [role, setRole] = useState("");
   const [character, setCharacter] = useState("");
 
   const [myHand, setMyHand] = useState([]);
@@ -204,6 +204,7 @@ function App() {
           setAllPlayersInfo={setAllPlayersInfo}
           username={username}
           character={character}
+          role={role}
           socket={socket}
           currentRoom={currentRoom}
           currentPlayer={currentPlayer}
