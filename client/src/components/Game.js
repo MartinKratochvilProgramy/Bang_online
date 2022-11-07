@@ -232,7 +232,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               deckActive={deckActive}
               drawFromDeck={drawFromDeck}
             />
-            <div className='absolute mt-8 z-50'>
+            <div className='absolute top-1/2 translate-y-[-50%]'>
               {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
             </div>
             <div className='absolute mt-8'>
