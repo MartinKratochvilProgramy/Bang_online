@@ -80,7 +80,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
               onClick={() => handleCharacterClick()} 
               className='w-[60px] xs:w-[80px] rounded-md mr-4' alt="Player character">
             </img>
-            <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-86px] left-[-50px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
+            <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-86px] left-[-60px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>
                 {character} 
               </div>
