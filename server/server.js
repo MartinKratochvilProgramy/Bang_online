@@ -572,6 +572,7 @@ function startGame(io, roomName) {
   }
   io.to(roomName).emit("characters", characters);
   io.to(roomName).emit("current_player", rooms[roomName].game.getNameOfCurrentTurnPlayer());
+  io.to(roomName).emit("update_players_with_action_required", rooms[roomName].game.getPlayersWithActionRequired());
   
   const currentPlayer = rooms[roomName].game.getNameOfCurrentTurnPlayer(); // get current player
 

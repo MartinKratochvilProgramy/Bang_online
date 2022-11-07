@@ -903,9 +903,6 @@ class Game {
         }
         this.setCardOnTableNotPlayable("Barilo", playerName)
         
-        this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
-
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
             if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
@@ -913,19 +910,19 @@ class Game {
                 this.setNotPlayable("Mancato!", this.playerPlaceHolder);
             }
         }
-
+        
         if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
             // Bart Cassidy draws a card on hit
             // this works on all damage taken except Indiani -> could cause problems
             this.draw(1, playerName);
         }
-
+        
         if (playerName !== this.getNameOfCurrentTurnPlayer()) {
             // if not players turn, disable his Bang!
             // this is for lose life when Indiani
             this.setNotPlayable("Bang!", playerName)
         }
-
+        
         if (this.duelActive) {
             this.duelActive = false;
             this.duelTurnIndex = 0;
@@ -942,14 +939,14 @@ class Game {
         if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
             const playerHandLenght = this.players[this.getNameOfCurrentTurnPlayer()].hand.length;
             if (playerHandLenght === 0) return;
-
+            
             const randomCardIndex = Math.floor(Math.random() * playerHandLenght);
             const randomCard = this.players[this.getNameOfCurrentTurnPlayer()].hand.shift(randomCardIndex, 1);
             randomCard.isPlayable = false;
             this.players[playerName].hand.push(randomCard);
             console.log("El Gringo was hit, so he draws 1 card");
         }
-
+        
         // 0 health -> lose game
         if (this.players[playerName].character.health <= 0) {
             // if player were to die, allow him to play beer
@@ -997,6 +994,23 @@ class Game {
             }
             this.knownRoles[playerName] = this.players[playerName].character.role;
         }
+
+        if (!this.gatlingActive) {
+            // if no gatling, continue
+            this.setAllPlayable(this.playerPlaceHolder);
+            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+        } else {
+            // on gatling, activate playerPlaceholder only when all reactions
+            // if there is player losing health, return
+            // if no player is found, set playable for playerPlaceholder
+            for (const player of this.getPlayersLosingHealth()) {
+                if (player.isLosingHealth) return;
+            }
+            this.gatlingActive = false;
+            this.setAllPlayable(this.playerPlaceHolder);
+            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+        }
+
     }
 
     jesseJonesTarget(target, playerName = this.getNameOfCurrentTurnPlayer()) {

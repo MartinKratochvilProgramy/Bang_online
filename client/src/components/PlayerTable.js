@@ -9,8 +9,6 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
     indianiActive, discarding, character, role, nextTurn, characterUsable, myDrawChoice, emporioState, myHealth,
     selectPlayerTarget, setDiscarding, playersLosingHealth}) {
 
-      console.log("Table: ", table);
-
   function cancelTargetSelect() {
     setSelectPlayerTarget(false);
     setSelectCardTarget(false);

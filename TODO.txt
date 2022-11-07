@@ -1,6 +1,5 @@
-
+JJ can end turn before drawing
 PR cant draw from deck
-gatling -> aktivovat karty v ruce až po konci lose health all
 
 sid ketchum should have separate discard from ability
 
