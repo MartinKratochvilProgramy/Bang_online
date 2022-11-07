@@ -11,7 +11,7 @@ export default function UsernameSelect({ setUsername }) {
     }
 
   return (
-    <div className='mt-24'>
+    <div className='mt-4 xs:mt-24'>
         <label className="text-outline font-rye text-6xl text-white mb-6">
             Select username 
         </label>

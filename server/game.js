@@ -1,7 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        const namesOfCharacters = ["Kit Carlson", "Calamity Janet", "Sid Ketchum"] // TODO: remove
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 4}, {name: "El Gringo", health: 4}] 
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -17,6 +18,7 @@ class Game {
         this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
         this.sidKetchumDiscarded = false;
+        this.awaitJesseJones = false;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -27,14 +29,9 @@ class Game {
                 isLosingHealth: false,
                 canUseBarel: true,
                 hasDynamite: false,
-                character: new function () {
-                    return(
-                        this.name = namesOfCharacters[i],
-                        this.role = null,
-                        this.maxHealth = 8 + (this.role === "Sheriffo" ? 1 : 0),
-                        this.health = this.maxHealth,
-                        this.startingHandSize = this.maxHealth
-                    )
+                character: {
+                    name: null,
+                    role: null
                 }
             }
         }
@@ -85,6 +82,10 @@ class Game {
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
 
+        if (this.players[playerName].character.name === "Jesse Jones") {
+            this.awaitJesseJones = false;
+        }
+
         if (numToDraw === 1) {
             console.log(`Player ${playerName} drew ${numToDraw} card`);
         } else {
@@ -104,7 +105,7 @@ class Game {
 
         // SK special case for when discard 2 => gain life
         if (this.players[playerName].character.name === "Sid Ketchum") {
-            if (this.sidKetchumDiscarded === true) {
+            if (this.sidKetchumDiscarded === true && this.players[playerName].character.health < this.players[playerName].character.maxHealth) {
                 this.players[playerName].character.health += 1
                 this.sidKetchumDiscarded = false;
             } else {
@@ -533,14 +534,13 @@ class Game {
             // find next alive player
             for (let i = 0; i < this.numOfPlayers; i++) {
                 currentEmporioTurnPlayerIndex += 1;
-                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentEmporioTurnPlayerIndex);
-                if (this.players[nextPlayer].character.health > 0) {
-                    this.players[nextPlayer].table.push(card);
-                    break;
-                }
-                // clamp player ID
                 if (currentEmporioTurnPlayerIndex >= this.numOfPlayers) {
                     currentEmporioTurnPlayerIndex = 0;
+                }
+                const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentEmporioTurnPlayerIndex);
+                if (this.players[nextPlayer].character.health > 0) {
+                    //this.players[nextPlayer].table.push(card);
+                    break;
                 }
             }
         this.nextEmporioTurn = playerNames[currentEmporioTurnPlayerIndex];
@@ -689,7 +689,8 @@ class Game {
     playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
         // TODO: special case for Sheriffo
         // put prison in other players' table
-        this.discard("Prigione", card.digit, card.type, playerName);
+        const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type));
+        this.players[playerName].hand.splice(cardIndex, 1)[0];
         console.log(`Player ${playerName} put ${target} in prison`);
 
         card.isPlayable = false;
@@ -818,10 +819,12 @@ class Game {
                 }
                 return;
             }
-            // if not dynamite on table, allow use cards
-            this.setAllPlayable(playerName);
-            this.setMancatoBeerNotPlayable(playerName);
-            this.draw(2, playerName);
+            // if not dynamite on table, allow use cards except Jesse Jones
+            if (this.players[playerName].character.name !== "Jesse Jones") {
+                this.setAllPlayable(playerName);
+                this.setMancatoBeerNotPlayable(playerName);
+                this.draw(2, playerName);
+            }
         }
     }
 
@@ -871,11 +874,15 @@ class Game {
                         this.deck.shift();
                     }
                     return;
+                } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
+                    this.awaitJesseJones = true;
                 }
-                // if not dynamite on table, allow use cards
-                this.setAllPlayable(playerName);
-                this.setMancatoBeerNotPlayable(playerName);
-                this.draw(2, playerName);
+                // if not dynamite on table, allow use cards except Jesse Jones
+                if (this.players[playerName].character.name !== "Jesse Jones") {
+                    this.draw(2, playerName);
+                    this.setAllPlayable(playerName);
+                    this.setMancatoBeerNotPlayable(playerName);
+                }            
             }
         } else {
             // next player round
@@ -930,10 +937,16 @@ class Game {
                 this.setMancatoBeerNotPlayable(currentPlayer);
             }
         }
-        //El Gringo can draw when hit by Bang! or Gatling
+        //El Gringo can draw from oponent when hit by Bang! or Gatling
         // Mancato! has also be in stack because of CJ
         if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
-            this.draw(1, playerName);
+            const playerHandLenght = this.players[this.getNameOfCurrentTurnPlayer()].hand.length;
+            if (playerHandLenght === 0) return;
+
+            const randomCardIndex = Math.floor(Math.random() * playerHandLenght);
+            const randomCard = this.players[this.getNameOfCurrentTurnPlayer()].hand.shift(randomCardIndex, 1);
+            randomCard.isPlayable = false;
+            this.players[playerName].hand.push(randomCard);
             console.log("El Gringo was hit, so he draws 1 card");
         }
 
@@ -1007,6 +1020,8 @@ class Game {
         this.draw(1, playerName);
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+
+        this.awaitJesseJones = false;
     }
 
     jourdonnaisBarel(playerName){
@@ -1115,13 +1130,27 @@ class Game {
         }
     }
 
+    setCharacter(playerName, characterName) {
+        // sets player character and resolves his health and starting hand size
+        this.players[playerName].character.name = characterName;
+
+        let startingHealth = 4;
+        if (characterName === "El Gringo") startingHealth = 3;
+        if (characterName === "Paul Regret") startingHealth = 3;
+
+        this.players[playerName].character.maxHealth = startingHealth;
+        this.players[playerName].character.health = startingHealth;
+        this.players[playerName].character.startingHandSize = startingHealth;
+    }
+
     // ******************* GETERS *******************
     getAllPlayersInfo() {
-        // returns array [{name, numberOfCards, health, table}]
+        // returns array [{name, character numberOfCards, health, table}]
         let state = [];
         for (var player of Object.keys(this.players)) {
             state.push({
                 name: player,
+                character: this.players[player].character.name, // TODO: this could be sent once at the start of game
                 numberOfCards: this.players[player].hand.length,
                 health: this.players[player].character.health,
                 table: this.players[player].table
@@ -1182,7 +1211,7 @@ class Game {
                 if (this.getPlayerIsInPrison(player)) {
                     prisonFound = true;
                 }
-                if (this.players[player].character.name === "Jesse Jones") {
+                if (this.players[player].character.name === "Jesse Jones" && this.awaitJesseJones) {
                     actionRequired = true;
                 }
             }
@@ -1325,6 +1354,17 @@ class Game {
         return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
     }
 
+    getAllPlayersChoseCharacter() {
+        // returns true if all players have character
+        // else return false
+        for (const player of Object.keys(this.players)) {
+            if (this.players[player].character.name === null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // ******************* GAME FLOW *******************
     putStackIntoDeck() {
         this.deck = this.stack;
@@ -1346,7 +1386,15 @@ class Game {
             this.draw(this.players[player].character.startingHandSize, player);
         }
 
-        const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
+        let firstPlayerName;
+        if (this.numOfPlayers >= 4) {
+            firstPlayerName = Object.keys(this.players).find(player => this.players[player].character.role === "Sheriff");
+            console.log("firstPlayerName", firstPlayerName);
+        } else {
+            firstPlayerName = Object.keys(this.players).find(player => this.players[player].id === 0);
+        }
+
+        this.playerRoundId = this.players[firstPlayerName].id;
 
         if (this.players[firstPlayerName].character.name === "Lucky Duke") {
             // populate create draw choice for Kit Carlson
@@ -1358,7 +1406,7 @@ class Game {
             }
             
         } else if (this.players[firstPlayerName].character.name === "Jesse Jones") {
-            null
+            this.awaitJesseJones = true;
 
         } else if (this.players[firstPlayerName].character.name === "Kit Carlson") {
             // populate create draw choice for Kit Carlson
@@ -1446,7 +1494,7 @@ class Game {
             return;
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
-            null
+            this.awaitJesseJones = true;
         
         } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez") {
             null
@@ -1493,6 +1541,55 @@ class Game {
             this.endTurn()
         }
         delete this.players[playerName];
+    }
+
+    genCharacterChoices() {
+        let res = {};
+        const playerNames = Object.keys(this.players);
+
+        for (let i = 0; i < this.numOfPlayers; i++) {
+            let playerChoice = []
+            for (let i = 0; i < 2; i++) {
+                const randIndex = Math.floor(Math.random() * this.namesOfCharacters.length);
+                // add to player choice
+                playerChoice.push(this.namesOfCharacters[randIndex]);
+                // remove from namesOfCharacters
+                this.namesOfCharacters.splice(randIndex, 1);
+            }
+            res[playerNames[i]] = playerChoice;
+        }
+        return res;
+    }
+
+    initRoles() {
+        // gives a role to each player
+        // if roles is Sheriff, maxHP +1
+
+        // if less than 4 players, leave roles as null
+        if (this.numOfPlayers < 4) return;
+
+        let roles;
+        if (this.numOfPlayers === 4) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit"]
+        } else if (this.numOfPlayers === 5) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit", "Vice"]
+        } else if (this.numOfPlayers === 6) {
+            roles = ["Sheriff", "Renegade", "Bandit", "Bandit", "Bandit", "Vice"]
+        }
+        for (let player of Object.keys(this.players)) {
+            // get random role, splice from roles
+            const randIndex = Math.floor(Math.random() * roles.length);
+            const role = roles.splice(randIndex, 1)[0];
+            // add role to player
+            this.players[player].character.role = role;
+
+            // sherif +1 HP
+            if (role === "Sheriff") {
+                this.players[player].character.maxHealth += 1;
+                this.players[player].character.health += 1;
+                this.players[player].character.startingHandSize += 1;
+            }
+        }
     }
 }
 

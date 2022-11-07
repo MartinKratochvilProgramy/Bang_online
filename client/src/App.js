@@ -11,6 +11,9 @@ const socket = io.connect("http://localhost:3001");
 
 function App() {
 
+  const [myCharacterChoice, setMyCharacterChoice] = useState([]);
+  const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
+  const [role, setRole] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -26,7 +29,7 @@ function App() {
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [playersActionRequiredOnStart, setPlayersActionRequiredOnStart] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
-  const [topStackCard, setTopStackCard] = useState({});
+  const [topStackCard, setTopStackCard] = useState(null);
   const [duelActive, setDuelActive] = useState(false);
   const [indianiActive, setIndianiActive] = useState(false);
   const [emporioState, setEmporioState] = useState([]);
@@ -36,13 +39,19 @@ function App() {
   const newRoomRef = useRef();
 
   useEffect(() => {
+    socket.on("get_character_choices", (characters) => {
+      // receive two chars to pick from
+      console.log("Got", characters[username]);
+      setGameStarted(true);
+      setMyCharacterChoice(characters[username]);
+    })
 
     socket.on("rooms", (rooms) => {
       setRooms(rooms);
     })
 
     socket.on("room_left", () => {
-    localStorage.setItem('room-name', JSON.stringify(null));
+      localStorage.setItem('room-name', JSON.stringify(null));
     })
 
     socket.on("get_players", (users) => {
@@ -55,9 +64,11 @@ function App() {
 
     // GAME LOGIC
     socket.on("game_started", data => {
+      console.log("emit game start");
+      setCharacterChoiceInProgress(false);
       setGameStarted(true);
       if (currentRoom !== null) {
-        console.log("emit game start");
+        socket.emit("get_my_role", {username, currentRoom});
         socket.emit("get_my_hand", {username, currentRoom});
       }
       console.log("all hands: ", data);
@@ -81,6 +92,11 @@ function App() {
       socket.emit("get_my_hand", {username, currentRoom});
     })
 
+    socket.on("my_role", role => {
+      console.log("my role: ", role); // TODO: this runs multiple times??? 
+      setRole(role);
+    })
+
     socket.on("my_hand", hand => {
       console.log("my hand: ", hand); // TODO: this runs multiple times??? 
       setMyHand(hand);
@@ -94,25 +110,6 @@ function App() {
       if (username === "") return;
       if (currentRoom === null) return;
       socket.emit("get_my_hand", {username, currentRoom});
-    })
-
-    socket.on("update_draw_choices", (characterName) => {
-      if (username === "") return;
-      if (currentRoom === null) return;
-      console.log("character: ", character);
-      console.log("characterName: ", characterName);
-      if (characterName === character) {
-
-        if (characterName === "Jesse Jones") {
-          setCharacterUsable(true);
-
-        } else if (characterName === "Pedro Ramirez") {
-          setCharacterUsable(true);
-
-        } else {
-          socket.emit("get_my_draw_choice", {username, currentRoom, character});
-        }
-      }
     })
 
     socket.on("update_players_losing_health", (players) => {
@@ -160,7 +157,6 @@ function App() {
   }
 
   function startGame() {
-    // TODO: check if players >= 4
     const players = users.map((user) => {
       return user.username
     })
@@ -173,7 +169,7 @@ function App() {
     <div className="App flex flex-col justify-start items-center h-screen">
       {currentRoom === null ? 
         <>
-          <img className="w-max mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
+          <img className="w-[300px] xs:w-max mt-2 xs:mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 
@@ -200,6 +196,9 @@ function App() {
       {gameStarted ? 
       <>
         <Game 
+          myCharacterChoice={myCharacterChoice}
+          characterChoiceInProgress={characterChoiceInProgress}
+          setCharacter={setCharacter}
           myHand={myHand}
           allPlayersInfo={allPlayersInfo}
           setAllPlayersInfo={setAllPlayersInfo}

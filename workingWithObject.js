@@ -1,20 +1,21 @@
-const players = {
-    "Sbeve": {name: "Joe", id: 1, table: [{name: "Mustang"}]},
-    "Joe": {name: "Joe", id: 3, table: [{name: "Apaloosa", value: true}, {name: "Mustang", value: true}, {name: "Apaloosa", value: false}, {name: "Apaloosa", value: false}]},
-    "Marvin": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
-    "Samuel": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
-    "Table": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
-}
+// const players = {
+//     "Sbeve": {name: "Joe", id: 1, table: [{name: "Mustang"}]},
+//     "Joe": {name: "Joe", id: 3, table: [{name: "Apaloosa", value: true}, {name: "Mustang", value: true}, {name: "Apaloosa", value: false}, {name: "Apaloosa", value: false}]},
+//     "Marvin": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
+//     "Samuel": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
+//     "Table": {name: "Joe", id: 2, table: [{name: "Mustang"}]},
+// }
 
-const targetPlayerHand = [
-  {
-    name: 'Apalosa',
-    rimColor: 'yellow',
-    digit: 2,
-    type: 'spades',
-    isPlayable: false
-  },
-]
+// const targetPlayerHand = [
+//   {
+//     name: 'Apalosa',
+//     rimColor: 'yellow',
+//     digit: 2,
+//     type: 'spades',
+//     isPlayable: false
+//   },
+// ]
+
 
 // for (let player of Object.keys(players)) {
 //   // remove from table object where name ===
@@ -25,14 +26,10 @@ const targetPlayerHand = [
 //   }
 // }
 
-for (let i = 0; i < 2; i++) {
-  const index = players["Joe"].table.findIndex(object => {
-    return (object.name === 'Halina');
-  });
-  console.log(index);
-}
-
-console.log(players["Joe"].table);
+const index = players.findIndex(player => {
+  return (player.name === "d");
+});
+console.log(index);
 
 // console.log(players["Joe"].table.some(card => card.name === 'Apaloosa'));
 // find card in hand

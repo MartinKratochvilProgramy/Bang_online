@@ -3,12 +3,14 @@ const deck = require('./deck.js')
 
 const game = new Game(["Sbeve", "Joe"], deck);
 
+const choices = game.genCharacterChoices()
+
+console.log(choices["Sbeve"].playerChoice);
+
+
 // game.startGame();
 // console.log(game.getPlayerHand("Sbeve"));
 // console.log(game.getPlayerHand("Joe"));
-console.log("-----------");
-
-console.log(game.placeBlueCardOnTable());
 
 
 // // SBEVE TURN

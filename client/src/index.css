@@ -25,3 +25,7 @@ code {
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: gray;
 }
+
+.on-top {
+  z-index: 1000 !important;
+}

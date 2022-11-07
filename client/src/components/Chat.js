@@ -17,13 +17,11 @@ export default function Chat({ sendMessage, messages, width }) {
     }, [messages])
 
   return (
-    <div className={`mt-8 w-[220px] md:w-[280px]`}>
+    <div className='mt-8 w-[280px] xs:w-[340px]'>
 
         <div 
             id="text" 
-            className={`bg-beige ml-0 rounded p-2 overflow-auto w-full h-[220px] font-rye`}
-            cols="37" 
-            rows="10" 
+            className={`bg-beige ml-0 rounded p-2 text-sm xs:text-md overflow-auto w-full h-[120px] xs:h-[200px] font-rye`}
             value={messagesOutput}
         >
             {messages.map(message => {
@@ -50,7 +48,7 @@ export default function Chat({ sendMessage, messages, width }) {
         >
         <div className="flex mt-2 w-full">
             <input
-                className='shadow appearance-none h-[32px] w-full font-rye text-xl rounded bg-beige mr-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                className='shadow appearance-none h-[32px] w-full font-rye text-sm xs:text-md rounded bg-beige mr-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder="Message..."
                 onChange={(e) => setMessageInput(e.target.value)}
                 value={messageInput}
