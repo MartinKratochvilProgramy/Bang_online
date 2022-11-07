@@ -37,7 +37,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   // while waiting for the role, it is "", so require() would not load
   // this is hacky, I'm sorry
   let roleSource;
-  if (role !== "") {
+  if (role !== ""  && role !== undefined && role !== null) {
     roleSource = require("../img/gfx/roles/" + role + ".png");
   }
 

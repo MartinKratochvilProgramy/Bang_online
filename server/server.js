@@ -367,7 +367,13 @@ io.on("connection", (socket) => {
     const roomName = data.currentRoom;
     
     rooms[roomName].game.loseHealth(data.username);
-    io.to(roomName).emit("duel_active", rooms[roomName].game.duelActive); // TODO: this is not optimal, lose_health happens also outside duel
+    
+    // player death -> show his role
+    if (rooms[roomName].game.players[data.username].character.health <= 0) {
+      io.to(roomName).emit("known_roles", rooms[roomName].game.knownRoles);
+    }
+
+    io.to(roomName).emit("duel_active", rooms[roomName].game.duelActive);  // this is not optimal, however fixing it would require creating loseHealthInDuel() method...
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());

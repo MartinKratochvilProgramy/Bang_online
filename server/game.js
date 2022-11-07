@@ -13,7 +13,7 @@ class Game {
         this.duelActive = false;
         this.indianiActive = false;
         this.gatlingActive = false;
-        this.duelPlayers = null;
+        this.duelPlayers = [];
         this.duelTurnIndex = 0;
         this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
@@ -929,7 +929,7 @@ class Game {
         if (this.duelActive) {
             this.duelActive = false;
             this.duelTurnIndex = 0;
-            this.duelPlayers = null;
+            this.duelPlayers = [];
             if (this.bangCanBeUsed) {
                 const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
@@ -950,8 +950,9 @@ class Game {
             console.log("El Gringo was hit, so he draws 1 card");
         }
 
-        // if player were to day, allow him to play beer
+        // 0 health -> lose game
         if (this.players[playerName].character.health <= 0) {
+            // if player were to die, allow him to play beer
             for (const card of this.players[playerName].hand) {
                 if (card.name === "Beer") {
                     console.log("Losing: ", card.digit, card.type);
@@ -994,6 +995,7 @@ class Game {
                 // if is current players' turn and he dies, end his turn
                 this.endTurn();
             }
+            this.knownRoles[playerName] = this.players[playerName].character.role;
         }
     }
 

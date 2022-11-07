@@ -9,9 +9,10 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 
   let roleSource;
-  if (role === null) {
+  if (role === null || role === undefined) {
     roleSource = require("../img/gfx/roles/back-role.png");
   } else {
+    console.log("REQ ROLE: ", role);
     roleSource = require("../img/gfx/roles/" + role + ".png");
   }
 
@@ -29,7 +30,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
       <div 
         className='flex justify-between items-start mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative'
       >
-        <div className='flex w-auto min-w-[60px] text-sm flex-col-reverse items-start font-rye'>
+        <div className='flex w-auto min-w-[60px] xs:min-w-[80px] text-sm flex-col-reverse items-start font-rye'>
           <div className='flex flex-col items-start'>
             <div className='overflow-visible'>{oponentName}</div>
             <div>HP: {health}</div>
