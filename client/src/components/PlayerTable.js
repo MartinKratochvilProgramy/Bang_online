@@ -38,7 +38,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   // this is hacky, I'm sorry
   let roleSource;
   if (role !== "") {
-    roleSource = require("../img/gfx/roles/" + role.replace(/\s/g, '') + ".png");
+    roleSource = require("../img/gfx/roles/" + role + ".png");
   }
 
   let characterStyles = {};

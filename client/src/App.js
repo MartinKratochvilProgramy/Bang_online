@@ -21,6 +21,7 @@ function App() {
   const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [role, setRole] = useState("");
+  const [knownRoles, setKnownRoles] = useState({});
   const [character, setCharacter] = useState("");
 
   const [myHand, setMyHand] = useState([]);
@@ -95,6 +96,11 @@ function App() {
     socket.on("my_role", role => {
       console.log("my role: ", role); // TODO: this runs multiple times??? 
       setRole(role);
+    })
+
+    socket.on("known_roles", roles => {
+      console.log("known roles role: ", roles); // TODO: this runs multiple times??? 
+      setKnownRoles(roles);
     })
 
     socket.on("my_hand", hand => {
@@ -194,34 +200,33 @@ function App() {
           />
       }
       {gameStarted ? 
-      <>
-        <Game 
-          myCharacterChoice={myCharacterChoice}
-          characterChoiceInProgress={characterChoiceInProgress}
-          setCharacter={setCharacter}
-          myHand={myHand}
-          allPlayersInfo={allPlayersInfo}
-          setAllPlayersInfo={setAllPlayersInfo}
-          username={username}
-          character={character}
-          role={role}
-          socket={socket}
-          currentRoom={currentRoom}
-          currentPlayer={currentPlayer}
-          playersLosingHealth={playersLosingHealth}
-          playersActionRequiredOnStart={playersActionRequiredOnStart}
-          topStackCard={topStackCard}
-          duelActive={duelActive}
-          indianiActive={indianiActive}
-          emporioState={emporioState}
-          myDrawChoice={myDrawChoice}
-          nextEmporioTurn={nextEmporioTurn}
-          characterUsable={characterUsable}
-          setCharacterUsable={setCharacterUsable}
-          sendMessage={sendMessage}
-          messages={messages}
-        />
-      </>
+      <Game 
+        myCharacterChoice={myCharacterChoice}
+        characterChoiceInProgress={characterChoiceInProgress}
+        setCharacter={setCharacter}
+        myHand={myHand}
+        allPlayersInfo={allPlayersInfo}
+        setAllPlayersInfo={setAllPlayersInfo}
+        username={username}
+        character={character}
+        role={role}
+        knownRoles={knownRoles}
+        socket={socket}
+        currentRoom={currentRoom}
+        currentPlayer={currentPlayer}
+        playersLosingHealth={playersLosingHealth}
+        playersActionRequiredOnStart={playersActionRequiredOnStart}
+        topStackCard={topStackCard}
+        duelActive={duelActive}
+        indianiActive={indianiActive}
+        emporioState={emporioState}
+        myDrawChoice={myDrawChoice}
+        nextEmporioTurn={nextEmporioTurn}
+        characterUsable={characterUsable}
+        setCharacterUsable={setCharacterUsable}
+        sendMessage={sendMessage}
+        messages={messages}
+      />
       :
        null
       }

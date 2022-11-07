@@ -3,11 +3,18 @@ import getCharacterDescription from '../utils/getCharacterDescription';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function SidePlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, health, confirmCardTarget, playersInRange, confirmPlayerTarget, rotateDescription }) {
+     character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, rotateDescription }) {
 
-  console.log("table: ", table);
+  console.log("role: ", role);
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
+
+  let roleSource;
+  if (role === null) {
+    roleSource = require("../img/gfx/roles/back-role.png");
+  } else {
+    roleSource = require("../img/gfx/roles/" + role + ".png");
+  }
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
@@ -37,7 +44,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
       <div 
         className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative' 
       >
-        <div className='flex w-[100px] text-sm flex-col items-start font-rye'>
+        <div className='flex w-[140px] text-sm flex-col items-start font-rye'>
           <div className='overflow-visible'>{oponentName}</div>
           <div>HP: {health}</div>
           <div className='relative flex justify-center group'>
@@ -59,7 +66,13 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
               </div>
             </div>
           </div>
+        </div>
 
+        <div className='flex w-[140px] relative group'>
+          <img 
+            className='w-[60px] xs:w-[80px]'
+            src={roleSource} alt="">
+          </img>
         </div>
 
         <div className='max-h-full w-full overflow-x-auto flex'>

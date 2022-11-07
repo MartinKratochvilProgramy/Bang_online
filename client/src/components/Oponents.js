@@ -3,8 +3,8 @@ import TopPlayerTable from './TopPlayerTable';
 import SidePlayerTable from './SidePlayerTable';
 import clamp from '../utils/clamp';
 
-export default function Oponents({ socket, allPlayersInfo, currentRoom, activateCharacter, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-    characterUsable, myHealth, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
+export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRoom, activateCharacter, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
+    characterUsable, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
         
     const playerIndex = allPlayersInfo.findIndex(player => {
         return (player.name === username);
@@ -49,7 +49,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
     if (oponentsInfo.length === 3) {
         return (
             <div className=''>
-                <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] left-[-70px] top-[50px] xs:top-[200px] rotate-90 '>
+                <div className='fixed z-10 flex items-end justify-center min-h-[352px] w-[490px] left-[-70px] top-[50px] xs:top-[200px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -63,6 +63,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         currentPlayer={currentPlayer}
                         username={username}
                         character={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].character}
+                        role={knownRoles[oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].name]}
                         characterUsable={characterUsable}
                         health={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
@@ -70,7 +71,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         rotateDescription={-90}
                     />
                 </div>
-                <div className='w-full flex justify-center fixed top-0 left-0 right-0 mx-auto z-50'>
+                <div className='flex justify-center fixed top-0 left-0 right-0 mx-auto z-5'>
                     <div className='w-[420px] xl:w-[620px]'>                        
                     <TopPlayerTable
                             socket={socket}
@@ -85,6 +86,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                             currentPlayer={currentPlayer}
                             username={username}
                             character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
+                            role={knownRoles[oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name]}
                             characterUsable={characterUsable}
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
@@ -106,6 +108,7 @@ export default function Oponents({ socket, allPlayersInfo, currentRoom, activate
                         currentPlayer={currentPlayer}
                         username={username}
                         character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
+                        role={knownRoles[oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name]}
                         characterUsable={characterUsable}
                         health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}

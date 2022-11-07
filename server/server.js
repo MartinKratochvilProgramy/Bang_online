@@ -135,8 +135,9 @@ io.on("connection", (socket) => {
     rooms[roomName].game.setCharacter(data.username, data.character);
     
     if (rooms[roomName].game.getAllPlayersChoseCharacter()) {
-      // if all char choices went through, start
+      // if all char choices went through, start game
       rooms[roomName].game.initRoles();
+      io.to(roomName).emit("known_roles", rooms[roomName].game.knownRoles)
       startGame(io, roomName);
     }
   });

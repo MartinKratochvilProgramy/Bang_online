@@ -2,7 +2,7 @@ class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
         this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 4}, {name: "El Gringo", health: 4}] 
+        this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
         this.emporio = [];
@@ -1496,7 +1496,7 @@ class Game {
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
             this.awaitJesseJones = true;
         
-        } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez") {
+        } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez" && this.stack.length > 0) {
             null
         
         } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {
@@ -1588,6 +1588,10 @@ class Game {
                 this.players[player].character.maxHealth += 1;
                 this.players[player].character.health += 1;
                 this.players[player].character.startingHandSize += 1;
+
+                this.knownRoles[player] = role;
+            } else {
+                this.knownRoles[player] = null;
             }
         }
     }
