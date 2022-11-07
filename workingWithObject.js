@@ -16,36 +16,6 @@
 //   },
 // ]
 
-const players = [
-  {
-    "name": "a",
-    "character": "Jesse Jones",
-    "numberOfCards": 2,
-    "health": 2,
-    "table": []
-  },
-  {
-    "name": "b",
-    "character": "Calamity Janet",
-    "numberOfCards": 4,
-    "health": 2,
-    "table": []
-  },
-  {
-    "name": "c",
-    "character": "Sid Ketchum",
-    "numberOfCards": 2,
-    "health": 2,
-    "table": []
-  },
-  {
-    "name": "d",
-    "character": "Sid Ketchum",
-    "numberOfCards": 2,
-    "health": 2,
-    "table": []
-  }
-]
 
 // for (let player of Object.keys(players)) {
 //   // remove from table object where name ===

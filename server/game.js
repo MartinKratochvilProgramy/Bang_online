@@ -1386,7 +1386,15 @@ class Game {
             this.draw(this.players[player].character.startingHandSize, player);
         }
 
-        const firstPlayerName = Object.keys(this.players).find(key => this.players[key].id === 0);
+        let firstPlayerName;
+        if (this.numOfPlayers >= 4) {
+            firstPlayerName = Object.keys(this.players).find(player => this.players[player].character.role === "Sheriff");
+            console.log("firstPlayerName", firstPlayerName);
+        } else {
+            firstPlayerName = Object.keys(this.players).find(player => this.players[player].id === 0);
+        }
+
+        this.playerRoundId = this.players[firstPlayerName].id;
 
         if (this.players[firstPlayerName].character.name === "Lucky Duke") {
             // populate create draw choice for Kit Carlson
