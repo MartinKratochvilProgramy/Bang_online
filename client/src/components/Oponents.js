@@ -72,7 +72,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                     />
                 </div>
                 <div className='flex justify-center fixed top-0 left-0 right-0 mx-auto z-5'>
-                    <div className='w-[420px] xl:w-[620px]'>                        
+                    <div className='w-[420px] xs:w-[820px]'>                        
                     <TopPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

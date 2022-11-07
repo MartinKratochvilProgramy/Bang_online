@@ -29,7 +29,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
       <div 
         className='flex justify-between items-start mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative'
       >
-        <div className='flex w-[140px] text-sm flex-col-reverse items-start font-rye'>
+        <div className='flex w-auto min-w-[60px] text-sm flex-col-reverse items-start font-rye'>
           <div className='flex flex-col items-start'>
             <div className='overflow-visible'>{oponentName}</div>
             <div>HP: {health}</div>
@@ -52,7 +52,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           </div>
         </div>
 
-        <div className='flex w-[140px] relative group'>
+        <div className='flex w-auto min-w-[90px] relative group'>
           <img 
             className='w-[60px] xs:w-[80px]'
             src={roleSource} alt="">

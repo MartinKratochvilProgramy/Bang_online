@@ -26,7 +26,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
   }
 
   return (
-    <div className='w-[300px] xs:w-[400px] absolute z-50'>
+    <div className='w-[300px] xs:w-full absolute z-50'>
       <div className='space-x-2 flex justify-center mb-1 xs:mb-2 translate-y-[0] xs:translate-y-[-px]'>
         {table.map(card => {
           return(
@@ -44,7 +44,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
       <div 
         className='flex justify-between items-end mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative' 
       >
-        <div className='flex w-[140px] text-sm flex-col items-start font-rye'>
+        <div className='flex w-auto min-w-[60px] xs:min-w-[80px] text-sm flex-col items-start font-rye'>
           <div className='overflow-visible'>{oponentName}</div>
           <div>HP: {health}</div>
           <div className='relative flex justify-center group'>
@@ -68,7 +68,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
           </div>
         </div>
 
-        <div className='flex w-[140px] relative group'>
+        <div className='flex w-auto min-w-[70px] xs:min-w-[90px] relative group'>
           <img 
             className='w-[60px] xs:w-[80px]'
             src={roleSource} alt="">
