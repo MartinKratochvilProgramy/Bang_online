@@ -2,7 +2,7 @@ class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
         // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["Jourdonnais", "Black Jack", "Pedro Ramirez", "El Gringo"] 
+        this.namesOfCharacters = ["Lucky Duke", "Black Jack", "Pedro Ramirez", "El Gringo"] 
         this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
@@ -19,7 +19,7 @@ class Game {
         this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
         this.sidKetchumDiscarded = false;
-        this.awaitJesseJones = false;
+        this.awaitDrawChoice = false;
 
         // init players
         for (let i = 0; i < this.numOfPlayers; i++) {
@@ -83,8 +83,8 @@ class Game {
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
 
-        if (this.players[playerName].character.name === "Jesse Jones") {
-            this.awaitJesseJones = false;
+        if (this.players[playerName].character.name === "Jesse Jones" || this.players[playerName].character.name === "Pedro Ramirez") {
+            this.awaitDrawChoice = false;
         }
 
         if (numToDraw === 1) {
@@ -606,6 +606,8 @@ class Game {
         
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+
+        this.awaitDrawChoice = false;
         
         console.log("Pedro Ramirez drew first crad from stack");
     }
@@ -821,11 +823,11 @@ class Game {
                 return;
             }
             // if not dynamite on table, allow use cards except Jesse Jones
-            if (this.players[playerName].character.name !== "Jesse Jones" && (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length <= 0)) {
+            if (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length > 0) {
                 this.draw(2, playerName);
                 this.setAllPlayable(playerName);
                 this.setMancatoBeerNotPlayable(playerName);
-            }
+            }  
         }
     }
 
@@ -876,10 +878,12 @@ class Game {
                     }
                     return;
                 } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
-                    this.awaitJesseJones = true;
+                    this.awaitDrawChoice = true;
+                    return;
                 }
-                // if not dynamite on table, allow use cards except Jesse Jones
-                if (this.players[playerName].character.name !== "Jesse Jones" && (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length <= 0)) {
+
+                // if not prigione on table, allow use cards except
+                if (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length > 0) {
                     this.draw(2, playerName);
                     this.setAllPlayable(playerName);
                     this.setMancatoBeerNotPlayable(playerName);
@@ -1038,7 +1042,7 @@ class Game {
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
 
-        this.awaitJesseJones = false;
+        this.awaitDrawChoice = false;
     }
 
     jourdonnaisBarel(playerName){
@@ -1228,10 +1232,10 @@ class Game {
                 if (this.getPlayerIsInPrison(player)) {
                     prisonFound = true;
                 }
-                if (this.players[player].character.name === "Jesse Jones" && this.awaitJesseJones) {
+                if (this.players[player].character.name === "Jesse Jones" && this.awaitDrawChoice) {
                     actionRequired = true;
                 }
-                if (this.players[player].character.name === "Pedro Ramirez" && this.stack.length > 0) {
+                if (this.players[player].character.name === "Pedro Ramirez" && this.stack.length > 0 && this.awaitDrawChoice) {
                     actionRequired = true;
                 }
             }
@@ -1427,7 +1431,7 @@ class Game {
             }
             
         } else if (this.players[firstPlayerName].character.name === "Jesse Jones") {
-            this.awaitJesseJones = true;
+            this.awaitDrawChoice = true;
 
         } else if (this.players[firstPlayerName].character.name === "Kit Carlson") {
             // populate create draw choice for Kit Carlson
@@ -1517,10 +1521,10 @@ class Game {
             return;
         
         } else if (this.players[currentPlayerName].character.name === "Jesse Jones") {
-            this.awaitJesseJones = true;
-        
+            this.awaitDrawChoice = true;
+            
         } else if (this.players[currentPlayerName].character.name === "Pedro Ramirez" && this.stack.length > 0) {
-            null
+            this.awaitDrawChoice = true;
         
         } else if (this.players[currentPlayerName].character.name === "Kit Carlson") {
             // populate create draw choice for Kit Carlson

@@ -101,10 +101,10 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
 
     let styles = {cursor: "auto"};
     if (isPlayable) {
-      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
     if (discarding) {
-      styles = {color: "red", border: "solid 1px red"}
+      styles = {color: "red", border: "solid 2px red"}
     } 
 
     const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");

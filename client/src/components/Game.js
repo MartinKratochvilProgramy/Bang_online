@@ -182,7 +182,10 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     setCharacterUsable(false);
     setSelectPlayerTarget(false);
     setDeckActive(false);
+    setNextTurn(true);
   }
+
+  console.log("Next turn", nextTurn);
   
   return (
     <div id='game'>
@@ -219,7 +222,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             confirmPlayerTarget={confirmPlayerTarget}
           />
 
-          <div className='fixed flex flex-col items-center z-50 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed flex flex-col items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
             <StackDeck 
               socket={socket} 
               username={username} 
@@ -229,7 +232,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               deckActive={deckActive}
               drawFromDeck={drawFromDeck}
             />
-            <div className='absolute mt-8'>
+            <div className='absolute mt-8 z-50'>
               {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
             </div>
             <div className='absolute mt-8'>
@@ -237,7 +240,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             </div>
           </div>
 
-          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-20'>
+          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-40'>
             <Chat sendMessage={sendMessage} messages={messages} width={260} />
             <PlayerTable
               socket={socket}
@@ -263,6 +266,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               myHealth={myHealth}
               selectPlayerTarget={selectPlayerTarget}
               setDiscarding={setDiscarding}
+              setDeckActive={setDeckActive}
               playersLosingHealth={playersLosingHealth}
             />
             <Console />

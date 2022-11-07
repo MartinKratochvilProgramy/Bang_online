@@ -11,7 +11,7 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
 
   let cardstyles = {};
   if (deckActive) {
-    cardstyles = {border: "solid 1px red", cursor: "pointer"}
+    cardstyles = {border: "solid 2px red", cursor: "pointer"}
   }
 
     return (

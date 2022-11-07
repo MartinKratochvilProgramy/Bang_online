@@ -4,7 +4,7 @@ export default function EmporionChoice({ cards, getEmporioCard, username, nextEm
   
     let emporioStyles = {color: "black"};
     if (nextEmporioTurn === username) {
-        emporioStyles = {border: "solid 1px red"}
+        emporioStyles = {border: "solid 2px red"}
     }
   
     return (

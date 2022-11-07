@@ -18,7 +18,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
-    characterStyles = {color: "red", border: "solid 1px red", cursor: "pointer"};
+    characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }
 
   function handleCharacterClick() {
@@ -29,19 +29,19 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   return (
     <div className=''>
       <div 
-        className='flex justify-between items-start mx-4 h-[145px] xs:h-[176px] bg-beige rounded p-2 relative'
+        className='flex justify-between items-start mx-4 h-[135px] xs:h-[176px] bg-beige rounded p-2'
       >
-        <div className='flex w-auto min-w-[60px] xs:min-w-[80px] text-sm flex-col-reverse items-start font-rye'>
+        <div className='flex w-auto min-w-[60px] xs:min-w-[80px] text-xs xs:text-sm flex-col-reverse items-start font-rye'>
           <div className='flex flex-col items-start'>
             <div className='overflow-visible'>{oponentName}</div>
             <div>HP: {health}</div>
           </div>
-          <div className='relative flex justify-center group'>
+          <div className='flex justify-center group'>
             <img 
               src={characterSource} 
               style={characterStyles} 
               onClick={() => handleCharacterClick()} 
-              className='w-[60px] xs:w-[80px]  rounded-md ml-2 mr-4' alt="Player character">
+              className='w-[60px] xs:w-[80px]  rounded-md ml-0 xs:ml-2 mr-2 xs:mr-4' alt="Player character">
             </img>
             <div className='hidden p-1 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[96px] xs:top-[126px] w-[200px] mx-auto bg-transparentBlack text-white absolute'>
               <div className='text-xl'>
@@ -54,25 +54,30 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           </div>
         </div>
 
-        <div className='flex w-auto min-w-[90px] relative group'>
+        <div className='flex w-auto min-w-[90px] group'>
           <img 
             className='w-[60px] xs:w-[80px]'
             src={roleSource} alt="">
           </img>
         </div>
 
-        <div className='max-h-full w-full overflow-x-auto flex'>
-          {cardsInHand.map(() => {
+        <div className='max-h-full w-[264px] flex relative'>
+          {cardsInHand.map((card, index) => {
+              let translate = 0;
+              if (cardsInHand.length > 4) {
+                  translate = - ((cardsInHand.length - 1) * 90 - 264) / (cardsInHand.length - 1) * index;
+              }
               return(
                 <img
                   className='w-[60px] xs:w-[80px]' 
+                  style={{transform: `translate(${translate}px, 0)`}}
                   src={require("../img/gfx/cards/back-playing.png")} alt="" />
               )
           })}
         </div>
         
       </div>
-      <div className='space-x-2 rotate-0 mt-2 flex justify-center z-20'>
+      <div className='space-x-2 rotate-0 mt-1 xs:mt-2 flex justify-center z-20'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
