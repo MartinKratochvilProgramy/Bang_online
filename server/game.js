@@ -2,7 +2,7 @@ class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
         // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["Calamity Janet", "Black Jack", "Jesse Jones", "El Gringo"] 
+        this.namesOfCharacters = ["Calamity Janet", "Black Jack", "Pedro Ramirez", "El Gringo"] 
         this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
@@ -1231,6 +1231,9 @@ class Game {
                 if (this.players[player].character.name === "Jesse Jones" && this.awaitJesseJones) {
                     actionRequired = true;
                 }
+                if (this.players[player].character.name === "Pedro Ramirez" && this.stack.length > 0) {
+                    actionRequired = true;
+                }
             }
             state.push({
                 name: player,
@@ -1471,10 +1474,10 @@ class Game {
             this.draw(1, previousPlayerName);
         }
 
+        // find next playerRoundId
         for (let i = 0; i < this.numOfPlayers; i++) {
             // move playerRoundId forward
             this.playerRoundId += 1;
-            // TODO: numOfPlayers changes on death
             if (this.playerRoundId >= this.numOfPlayers) {
                 this.playerRoundId = 0;
             }
@@ -1483,6 +1486,8 @@ class Game {
                 break;
             }            
         }
+
+        // this is next player in line
         const currentPlayerName = this.getNameOfCurrentTurnPlayer()
 
         this.setAllNotPlayable(previousPlayerName);

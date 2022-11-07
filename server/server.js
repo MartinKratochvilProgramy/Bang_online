@@ -515,7 +515,7 @@ function endTurn(io, currentRoom) {
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Lucky Duke") {
     io.to(currentRoom).emit("update_draw_choices", "Lucky Duke");
 
-  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez" && rooms[currentRoom].game.stack.length > 0) {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
   
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Jesse Jones") {
@@ -533,7 +533,7 @@ function nextTurn(io, currentRoom) {
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Lucky Duke") {
     io.to(currentRoom).emit("update_draw_choices", "Lucky Duke");
 
-  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez") {
+  } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Pedro Ramirez" && rooms[currentRoom].game.stack.length > 0) {
     io.to(currentRoom).emit("update_draw_choices", "Pedro Ramirez");
 
   } else if (rooms[currentRoom].game.players[currentPlayer].character.name === "Jesse Jones") {
