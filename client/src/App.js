@@ -35,7 +35,6 @@ function App() {
   const [indianiActive, setIndianiActive] = useState(false);
   const [emporioState, setEmporioState] = useState([]);
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
-  const [characterUsable, setCharacterUsable] = useState(false);
 
   const newRoomRef = useRef();
 
@@ -222,8 +221,6 @@ function App() {
         emporioState={emporioState}
         myDrawChoice={myDrawChoice}
         nextEmporioTurn={nextEmporioTurn}
-        characterUsable={characterUsable}
-        setCharacterUsable={setCharacterUsable}
         sendMessage={sendMessage}
         messages={messages}
       />

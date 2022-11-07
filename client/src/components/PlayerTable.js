@@ -6,7 +6,7 @@ import getRoleDescription from '../utils/getRoleDescription';
 import CardOnTable from './CardOnTable';
 
 export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarget, setSelectCardTarget, currentRoom, setActiveCard, activateCharacter, username, currentPlayer, duelActive, 
-    indianiActive, discarding, character, role, nextTurn, characterUsable, myDrawChoice, emporioState, myHealth,
+    indianiActive, discarding, character, role, nextTurn, characterUsable, setCharacterUsable, myDrawChoice, emporioState, myHealth,
     selectPlayerTarget, setDiscarding, playersLosingHealth}) {
 
   function cancelTargetSelect() {
@@ -16,6 +16,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
   
   function loseHealth() {
+    setCharacterUsable(false);
     socket.emit("lose_health", {username, currentRoom})
   }
 

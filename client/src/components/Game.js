@@ -9,10 +9,9 @@ import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
 
 export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
-  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
+  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages }) { 
   
-
-    
+  const [characterUsable, setCharacterUsable] = useState(false);
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
@@ -52,7 +51,9 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     for (const player of playersActionRequiredOnStart) {
       if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
-        setCharacterUsable(false);
+        if (character !== "Pedro Ramirez") {
+          setCharacterUsable(false);
+        }
         break;
       }
     }
@@ -256,6 +257,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               role={role}
               nextTurn={nextTurn}
               characterUsable={characterUsable}
+              setCharacterUsable={setCharacterUsable}
               myDrawChoice={myDrawChoice}
               emporioState={emporioState}
               myHealth={myHealth}

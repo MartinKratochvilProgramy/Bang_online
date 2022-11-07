@@ -288,6 +288,8 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     updateGameState(io, roomName);
 
+    if (rooms[roomName].game.players[data.username].character.name === "Jourdonnais") return; // if Jourdonnais played Gatling, don't activate his Barel
+    // search player characters, if there is Jourdonnais, let him use Barel
     for (const player of Object.keys(rooms[roomName].game.players)) {
       if (rooms[roomName].game.players[player].character.name === "Jourdonnais") {
         io.to(roomName).emit("jourdonnais_can_use_barel");
