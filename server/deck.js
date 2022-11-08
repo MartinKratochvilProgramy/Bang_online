@@ -57,7 +57,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Gatling",
+        name: "Indiani",
         rimColor: "yellow",
         digit: 103,
         type: "hearts",

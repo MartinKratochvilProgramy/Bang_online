@@ -1012,6 +1012,7 @@ class Game {
                 if (player.isLosingHealth) return;
             }
             this.gatlingActive = false;
+            this.indianiActive = false;
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         }
