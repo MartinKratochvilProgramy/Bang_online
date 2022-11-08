@@ -41,7 +41,6 @@ function App() {
   useEffect(() => {
     socket.on("get_character_choices", (characters) => {
       // receive two chars to pick from
-      console.log("Got", characters[username]);
       setGameStarted(true);
       setMyCharacterChoice(characters[username]);
     })
@@ -98,7 +97,7 @@ function App() {
     })
 
     socket.on("known_roles", roles => {
-      console.log("known roles role: ", roles); // TODO: this runs multiple times??? 
+      console.log("known roles: ", roles); // TODO: this runs multiple times??? 
       setKnownRoles(roles);
     })
 

@@ -71,7 +71,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         rotateDescription={-90}
                     />
                 </div>
-                <div className='flex justify-center fixed top-0 left-0 right-0 mx-auto z-5'>
+                <div className='fixed top-0 left-[50%] translate-x-[-210px] xs:translate-x-[-310px] o z-5'>
                     <div className='w-[420px] xs:w-[620px]'>                        
                     <TopPlayerTable
                             socket={socket}
