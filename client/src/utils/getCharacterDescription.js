@@ -19,6 +19,14 @@ export default function getCharacterDescription(characterName) {
     if (characterName === "Jesse Jones") {
         return "He may draw the first card from the hand of a player."
     } 
+    
+    if (characterName === "Jourdonnais") {
+        return "Whenever he is the target of a Bang! card, he may draw: on a heart, he is missed."
+    } 
+
+    if (characterName === "Kit Carlson") {
+        return "He looks at the top three cards of the deck and chooses the two to draw."
+    } 
 
     if (characterName === "Lucky Duke") {
         return "Each time he draws, he flips the top two cards and chooses one."
@@ -33,11 +41,26 @@ export default function getCharacterDescription(characterName) {
     } 
 
     if (characterName === "Rose Doolan") {
-        return "She sees all players at a ."
+        return "She sees all players at a distance decreased by 1."
     } 
 
-    if (characterName === "Kit Carlson") {
-        return "He looks at the top three cards of the deck and chooses the two to draw."
+    if (characterName === "Sid Ketchum") {
+        return "He may discard 2 cards to gain one life point."
     } 
 
+    if (characterName === "Slab the Killer") {
+        return "Player needs 2 Mancato! cards to cancel his Bang!."
+    } 
+
+    if (characterName === "Suzy Lafayette") {
+        return "As soon as she has no cards in hand, she draws a card."
+    } 
+
+    if (characterName === "Vulture Sam") {
+        return "Whenever a player is eliminated from play, he takes in hand all the cards of that player."
+    } 
+
+    if (characterName === "Willy the Kid") {
+        return "He can play any number of Bang! cards."
+    } 
 }
