@@ -109,7 +109,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
           </div>
         }
 
-        <div className='max-h-full w-full overflow-y-auto flex justify-center'>
+        <div className='max-h-full w-full overflow-y-auto flex flex-wrap justify-center'>
           {myHand.map(card => {
               return(
               <Card 

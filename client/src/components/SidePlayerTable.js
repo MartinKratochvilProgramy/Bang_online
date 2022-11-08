@@ -76,15 +76,22 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
           </img>
         </div>
 
-        <div className='max-h-full w-full overflow-x-auto flex'>
-          {cardsInHand.map(() => {
-              return(
-                // unknown card
-                <img
-                  className='w-[60px] xs:w-[80px]' 
-                  src={require("../img/gfx/cards/back-playing.png")} alt="" />
-              )
-          })}
+        <div className='max-h-full w-full flex justify-center'>
+          <div className='max-h-full w-[272px] flex relative'>
+            {cardsInHand.map((card, index) => {
+                let translate = 0;
+                if (cardsInHand.length > 3) {
+                    translate = - 0.92 * ((cardsInHand.length - 1) * 90 - 210) / (cardsInHand.length - 1) * index;
+                }
+                return(
+                  // unknown card
+                  <img
+                    className='w-[60px] xs:w-[80px]' 
+                    style={{transform: `translate(${translate}px, 0)`}}
+                    src={require("../img/gfx/cards/back-playing.png")} alt="" />
+                )
+            })}
+          </div>
         </div>
       </div>
     </div>

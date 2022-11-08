@@ -23,7 +23,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
 
     if (oponentsInfo.length === 1) {
         return (
-          <div className='min-w-[420px] md:min-w-[600px] w-full z-50'>
+          <div className='min-w-[420px] xs:min-w-[600px] w-full z-50'>
               <TopPlayerTable
                 socket={socket}
                 cardsInHand={new Array(oponentsInfo[0].numberOfCards).fill(0)}
@@ -72,7 +72,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                     />
                 </div>
                 <div className='flex justify-center fixed top-0 left-0 right-0 mx-auto z-5'>
-                    <div className='w-[420px] xs:w-[820px]'>                        
+                    <div className='w-[420px] xs:w-[620px]'>                        
                     <TopPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
