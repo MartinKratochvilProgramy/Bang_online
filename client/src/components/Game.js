@@ -169,7 +169,9 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
 
     if (character === "Pedro Ramirez") {
       setCharacterUsable(false);
+      setSelectPlayerTarget(false);
       setDeckActive(false);
+      setNextTurn(true);
       socket.emit("get_stack_card_PR", {currentRoom, username});
     }
 
