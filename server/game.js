@@ -606,24 +606,29 @@ class Game {
         
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
-
+        
         this.awaitDrawChoice = false;
         
         console.log("Pedro Ramirez drew first crad from stack");
     }
-
+    
     useDiligenza(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Diligenza", cardDigit, cardType);
         console.log(`Player ${playerName} used Diligenza`);
-
+        
         this.draw(2, playerName);
+        
+        this.setAllPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
     }
-
+    
     useWellsFargo(playerName = this.getNameOfCurrentTurnPlayer(), cardDigit, cardType) {
         this.discard("Wells Fargo", cardDigit, cardType);
         console.log(`Player ${playerName} used Wells Fargo`);
-
+        
         this.draw(3, playerName);
+        this.setAllPlayable(playerName);
+        this.setMancatoBeerNotPlayable(playerName);
     }
 
     useDuel(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -1266,6 +1271,7 @@ class Game {
             range += 1;
         }
 
+        console.log("GET RANGE", range, playerName);
         if  (range === "max" || range === "max_not_sheriff") {
             // ******** MAX RANGE ********
             let result = [];
