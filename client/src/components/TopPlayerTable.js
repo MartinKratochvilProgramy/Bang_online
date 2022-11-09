@@ -18,7 +18,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
-    characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
+    characterStyles = {color: "red", border: "solid 2px red"};
   }
 
   function handleCharacterClick() {

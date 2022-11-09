@@ -18,7 +18,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
-    characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
+    characterStyles = {color: "red", border: "solid 2px red"};
   }
 
   function handleCharacterClick() {
@@ -83,11 +83,11 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
                 let magicConstant = 72;
                 let cardWidth = 60;
                 if (document.getElementById('cards') !== null) {
-                  document.getElementById('cards').offsetWidth > 260 ? magicConstant = 252 : magicConstant = 72;
+                  document.getElementById('cards').offsetWidth > 260 ? magicConstant = 262 : magicConstant = 112;
                   document.getElementById('cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
                 }
                 if (cardsInHand.length > 3) {
-                    translate = - 1 * ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length) * index;
+                    translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }
                 return(
                   // unknown card
