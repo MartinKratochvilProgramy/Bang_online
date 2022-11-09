@@ -1005,7 +1005,7 @@ class Game {
             this.knownRoles[playerName] = this.players[playerName].character.role;
         }
 
-        if (!this.gatlingActive) {
+        if (!this.gatlingActive && !this.indianiActive) {
             // if no gatling, continue
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
@@ -1018,6 +1018,7 @@ class Game {
             }
             this.gatlingActive = false;
             this.indianiActive = false;
+            console.log("this.indianiActive ", this.indianiActive);
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         }
@@ -1271,7 +1272,6 @@ class Game {
             range += 1;
         }
 
-        console.log("GET RANGE", range, playerName);
         if  (range === "max" || range === "max_not_sheriff") {
             // ******** MAX RANGE ********
             let result = [];
@@ -1290,28 +1290,32 @@ class Game {
                     }
                 }
             }
+            console.log("RANGE: ", result);
             return result;
         } else if (range === "one_not_gun") {
-                // ******** CUSTOM RANGE ********
-                let result = [];
-
-                const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
-                const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
-
-                for (let i = 0; i < concatArray.length; i++) {
-                    let currentName = concatArray[i];
-
-                    if (currentName !== playerName && this.players[currentName].character.health > 0) {
-                        const currentRange = range;
-                        if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
-                        if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
-
-                        if (Math.abs(i - playerIndex) <= currentRange) {
-                            result.push(currentName);
-                        }
-                    };
+            // ******** CUSTOM RANGE ********
+            let result = [];
+            
+            const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
+            const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
+            
+            for (let i = 0; i < concatArray.length; i++) {
+                let currentName = concatArray[i];
+                
+                if (currentName !== playerName && this.players[currentName].character.health > 0) {
+                    console.log("range ", i, playerIndex, currentName);
+                    const currentRange = 1;
+                    if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
+                    if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
                     
-                }
+                    if (Math.abs(i - playerIndex) <= currentRange) {
+                        result.push(currentName);
+                    }
+                };
+                    
+            }
+                
+                console.log("RANGE: ", result);
                 return result;
         } else {
             // ******** CUSTOM RANGE ********

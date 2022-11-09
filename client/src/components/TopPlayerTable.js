@@ -18,7 +18,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
 
   let characterStyles = {};
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
-    characterStyles = {color: "red", border: "solid 2px red"};
+    characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }
 
   function handleCharacterClick() {
@@ -70,6 +70,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
                 }
                 return(
                   <img
+                    key={card}
                     className='w-[60px] xs:w-[80px]' 
                     style={{transform: `translate(${translate}px, 0)`}}
                     src={require("../img/gfx/cards/back-playing.png")} alt="" />
@@ -89,6 +90,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
               selectCardTarget={selectCardTarget}
               confirmCardTarget={confirmCardTarget}
               currentRoom={currentRoom}
+              key={card}
               card={card}
             />
           )

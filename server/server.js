@@ -378,8 +378,9 @@ io.on("connection", (socket) => {
 
     // on indiani, emit state
     io.to(roomName).emit("indiani_active", rooms[roomName].game.indianiActive);
-
+    console.log("indiani_active", rooms[roomName].game.indianiActive);
     io.to(roomName).emit("duel_active", rooms[roomName].game.duelActive);  // this is not optimal, however fixing it would require creating loseHealthInDuel() method...
+
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());

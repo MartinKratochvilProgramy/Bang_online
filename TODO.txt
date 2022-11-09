@@ -1,5 +1,7 @@
 sid ketchum should probably have separate discard from ability
 
+on player death, change ranges
+
 on wells fargo check are cards playable?
 
 end game

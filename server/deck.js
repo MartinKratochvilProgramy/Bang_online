@@ -9,7 +9,7 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Indiani",
+        name: "Panico",
         rimColor: "yellow",
         digit: 314,
         type: "hearts",

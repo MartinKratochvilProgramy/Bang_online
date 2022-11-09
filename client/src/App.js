@@ -50,7 +50,7 @@ function App() {
     })
 
     socket.on("room_left", () => {
-      localStorage.setItem('room-name', JSON.stringify(null));
+      // localStorage.setItem('room-name', JSON.stringify(null));
     })
 
     socket.on("get_players", (users) => {
@@ -153,7 +153,6 @@ function App() {
     setAdmin(false);
     setGameStarted(false);
     setCurrentRoom(null);
-    localStorage.setItem('room-name', JSON.stringify(null));
   }
 
   const sendMessage = (message) => {
@@ -167,7 +166,6 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
-  console.log(JSON.parse(localStorage.getItem('room-name')));
 
   return (
     <div className="App flex flex-col justify-start items-center h-screen">

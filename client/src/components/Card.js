@@ -104,7 +104,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
     if (discarding) {
-      styles = {color: "red", border: "solid 2px red"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
     const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");
@@ -115,7 +115,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       style={styles} 
       className='w-[60px] xs:w-[80px] rounded-md group flex flex-row justify-center'>
       <img src={cardSource} alt="" />
-      <div className='hidden p-1 z-40 font-rye absolute rounded group-hover:flex group-hover:flex-col group-hover:justify-center translate-y-[-60px] bg-transparentBlack text-white'>
+      <div className='hidden p-1 z-40 font-rye absolute group-hover:flex group-hover:flex-col group-hover:justify-center translate-y-[-60px] bg-transparentBlack text-white'>
         <div className='text-xl'>
           {cardName} 
         </div>
