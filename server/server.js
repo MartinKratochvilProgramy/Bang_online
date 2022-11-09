@@ -56,13 +56,17 @@ io.on("connection", (socket) => {
       for (let i = 0; i < rooms[room].players.length; i++) {
         // if player === player who disconnected, splice him
         if(rooms[room].players[i].id === socket.id) {
+  
+          io.to(room).emit("console", [`${rooms[room].players[i].username} disconnected`]);
+          rooms[room].game.removePlayer(rooms[room].players[i].username);
+          io.to(room).emit("known_roles", rooms[room].game.knownRoles);
+          
           rooms[room].players.splice(i, 1);
           io.emit("rooms", getRoomsInfo());
 
           // tell game a player left if room exists
           if (rooms[room].game && rooms[room].players.length >= 2) {
             // if game exists, remove player from game
-            rooms[room].game.removePlayer(rooms[room].players[i].username);
             // send info to client
             updateGameState(io, room);
             nextTurn(io, room);
@@ -77,6 +81,7 @@ io.on("connection", (socket) => {
           } else {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
+            updateGameState(io, room);
           }
           break;
         }

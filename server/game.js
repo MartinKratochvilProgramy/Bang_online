@@ -1615,7 +1615,8 @@ class Game {
             // next turn
             this.endTurn()
         }
-        delete this.players[playerName];
+        this.players[playerName].character.health = 0;
+        this.knownRoles[playerName] = this.players[playerName].character.role;
     }
 
     genCharacterChoices() {
