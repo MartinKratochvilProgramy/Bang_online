@@ -13,14 +13,16 @@ function App() {
 
   const [myCharacterChoice, setMyCharacterChoice] = useState([]);
   const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
-  const [role, setRole] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [consoleOutput, setConsoleOutput] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [role, setRole] = useState("");
+  const [knownRoles, setKnownRoles] = useState({});
   const [character, setCharacter] = useState("");
 
   const [myHand, setMyHand] = useState([]);
@@ -34,14 +36,16 @@ function App() {
   const [indianiActive, setIndianiActive] = useState(false);
   const [emporioState, setEmporioState] = useState([]);
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
-  const [characterUsable, setCharacterUsable] = useState(false);
 
   const newRoomRef = useRef();
 
   useEffect(() => {
+    socket.on("username_changed", (username) => {
+      setUsername(username);
+    })
+
     socket.on("get_character_choices", (characters) => {
       // receive two chars to pick from
-      console.log("Got", characters[username]);
       setGameStarted(true);
       setMyCharacterChoice(characters[username]);
     })
@@ -51,7 +55,7 @@ function App() {
     })
 
     socket.on("room_left", () => {
-      localStorage.setItem('room-name', JSON.stringify(null));
+      // localStorage.setItem('room-name', JSON.stringify(null));
     })
 
     socket.on("get_players", (users) => {
@@ -60,6 +64,11 @@ function App() {
 
     socket.on("get_messages", (messages) => {
       setMessages(messages);
+    })
+
+    socket.on("console", consoleMessage => {
+      setConsoleOutput([...consoleOutput, ...consoleMessage])
+      console.log("Console: ", consoleOutput);
     })
 
     // GAME LOGIC
@@ -95,6 +104,11 @@ function App() {
     socket.on("my_role", role => {
       console.log("my role: ", role); // TODO: this runs multiple times??? 
       setRole(role);
+    })
+
+    socket.on("known_roles", roles => {
+      console.log("known roles: ", roles); // TODO: this runs multiple times??? 
+      setKnownRoles(roles);
     })
 
     socket.on("my_hand", hand => {
@@ -142,14 +156,13 @@ function App() {
       setNextEmporioTurn(state.nextEmporioTurn);
     })
 
-  }, [username, currentRoom, character])
+  }, [username, currentRoom, character, consoleOutput])
   
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
     setAdmin(false);
     setGameStarted(false);
     setCurrentRoom(null);
-    localStorage.setItem('room-name', JSON.stringify(null));
   }
 
   const sendMessage = (message) => {
@@ -163,7 +176,6 @@ function App() {
     socket.emit("start_game", {players, currentRoom})
   }
 
-  console.log(JSON.parse(localStorage.getItem('room-name')));
 
   return (
     <div className="App flex flex-col justify-start items-center h-screen">
@@ -194,33 +206,32 @@ function App() {
           />
       }
       {gameStarted ? 
-      <>
-        <Game 
-          myCharacterChoice={myCharacterChoice}
-          characterChoiceInProgress={characterChoiceInProgress}
-          setCharacter={setCharacter}
-          myHand={myHand}
-          allPlayersInfo={allPlayersInfo}
-          setAllPlayersInfo={setAllPlayersInfo}
-          username={username}
-          character={character}
-          socket={socket}
-          currentRoom={currentRoom}
-          currentPlayer={currentPlayer}
-          playersLosingHealth={playersLosingHealth}
-          playersActionRequiredOnStart={playersActionRequiredOnStart}
-          topStackCard={topStackCard}
-          duelActive={duelActive}
-          indianiActive={indianiActive}
-          emporioState={emporioState}
-          myDrawChoice={myDrawChoice}
-          nextEmporioTurn={nextEmporioTurn}
-          characterUsable={characterUsable}
-          setCharacterUsable={setCharacterUsable}
-          sendMessage={sendMessage}
-          messages={messages}
-        />
-      </>
+      <Game 
+        myCharacterChoice={myCharacterChoice}
+        characterChoiceInProgress={characterChoiceInProgress}
+        setCharacter={setCharacter}
+        myHand={myHand}
+        allPlayersInfo={allPlayersInfo}
+        setAllPlayersInfo={setAllPlayersInfo}
+        username={username}
+        character={character}
+        role={role}
+        knownRoles={knownRoles}
+        socket={socket}
+        currentRoom={currentRoom}
+        currentPlayer={currentPlayer}
+        playersLosingHealth={playersLosingHealth}
+        playersActionRequiredOnStart={playersActionRequiredOnStart}
+        topStackCard={topStackCard}
+        duelActive={duelActive}
+        indianiActive={indianiActive}
+        emporioState={emporioState}
+        myDrawChoice={myDrawChoice}
+        nextEmporioTurn={nextEmporioTurn}
+        sendMessage={sendMessage}
+        messages={messages}
+        consoleOutput={consoleOutput}
+      />
       :
        null
       }

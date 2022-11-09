@@ -1,13 +1,6 @@
 const deckTwoBarrelsVulcanic = [
     {
-        name: "Gatling",
-        rimColor: "yellow",
-        digit: 314,
-        type: "hearts",
-        isPlayable: false
-    }, 
-    {
-        name: "Dynamite",
+        name: "Prigione",
         rimColor: "blue",
         digit: 22,
         type: "hearts",
@@ -15,6 +8,13 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false,
         actionReqOnStart: false,
     },  
+    {
+        name: "Panico",
+        rimColor: "yellow",
+        digit: 314,
+        type: "hearts",
+        isPlayable: false
+    }, 
     {
         name: "Barilo",
         rimColor: "blue",
@@ -25,12 +25,21 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Emporio",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 1010,
         type: "hearts",
         isPlayable: false
     },  
+    {
+        name: "Prigione",
+        rimColor: "blue",
+        digit: 2222222,
+        type: "hearts",
+        class: "prison",
+        isPlayable: false,
+        actionReqOnStart: false,
+    }, 
     {
         name: "Barilo",
         rimColor: "blue",
@@ -48,7 +57,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Gatling",
+        name: "Indiani",
         rimColor: "yellow",
         digit: 103,
         type: "hearts",
@@ -80,7 +89,7 @@ const deckTwoBarrelsVulcanic = [
         isPlayable: false
     },  
     {
-        name: "Prigione",
+        name: "Bang!",
         rimColor: "yellow",
         digit: 5,
         type: "hearts",

@@ -21,7 +21,7 @@ export default function CardOnTable({ socket, username, selectCardTarget, curren
 
     let styles = {cursor: "auto"};
     if (card.isPlayable || selectCardTarget) {
-      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
 

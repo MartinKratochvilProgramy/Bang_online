@@ -22,7 +22,7 @@ export default function CharacterChoice({ socket, currentRoom, username, charact
           }
           return (
               <img 
-                className='w-[185px] xs:w-[260px] hover:shadow-2xl cursor-pointer'
+                className='w-[185px] xs:w-[260px] rounded-3xl hover:shadow-2xl cursor-pointer'
                 src={characterSource} 
                 key={card}
                 style={styles}

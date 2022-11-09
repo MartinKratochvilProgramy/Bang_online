@@ -15,7 +15,8 @@ export default function DrawChoice({ cards, getChoiceCard }) {
                 return (
                     <button 
                         onClick={() => getChoiceCard(card)} 
-                        className='w-[60px] xs:w-[80px]'>
+                        style={{color: "red", border: "solid 2px red", cursor: "pointer"}}
+                        className='w-[60px] xs:w-[80px] rounded-md'>
                         <img src={cardSource} alt="" />
                     </button>
                 )

@@ -1,4 +1,4 @@
-const namesOfCharacters = [{name: "Bart Cassidy", health: 4}, {name: "Black Jack", health: 4}, {name: "Calamity Janet", health: 69}, {name: "El Gringo", health: 4}] 
+const str1 = "I_"
+const str2 = str1 + "I_"
 
-
-console.log(namesOfCharacters.findIndex(character => {return (character.name === "Calamity Janet")}));
+console.log(str2);

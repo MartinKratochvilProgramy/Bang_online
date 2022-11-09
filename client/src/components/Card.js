@@ -21,6 +21,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       }
 
       if (!isPlayable) return;
+
+      setSelectPlayerTarget(false);
+      setSelectCardTarget(false);
         
       if (cardName === "Bang!") {
         if (username !== currentPlayer && character === "Calamity Janet") {
@@ -87,6 +90,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         setActiveCard(card);
         setSelectPlayerTarget(true);
         setSelectCardTarget(true);
+        console.log("panico range");
         socket.emit("request_players_in_range", {range: "one_not_gun", currentRoom, username});
       
       } else if (card.rimColor === "blue" && card.name !== "Prigione") {
@@ -95,16 +99,16 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       } else if (card.name === "Prigione") {
         setActiveCard(card);
         setSelectPlayerTarget(true);
-        socket.emit("request_players_in_range", {range: "max_not_sheriffo", currentRoom, username});
+        socket.emit("request_players_in_range", {range: "max_not_sheriff", currentRoom, username});
       }
     }
 
     let styles = {cursor: "auto"};
     if (isPlayable) {
-      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
     if (discarding) {
-      styles = {color: "red", border: "solid 1px red"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
     const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");
@@ -115,7 +119,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       style={styles} 
       className='w-[60px] xs:w-[80px] rounded-md group flex flex-row justify-center'>
       <img src={cardSource} alt="" />
-      <div className='hidden p-1 z-40 font-rye absolute rounded group-hover:flex group-hover:flex-col group-hover:justify-center translate-y-[-60px] bg-transparentBlack text-white'>
+      <div className='hidden p-1 z-40 font-rye absolute group-hover:flex group-hover:flex-col group-hover:justify-center translate-y-[-60px] bg-transparentBlack text-white'>
         <div className='text-xl'>
           {cardName} 
         </div>

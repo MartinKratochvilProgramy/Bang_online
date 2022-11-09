@@ -1,9 +1,10 @@
+sid ketchum should probably have separate discard from ability
+start game with 3 players
+není potřeba posílat celej chat naráz
 
-výběr karty na začátku
+on player death, change ranges
 
-sid ketchum should have separate discard from ability
-
-maybe graphically distinguish discardable from playable
+on wells fargo check are cards playable?
 
 end game
 

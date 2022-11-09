@@ -4,7 +4,7 @@ export default function OponentCardOnTable({ selectCardTarget, card, confirmCard
 
     let styles = {cursor: "auto"};
     if (selectCardTarget) {
-      styles = {color: "red", border: "solid 1px red", cursor: "pointer"}
+      styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
 

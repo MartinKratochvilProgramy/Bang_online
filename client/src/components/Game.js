@@ -8,11 +8,10 @@ import DrawChoice from './DrawChoice';
 import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
 
-export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
-  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, characterUsable, setCharacterUsable, sendMessage, messages }) { 
+export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
+  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages, consoleOutput }) { 
   
-
-    
+  const [characterUsable, setCharacterUsable] = useState(false);
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
@@ -52,7 +51,9 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     for (const player of playersActionRequiredOnStart) {
       if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
-        setCharacterUsable(false);
+        if (character !== "Pedro Ramirez") {
+          setCharacterUsable(false);
+        }
         break;
       }
     }
@@ -74,8 +75,10 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
         setSelectPlayerTarget(true);
         setDeckActive(true);
         socket.emit("request_players_in_range", {range: "max", currentRoom, username});
-
+        
       } else if (characterName === "Pedro Ramirez") {
+        console.log("char usable");
+        setDeckActive(true);
         setCharacterUsable(true);
 
       } else {
@@ -142,7 +145,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   }
 
   function getEmporioCard(card) {
-    console.log("Git");
+    if (username !== nextEmporioTurn) return;
     socket.emit("get_emporio_card", {username, currentRoom, card});
   }
   
@@ -166,6 +169,9 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
 
     if (character === "Pedro Ramirez") {
       setCharacterUsable(false);
+      setSelectPlayerTarget(false);
+      setDeckActive(false);
+      setNextTurn(true);
       socket.emit("get_stack_card_PR", {currentRoom, username});
     }
 
@@ -179,7 +185,10 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     setCharacterUsable(false);
     setSelectPlayerTarget(false);
     setDeckActive(false);
+    setNextTurn(true);
   }
+
+  console.log("Next turn", nextTurn);
   
   return (
     <div id='game'>
@@ -202,6 +211,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             socket={socket}
             myHand={myHand}
             allPlayersInfo={allPlayersInfo}
+            knownRoles={knownRoles}
             currentRoom={currentRoom}
             activateCharacter={activateCharacter}
             username={username}
@@ -215,7 +225,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             confirmPlayerTarget={confirmPlayerTarget}
           />
 
-          <div className='fixed flex flex-col items-center z-50 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed flex flex-col items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
             <StackDeck 
               socket={socket} 
               username={username} 
@@ -225,7 +235,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               deckActive={deckActive}
               drawFromDeck={drawFromDeck}
             />
-            <div className='absolute mt-8'>
+            <div className='absolute top-1/2 translate-y-[-50%]'>
               {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
             </div>
             <div className='absolute mt-8'>
@@ -233,7 +243,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             </div>
           </div>
 
-          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-20'>
+          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-40'>
             <Chat sendMessage={sendMessage} messages={messages} width={260} />
             <PlayerTable
               socket={socket}
@@ -250,16 +260,19 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               indianiActive={indianiActive}
               discarding={discarding}
               character={character}
+              role={role}
               nextTurn={nextTurn}
               characterUsable={characterUsable}
+              setCharacterUsable={setCharacterUsable}
               myDrawChoice={myDrawChoice}
               emporioState={emporioState}
               myHealth={myHealth}
               selectPlayerTarget={selectPlayerTarget}
               setDiscarding={setDiscarding}
+              setDeckActive={setDeckActive}
               playersLosingHealth={playersLosingHealth}
             />
-            <Console />
+            <Console socket={socket} consoleOutput={consoleOutput} />
           </div>
         </>
       }

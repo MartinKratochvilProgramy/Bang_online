@@ -17,7 +17,7 @@ export default function Room({ users, messages, sendMessage, roomName, leaveRoom
           })}
         </div>
   
-        {(admin && users.length >= 2) && // TODO: change to 4 for dev
+        {(admin && (users.length === 2 || users.length >= 4) && users.length <= 6) && // TODO: change to 4 for dev
           <Button onClick={() => startGame()} value={"Start game"} size={2} />
         }
 
