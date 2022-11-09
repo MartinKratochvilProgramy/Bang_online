@@ -9,7 +9,7 @@ import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
 
 export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
-  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages }) { 
+  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages, consoleOutput }) { 
   
   const [characterUsable, setCharacterUsable] = useState(false);
   const [nextTurn, setNextTurn] = useState(true);
@@ -145,7 +145,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   }
 
   function getEmporioCard(card) {
-    console.log("Git");
+    if (username !== nextEmporioTurn) return;
     socket.emit("get_emporio_card", {username, currentRoom, card});
   }
   
@@ -272,7 +272,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               setDeckActive={setDeckActive}
               playersLosingHealth={playersLosingHealth}
             />
-            <Console />
+            <Console socket={socket} consoleOutput={consoleOutput} />
           </div>
         </>
       }

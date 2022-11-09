@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Button from './Button'
 
-export default function Chat({ sendMessage, messages, width }) {
+export default function Chat({ sendMessage, messages }) {
     
     const [messageInput, setMessageInput] = useState("");
     const [messagesOutput, setMessagesOutput] = useState("");

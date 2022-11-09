@@ -61,12 +61,19 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
           </img>
         </div>
 
-        <div className='w-full flex justify-center'>
+        <div id='top-cards' className='w-full flex justify-center'>
           <div className='max-h-full w-[240px] xs:w-[320px] flex relative'>
             {cardsInHand.map((card, index) => {
                 let translate = 0;
+                let magicConstant = 222;
+                let cardWidth = 60;
+                if (document.getElementById('top-cards') !== null) {
+                  document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = 402 : magicConstant = 222;
+                  document.getElementById('top-cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
+                }
+                console.log("Magic: ", magicConstant);
                 if (cardsInHand.length > 4) {
-                    translate = - ((cardsInHand.length - 1) * 90 - 320) / (cardsInHand.length - 1) * index;
+                    translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }
                 return(
                   <img

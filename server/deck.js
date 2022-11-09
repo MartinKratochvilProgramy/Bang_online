@@ -25,7 +25,7 @@ const deckTwoBarrelsVulcanic = [
         actionReqOnStart: false,
     },  
     {
-        name: "Emporio",
+        name: "Mancato!",
         rimColor: "yellow",
         digit: 1010,
         type: "hearts",

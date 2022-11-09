@@ -16,6 +16,7 @@ function App() {
   const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [consoleOutput, setConsoleOutput] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [username, setUsername] = useState("");
   const [admin, setAdmin] = useState(false);
@@ -59,6 +60,11 @@ function App() {
 
     socket.on("get_messages", (messages) => {
       setMessages(messages);
+    })
+
+    socket.on("console", consoleMessage => {
+      setConsoleOutput([...consoleOutput, ...consoleMessage])
+      console.log("Console: ", consoleOutput);
     })
 
     // GAME LOGIC
@@ -146,7 +152,7 @@ function App() {
       setNextEmporioTurn(state.nextEmporioTurn);
     })
 
-  }, [username, currentRoom, character])
+  }, [username, currentRoom, character, consoleOutput])
   
   const leaveRoom = () => {
     socket.emit("leave_room", {username, currentRoom});
@@ -220,6 +226,7 @@ function App() {
         nextEmporioTurn={nextEmporioTurn}
         sendMessage={sendMessage}
         messages={messages}
+        consoleOutput={consoleOutput}
       />
       :
        null

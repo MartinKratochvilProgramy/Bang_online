@@ -1,5 +1,6 @@
 sid ketchum should probably have separate discard from ability
 start game with 3 players
+není potřeba posílat celej chat naráz
 
 on player death, change ranges
 
