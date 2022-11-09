@@ -77,7 +77,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
                 }
                 return(
                   <img
-                    key={card}
+                    key={index}
                     className='w-[60px] xs:w-[80px]' 
                     style={{transform: `translate(${translate}px, 0)`}}
                     src={require("../img/gfx/cards/back-playing.png")} alt="" />
@@ -97,7 +97,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
               selectCardTarget={selectCardTarget && playersInRange.includes(oponentName)}
               confirmCardTarget={confirmCardTarget}
               currentRoom={currentRoom}
-              key={card}
+              key={card.digit + card.type}
               card={card}
             />
           )

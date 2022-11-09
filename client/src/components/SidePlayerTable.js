@@ -83,7 +83,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
                 let magicConstant = 72;
                 let cardWidth = 60;
                 if (document.getElementById('cards') !== null) {
-                  document.getElementById('cards').offsetWidth > 260 ? magicConstant = 262 : magicConstant = 112;
+                  document.getElementById('cards').offsetWidth > 260 ? magicConstant = 292 : magicConstant = 112;
                   document.getElementById('cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
                 }
                 if (cardsInHand.length > 3) {

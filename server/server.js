@@ -24,9 +24,20 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", (data) => {
     socket.join(data.currentRoom);
+
     const roomName = data.currentRoom;
+    let username = data.username;
+    // go through players, if player exists, add "_|" to username
+    for (let i = 0; i < rooms[roomName].players.length; i++) {
+      if (rooms[roomName].players[i].username === username) {
+        username += "_|";
+        socket.emit("username_changed", username);
+        i = 0;
+      }
+    }
+
     const newUser = {
-      username: data.username,
+      username: username,
       id: socket.id
     };
     rooms[roomName].players.push(newUser);
@@ -62,6 +73,7 @@ io.on("connection", (socket) => {
           if(rooms[room].players.length <= 0) {
             // if room empty, delete it
             delete rooms[room];
+            console.log("Room ", room, " deleted")
           } else {
             // if players left in game, emit to them
             io.to(room).emit("get_players", rooms[room].players);
@@ -83,6 +95,7 @@ io.on("connection", (socket) => {
     if(rooms[roomName].players.length <= 0) {
       // if room empty, delete it
       delete rooms[roomName];
+      console.log("Room ", room, " deleted")
       socket.emit("rooms", getRoomsInfo()); 
     } else {
       if (rooms[roomName].game !== null) {
@@ -122,8 +135,9 @@ io.on("connection", (socket) => {
   // ********** GAME LOGIC **********
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
-    
+
     rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
+    console.log("Game started in room ", roomName);
 
     io.to(roomName).emit("get_character_choices", rooms[roomName].game.genCharacterChoices());
   });
@@ -572,7 +586,7 @@ return res;
 
 function startGame(io, roomName) {
   io.to(roomName).emit("console", rooms[roomName].game.startGame());
-  
+
   // emit so Join Room could not be displayed
   io.emit("rooms", getRoomsInfo());
   

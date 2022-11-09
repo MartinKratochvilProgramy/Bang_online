@@ -214,25 +214,24 @@ class Game {
         this.discard("Bang!", cardDigit, cardType, playerName);
 
         this.setIsLosingHealth(false, playerName);
+        this.setAllNotPlayable(playerName);
 
         // if there is player loosing health, return
         // if no player is found, set playable for playerPlaceholder
         for (const player of this.getPlayersLosingHealth()) {
-            if (player.isLosingHealth) return [`${playerName} used Bang! on Indiani`];
+            if (player.isLosingHealth) return [`${playerName} used Bang!`];
         }
         this.setAllPlayable(this.playerPlaceHolder);
         this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         this.indianiActive = false;
 
-        return [`${playerName} used Bang! on Indiani`];
+        return [`${playerName} used Bang!`];
     }
 
     useBangInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         // special case of Bang! use, sets the next turn of the duel state
-        let message = [];
 
         this.discard("Bang!", cardDigit, cardType, playerName);
-        message.push(`${playerName} used Bang! in duel`);
 
         this.setNotPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(false, this.duelPlayers[this.duelTurnIndex]);
@@ -240,13 +239,12 @@ class Game {
         
         // shift to the next player in duel (duelPlayers.length should always = 2)
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
-        message.push(`Next player: ${this.duelPlayers[this.duelTurnIndex]}`);
         // set next players Ban!g cards playable
         // TODO: character exception
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
         
-        return message;
+        return [`${playerName} used Bang! in duel`];
     }
 
     useMancato(playerName, cardDigit, cardType) {
@@ -282,7 +280,8 @@ class Game {
                 message.push(`${playerName} used Mancato!`);
             }
         } else {
-            // normally discard one Mancato!
+            // on gatling discard one Mancato!
+            this.setAllNotPlayable(playerName);
             this.discard("Mancato!", cardDigit, cardType, playerName);
             message.push(`${playerName} used Mancato!`);
         }
@@ -320,10 +319,8 @@ class Game {
 
     useMancatoInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         // special case of Bang! use, sets the next turn of the duel state
-        let message = [];
 
         this.discard("Mancato!", cardDigit, cardType, playerName);
-        message.push(`${playerName} used Mancato! as Bang! in duel`);
 
         this.setNotPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setNotPlayable("Mancato!", this.duelPlayers[this.duelTurnIndex]);
@@ -332,13 +329,12 @@ class Game {
         
         // shift to the next player in duel (duelPlayers.length should always = 2)
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
-        message.push(`Next player: ${this.duelPlayers[this.duelTurnIndex]}`)
         // set next players Ban!g cards playable
         // TODO: character exception
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
 
-        return message;
+        return [`${playerName} used Mancato! as Bang! in duel`];
     }
 
     useMancatoAsCJ(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -916,8 +912,9 @@ class Game {
                     this.setAllPlayable(playerName);
                     this.setMancatoBeerNotPlayable(playerName);
                     return message;
-                }            
+                }
             }
+            return message;
         } else {
             // next player round
             this.endTurn();
@@ -927,7 +924,7 @@ class Game {
     }
 
     loseHealth(playerName) {
-        let message = [];
+        let message = [`${playerName} lost health`];
 
         this.players[playerName].character.health -= 1;
 
@@ -944,7 +941,7 @@ class Game {
         if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
             // Bart Cassidy draws a card on hit
             // this works on all damage taken except Indiani -> could cause problems
-            this.draw(1, playerName);
+            message.push(this.draw(1, playerName));
         }
         
         if (playerName !== this.getNameOfCurrentTurnPlayer()) {
@@ -993,7 +990,7 @@ class Game {
                             this.setNotPlayable("Mancato!", this.playerPlaceHolder);
                         }
                     }
-                    return;
+                    return message;
                 }
             }
             // LOSE GAME
@@ -1048,12 +1045,13 @@ class Game {
                     this.setNotPlayable("Mancato!", this.playerPlaceHolder);
                 }
             }
+            return message;
         } else {
             // on gatling, activate playerPlaceholder only when all reactions
             // if there is player losing health, return
             // if no player is found, set playable for playerPlaceholder
             for (const player of this.getPlayersLosingHealth()) {
-                if (player.isLosingHealth) return;
+                if (player.isLosingHealth) return message;
             }
             this.gatlingActive = false;
             this.indianiActive = false;
@@ -1067,6 +1065,7 @@ class Game {
                     this.setNotPlayable("Mancato!", this.playerPlaceHolder);
                 }
             }
+            return message;
         }
 
     }
@@ -1544,7 +1543,8 @@ class Game {
         }
 
         // this is next player in line
-        const currentPlayerName = this.getNameOfCurrentTurnPlayer()
+        const currentPlayerName = this.getNameOfCurrentTurnPlayer();
+        this.bangCanBeUsed = true;
         
         message.push(`End of turn, next player: ${currentPlayerName}`);
 

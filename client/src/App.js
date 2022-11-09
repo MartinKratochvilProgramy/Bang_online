@@ -40,6 +40,10 @@ function App() {
   const newRoomRef = useRef();
 
   useEffect(() => {
+    socket.on("username_changed", (username) => {
+      setUsername(username);
+    })
+
     socket.on("get_character_choices", (characters) => {
       // receive two chars to pick from
       setGameStarted(true);

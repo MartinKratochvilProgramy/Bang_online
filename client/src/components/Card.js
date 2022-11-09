@@ -21,6 +21,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       }
 
       if (!isPlayable) return;
+
+      setSelectPlayerTarget(false);
+      setSelectCardTarget(false);
         
       if (cardName === "Bang!") {
         if (username !== currentPlayer && character === "Calamity Janet") {
@@ -87,6 +90,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         setActiveCard(card);
         setSelectPlayerTarget(true);
         setSelectCardTarget(true);
+        console.log("panico range");
         socket.emit("request_players_in_range", {range: "one_not_gun", currentRoom, username});
       
       } else if (card.rimColor === "blue" && card.name !== "Prigione") {
