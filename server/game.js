@@ -913,13 +913,6 @@ class Game {
         }
         this.setCardOnTableNotPlayable("Barilo", playerName)
         
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.playerPlaceHolder);
-            if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
-                // also disable Mancato! for CJ
-                this.setNotPlayable("Mancato!", this.playerPlaceHolder);
-            }
-        }
         
         if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
             // Bart Cassidy draws a card on hit
@@ -964,6 +957,16 @@ class Game {
                 if (card.name === "Beer") {
                     console.log("Losing: ", card.digit, card.type);
                     this.useBeer(playerName, card.digit, card.type);
+
+                    this.setAllPlayable(this.playerPlaceHolder);
+                    this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+                    if (!this.bangCanBeUsed) {
+                        this.setNotPlayable("Bang!", this.playerPlaceHolder);
+                        if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                            // also disable Mancato! for CJ
+                            this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                        }
+                    }
                     return;
                 }
             }
@@ -972,7 +975,7 @@ class Game {
             this.setAllCardsOnTableNotPlayable(playerName);
             console.log(`Player ${playerName} has died!`)
             for (const player of Object.keys(this.players)) {
-                if (this.players[player].character.name === "Vulture Sam") {
+                if (this.players[player].character.name === "Vulture Sam" && player !== playerName) {
                     // if there is Vulture Sam, put dead player's hand to his hand
                     console.log(`Vulture Sam received the hand of ${playerName}`)
                     for (const card of this.players[playerName].hand) {
@@ -1009,6 +1012,13 @@ class Game {
             // if no gatling, continue
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+            if (!this.bangCanBeUsed) {
+                this.setNotPlayable("Bang!", this.playerPlaceHolder);
+                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                    // also disable Mancato! for CJ
+                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                }
+            }
         } else {
             // on gatling, activate playerPlaceholder only when all reactions
             // if there is player losing health, return
@@ -1018,9 +1028,16 @@ class Game {
             }
             this.gatlingActive = false;
             this.indianiActive = false;
-            console.log("this.indianiActive ", this.indianiActive);
+
             this.setAllPlayable(this.playerPlaceHolder);
             this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+            if (!this.bangCanBeUsed) {
+                this.setNotPlayable("Bang!", this.playerPlaceHolder);
+                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                    // also disable Mancato! for CJ
+                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                }
+            }
         }
 
     }
@@ -1261,6 +1278,12 @@ class Game {
         // return array of all players if range === "max"
         
         const playerNames = Object.keys(this.players)   // array of player names;
+        for (const player of playerNames) {
+            if (this.players[player].character.health <= 0) {
+                playerNames.splice(playerNames.indexOf(player), 1);
+            }
+        }
+        console.log(playerNames, range);
 
         if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
             // if player has Apaloosa, increase range by 1
@@ -1303,8 +1326,7 @@ class Game {
                 let currentName = concatArray[i];
                 
                 if (currentName !== playerName && this.players[currentName].character.health > 0) {
-                    console.log("range ", i, playerIndex, currentName);
-                    const currentRange = 1;
+                    let currentRange = 1;
                     if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
                     if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
                     
@@ -1315,8 +1337,8 @@ class Game {
                     
             }
                 
-                console.log("RANGE: ", result);
-                return result;
+            console.log("RANGE: ", result);
+            return result;
         } else {
             // ******** CUSTOM RANGE ********
             let result = [];

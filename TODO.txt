@@ -1,4 +1,5 @@
 sid ketchum should probably have separate discard from ability
+start game with 3 players
 
 on player death, change ranges
 

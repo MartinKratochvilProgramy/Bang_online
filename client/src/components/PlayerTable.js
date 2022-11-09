@@ -23,6 +23,9 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   function endTurn() {
     if (myHand.length > myHealth) {
       setDiscarding(true);
+      setSelectPlayerTarget(false);
+      setSelectCardTarget(false);
+      setDeckActive(false);
     } else {
       setDiscarding(false);
       setSelectPlayerTarget(false);

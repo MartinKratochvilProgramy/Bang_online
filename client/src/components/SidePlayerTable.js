@@ -34,7 +34,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
             <OponentCardOnTable 
               socket={socket}
               username={username}
-              selectCardTarget={selectCardTarget}
+              selectCardTarget={selectCardTarget && playersInRange.includes(oponentName)}
               confirmCardTarget={confirmCardTarget}
               currentRoom={currentRoom}
               card={card}
