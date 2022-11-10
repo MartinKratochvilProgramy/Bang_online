@@ -1672,6 +1672,15 @@ class Game {
             }
         }
     }
+
+    endGame() {
+        for (const player of Object.keys(this.players)) {
+            this.setAllNotPlayable(player);
+            for (const card of this.players[player].table) {
+                this.setCardOnTableNotPlayable(card, player);
+            }
+        }
+    }
 }
 
 module.exports = Game;

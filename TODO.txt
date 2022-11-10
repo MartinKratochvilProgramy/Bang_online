@@ -1,10 +1,8 @@
 sid ketchum should probably have separate discard from ability
-start game with 3 players
 není potřeba posílat celej chat naráz
+    -ale když se přidá hráč pozdě, neuvidí stávající chat
 
-on player death, change ranges
-
-on wells fargo check are cards playable?
+Sheriff kills Vice
 
 end game
 

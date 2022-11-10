@@ -1,21 +1,11 @@
-characterChoiceInProgress
-currentRoom
-users
-messages
-consoleOutput
-username
-gameStarted
-role
-knownRoles
-character
-myHand
-myDrawChoice
-allPlayersInfo
-playersLosingHealth
-playersActionRequiredOnStart
-currentPlayer
-topStackCard
-duelActive
-indianiActive
-emporioState
-nextEmporioTurn
+Sheriff Vice win
+    contains("Sherif")
+    !contains("Bandit", "Renegade")
+
+Bandit win
+    contains("Bandit")
+    !contains("Sherif")
+
+Renegade win 
+    contains("Renegade")
+    !contains("Sherif", "Vice", "Bandit")

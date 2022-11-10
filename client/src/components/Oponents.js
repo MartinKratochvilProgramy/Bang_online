@@ -287,9 +287,9 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                     <div className='w-[320px] xs:w-[620px]'>                        
                      <TopPlayerTable
                             socket={socket}
-                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
-                            table={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].table}
-                            oponentName={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name}
+                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                            table={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].table}
+                            oponentName={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name}
                             currentRoom={currentRoom}
                             activateCharacter={activateCharacter}
                             selectCardTarget={selectCardTarget}
@@ -297,10 +297,10 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             confirmCardTarget={confirmCardTarget}
                             currentPlayer={currentPlayer}
                             username={username}
-                            character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
-                            role={knownRoles[oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name]}
+                            character={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].character}
+                            role={knownRoles[oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name]}
                             characterUsable={characterUsable}
-                            health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
+                            health={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
                             smallMagicConstant={122}
@@ -310,9 +310,9 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[200px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
-                        cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
-                        table={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].table}
-                        oponentName={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name}
+                        cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                        table={oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].table}
+                        oponentName={oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].name}
                         currentRoom={currentRoom}
                         activateCharacter={activateCharacter}
                         selectCardTarget={selectCardTarget}
@@ -320,10 +320,10 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         confirmCardTarget={confirmCardTarget}
                         currentPlayer={currentPlayer}
                         username={username}
-                        character={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].character}
-                        role={knownRoles[oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name]}
+                        character={oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].character}
+                        role={knownRoles[oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].name]}
                         characterUsable={characterUsable}
-                        health={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].health}
+                        health={oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].health}
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
                         rotateDescription={90}
