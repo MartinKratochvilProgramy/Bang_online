@@ -711,7 +711,6 @@ class Game {
     }
     
     playPrigione(target, card, playerName = this.getNameOfCurrentTurnPlayer()) {
-        // TODO: special case for Sheriffo
         // put prison in other players' table
         const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type));
         this.players[playerName].hand.splice(cardIndex, 1)[0];
@@ -1334,7 +1333,7 @@ class Game {
                         result.push(player);
     
                     } else if (range === "max_not_sheriff") {
-                        if (player !== playerName && this.players[player].character.role !== "Sheriff") {
+                        if (this.players[player].character.role !== "Sheriff") {
                             result.push(player);
                         }
     

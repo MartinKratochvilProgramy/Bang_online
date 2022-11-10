@@ -80,13 +80,13 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
           <div className='max-h-full w-[272px] flex relative'>
             {cardsInHand.map((card, index) => {
                 let translate = 0;
-                let magicConstant = 72;
-                let cardWidth = 60;
-                if (document.getElementById('cards') !== null) {
-                  document.getElementById('cards').offsetWidth > 260 ? magicConstant = 292 : magicConstant = 112;
-                  document.getElementById('cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
-                }
-                if (cardsInHand.length > 3) {
+                if (cardsInHand.length >= 3) {
+                  let magicConstant = 72;
+                  let cardWidth = 60;
+                  if (document.getElementById('cards') !== null) {
+                    document.getElementById('cards').offsetWidth > 260 ? magicConstant = 292 : magicConstant = 112;
+                    document.getElementById('cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
+                  }
                     translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }
                 return(
