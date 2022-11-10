@@ -3,7 +3,7 @@ import getCharacterDescription from '../utils/getCharacterDescription';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget}) {
+     character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, smallMagicConstant }) {
 
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
@@ -68,11 +68,11 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
                 let magicConstant = 222;
                 let cardWidth = 60;
                 if (document.getElementById('top-cards') !== null) {
-                  document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = 402 : magicConstant = 222;
+                  document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = 402 : magicConstant = smallMagicConstant;
                   document.getElementById('top-cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
                 }
                 console.log("Magic: ", magicConstant);
-                if (cardsInHand.length > 4) {
+                if (cardsInHand.length >= 3) {
                     translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }
                 return(

@@ -36,6 +36,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 health={oponentsInfo[0].health}
                 playersInRange={playersInRange}
                 confirmPlayerTarget={confirmPlayerTarget}
+                smallMagicConstant={222}
               />
           </div>
         )
@@ -86,6 +87,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={238}
                         />
                     </div>
                 </div>
@@ -114,6 +116,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
             </div>
         )
     }
+
     if (oponentsInfo.length === 4) {
         return (
             <div className=''>
@@ -159,6 +162,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={238}
                         />
                     </div>
                     <div className='w-[420px] xs:w-[620px]'>                        
@@ -180,6 +184,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={232}
                         />
                     </div>
                 </div>
@@ -208,4 +213,125 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
             </div>
         )
     }
+
+    if (oponentsInfo.length === 5) {
+        return (
+            <div className=''>
+                <div className='fixed z-10 flex items-end justify-start min-h-[352px] w-[490px] left-[-70px] top-[180px] xs:top-[200px] rotate-90 '>
+                    <SidePlayerTable
+                        socket={socket}
+                        cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                        table={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].table}
+                        oponentName={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].name}
+                        currentRoom={currentRoom}
+                        activateCharacter={activateCharacter}
+                        selectCardTarget={selectCardTarget}
+                        selectPlayerTarget={selectPlayerTarget}
+                        confirmCardTarget={confirmCardTarget}
+                        currentPlayer={currentPlayer}
+                        username={username}
+                        character={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].character}
+                        role={knownRoles[oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].name]}
+                        characterUsable={characterUsable}
+                        health={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].health}
+                        playersInRange={playersInRange}
+                        confirmPlayerTarget={confirmPlayerTarget}
+                        rotateDescription={-90}
+                    />
+                </div>
+                <div className='fixed top-0 left-0 right-0 flex justify-center space-x-2 z-5'>
+                    <div className='w-[320px] xs:w-[620px]'>                        
+                    <TopPlayerTable
+                            socket={socket}
+                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                            table={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].table}
+                            oponentName={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name}
+                            currentRoom={currentRoom}
+                            activateCharacter={activateCharacter}
+                            selectCardTarget={selectCardTarget}
+                            selectPlayerTarget={selectPlayerTarget}
+                            confirmCardTarget={confirmCardTarget}
+                            currentPlayer={currentPlayer}
+                            username={username}
+                            character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
+                            role={knownRoles[oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name]}
+                            characterUsable={characterUsable}
+                            health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
+                            playersInRange={playersInRange}
+                            confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={122}
+                        />
+                    </div>
+                    <div className='w-[320px] xs:w-[620px]'>                        
+                     <TopPlayerTable
+                            socket={socket}
+                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                            table={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].table}
+                            oponentName={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name}
+                            currentRoom={currentRoom}
+                            activateCharacter={activateCharacter}
+                            selectCardTarget={selectCardTarget}
+                            selectPlayerTarget={selectPlayerTarget}
+                            confirmCardTarget={confirmCardTarget}
+                            currentPlayer={currentPlayer}
+                            username={username}
+                            character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
+                            role={knownRoles[oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name]}
+                            characterUsable={characterUsable}
+                            health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
+                            playersInRange={playersInRange}
+                            confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={122}
+                        />
+                    </div>
+                    <div className='w-[320px] xs:w-[620px]'>                        
+                     <TopPlayerTable
+                            socket={socket}
+                            cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                            table={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].table}
+                            oponentName={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name}
+                            currentRoom={currentRoom}
+                            activateCharacter={activateCharacter}
+                            selectCardTarget={selectCardTarget}
+                            selectPlayerTarget={selectPlayerTarget}
+                            confirmCardTarget={confirmCardTarget}
+                            currentPlayer={currentPlayer}
+                            username={username}
+                            character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
+                            role={knownRoles[oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name]}
+                            characterUsable={characterUsable}
+                            health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
+                            playersInRange={playersInRange}
+                            confirmPlayerTarget={confirmPlayerTarget}
+                            smallMagicConstant={122}
+                        />
+                    </div>
+                </div>
+                <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[200px] rotate-[270deg]'>
+                    <SidePlayerTable
+                        socket={socket}
+                        cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
+                        table={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].table}
+                        oponentName={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name}
+                        currentRoom={currentRoom}
+                        activateCharacter={activateCharacter}
+                        selectCardTarget={selectCardTarget}
+                        selectPlayerTarget={selectPlayerTarget}
+                        confirmCardTarget={confirmCardTarget}
+                        currentPlayer={currentPlayer}
+                        username={username}
+                        character={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].character}
+                        role={knownRoles[oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name]}
+                        characterUsable={characterUsable}
+                        health={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].health}
+                        playersInRange={playersInRange}
+                        confirmPlayerTarget={confirmPlayerTarget}
+                        rotateDescription={90}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+
 }
