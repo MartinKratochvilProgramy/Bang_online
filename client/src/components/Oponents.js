@@ -11,8 +11,8 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
         return (player.name === username);
     });
     
+    // remove user player from players info array
     const oponentsInfo = allPlayersInfo.filter(player => {
-        // remove user player of players info array
         return (player.name !== username);
     });
 
@@ -332,6 +332,5 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
             </div>
         )
     }
-
 
 }
