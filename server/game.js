@@ -444,8 +444,8 @@ class Game {
         const cardInHandIndex = this.players[playerName].hand.findIndex(cardInHand => (cardInHand.name === card.name && cardInHand.digit === card.digit && cardInHand.type === card.type));
         this.players[playerName].hand.splice(cardInHandIndex, 1)[0]; // this can't be handled by this.discard() because decision must be made weather to push card on table or stack
 
-        //let cardOnTableIndex;
         if (card.class === "horse") {
+            console.log("1");
             // two horses allowed on table, so filter by name
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.name === card.name).length > 0) {
                 // remove card from table
@@ -456,11 +456,14 @@ class Game {
         } else if (card.class === "dynamite") {
             
         } else {
+            console.log("2", card.class);
             // only one gun card of same class allowed so filter by class
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length > 0) {
                 // remove card from table
-                const cardOnTableIndex = this.players[playerName].table.findIndex(cardOnTable => (cardOnTable.name === card.name));
+                const cardOnTableIndex = this.players[playerName].table.findIndex(foundCard => (foundCard.name === card.name));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
+                console.log("Splice ", removedCard);
+                console.log("class ", card.class);
                 if (removedCard.name === "Vulcanic") this.bangCanBeUsed = false;
                 this.stack.push(removedCard);
             }
@@ -1340,6 +1343,7 @@ class Game {
                     }
                 }
             }
+            console.log("range 1: ", result);
             return result;
 
         } else if (range === "one_not_gun") {

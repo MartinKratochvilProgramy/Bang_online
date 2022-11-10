@@ -54,10 +54,6 @@ function App() {
       setRooms(rooms);
     })
 
-    socket.on("room_left", () => {
-      // localStorage.setItem('room-name', JSON.stringify(null));
-    })
-
     socket.on("get_players", (users) => {
       setUsers(users);
     })
@@ -68,12 +64,10 @@ function App() {
 
     socket.on("console", consoleMessage => {
       setConsoleOutput([...consoleOutput, ...consoleMessage])
-      console.log("Console: ", consoleOutput);
     })
 
     // GAME LOGIC
     socket.on("game_started", data => {
-      console.log("emit game start");
       setCharacterChoiceInProgress(false);
       setGameStarted(true);
       if (currentRoom !== null) {
