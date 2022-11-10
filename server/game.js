@@ -445,7 +445,6 @@ class Game {
         this.players[playerName].hand.splice(cardInHandIndex, 1)[0]; // this can't be handled by this.discard() because decision must be made weather to push card on table or stack
 
         if (card.class === "horse") {
-            console.log("1");
             // two horses allowed on table, so filter by name
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.name === card.name).length > 0) {
                 // remove card from table
@@ -456,7 +455,6 @@ class Game {
         } else if (card.class === "dynamite") {
             
         } else {
-            console.log("2", card.class);
             // only one gun card of same class allowed so filter by class
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length > 0) {
                 // remove card from table
