@@ -18,7 +18,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [consoleOutput, setConsoleOutput] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(JSON.parse(sessionStorage.getItem('username')) || "");
   const [admin, setAdmin] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [role, setRole] = useState("");

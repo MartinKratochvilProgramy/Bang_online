@@ -19,13 +19,11 @@ export default function RoomSelect({ setUsername, socket, setCurrentRoom, userna
         // join room after create
         socket.emit("join_room", {currentRoom: roomName, username});
         setCurrentRoom(roomName);
-        localStorage.setItem('room-name', JSON.stringify(roomName));
     }
   
     const joinRoom = (room) => {
         socket.emit("join_room", {currentRoom: room, username});
         setCurrentRoom(room);
-        localStorage.setItem('room-name', JSON.stringify(room));
     };
 
     let gridStyle ;

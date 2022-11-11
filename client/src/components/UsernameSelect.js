@@ -6,6 +6,7 @@ export default function UsernameSelect({ setUsername }) {
     const [usernameInput, setUsernameInput] = useState("");
 
     function handleClick() {
+        sessionStorage.setItem('username', JSON.stringify(usernameInput));
         setUsername(usernameInput);
         setUsernameInput("");
     }
