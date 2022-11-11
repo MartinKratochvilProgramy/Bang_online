@@ -971,6 +971,41 @@ class Game {
             this.players[playerName].hand.push(randomCard);
             message.push("El Gringo was hit, so he draws 1 card");
         }
+
+        if (!this.gatlingActive && !this.indianiActive) {
+            // if no gatling, continue
+            this.setAllPlayable(this.playerPlaceHolder);
+            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+            if (!this.bangCanBeUsed) {
+                this.setNotPlayable("Bang!", this.playerPlaceHolder);
+                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                    // also disable Mancato! for CJ
+                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                }
+            }
+        } else {
+            // on gatling, activate playerPlaceholder only when all reactions
+            // if there is player losing health, return
+            // if no player is found, set playable for playerPlaceholder
+            let someoneLosingHealth = false;
+            for (const player of this.getPlayersLosingHealth()) {
+                if (player.isLosingHealth) someoneLosingHealth = true;
+            }
+            if (!someoneLosingHealth) {
+                this.gatlingActive = false;
+                this.indianiActive = false;
+    
+                this.setAllPlayable(this.playerPlaceHolder);
+                this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
+                if (!this.bangCanBeUsed) {
+                    this.setNotPlayable("Bang!", this.playerPlaceHolder);
+                    if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                        // also disable Mancato! for CJ
+                        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                    }
+                }
+            }
+        }
         
         // 0 health -> lose game
         if (this.players[playerName].character.health <= 0) {
@@ -994,6 +1029,7 @@ class Game {
             // LOSE GAME
             this.setAllNotPlayable(playerName);
             this.setAllCardsOnTableNotPlayable(playerName);
+
             for (const player of Object.keys(this.players)) {
                 if (this.players[player].character.name === "Vulture Sam" && player !== playerName) {
                     // if there is Vulture Sam, put dead player's hand to his hand
@@ -1023,49 +1059,42 @@ class Game {
             }
             if (playerName === this.getNameOfCurrentTurnPlayer()) {
                 // if is current players' turn and he dies, end his turn
-                message.push(`${playerName} has died!`);
                 message.push(this.endTurn());
-                return message;
             }
             this.knownRoles[playerName] = this.players[playerName].character.role;
             message.push(`${playerName} has died!`);
-            return message;
-        }
 
-        if (!this.gatlingActive && !this.indianiActive) {
-            // if no gatling, continue
-            this.setAllPlayable(this.playerPlaceHolder);
-            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
-            if (!this.bangCanBeUsed) {
-                this.setNotPlayable("Bang!", this.playerPlaceHolder);
-                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
-                    // also disable Mancato! for CJ
-                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+            let aliveRoles = [];
+            let deadRoles = [];
+            for (const player of Object.keys(this.players)) {
+                if (this.players[player].character.health > 0) {
+                    aliveRoles.push(this.players[player].character.role);
+                } else {
+                    deadRoles.push(this.players[player].character.role);
                 }
             }
-            return message;
-        } else {
-            // on gatling, activate playerPlaceholder only when all reactions
-            // if there is player losing health, return
-            // if no player is found, set playable for playerPlaceholder
-            for (const player of this.getPlayersLosingHealth()) {
-                if (player.isLosingHealth) return message;
-            }
-            this.gatlingActive = false;
-            this.indianiActive = false;
-
-            this.setAllPlayable(this.playerPlaceHolder);
-            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
-            if (!this.bangCanBeUsed) {
-                this.setNotPlayable("Bang!", this.playerPlaceHolder);
-                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
-                    // also disable Mancato! for CJ
-                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+            if (aliveRoles.includes("Sheriff") && (!aliveRoles.includes("Bandit") && !aliveRoles.includes("Renegade"))){
+                // Sherif and Vice victory
+                if (aliveRoles.includes("Vice") || deadRoles.includes("Vice")) {
+                    // Vice in game
+                    message.push("Sheriff and Vice wictory!");
+                    message.push("Game ended");
+                    this.endGame();
                 }
+                
+            } else if (aliveRoles.includes("Bandit") && deadRoles.includes("Sheriff")) {
+                message.push("Bandits wictory!");
+                message.push("Game ended");
+                this.endGame();
+                
+            } else if (aliveRoles.includes("Renegade") && (!aliveRoles.includes("Sheriff") && !aliveRoles.includes("Vice") && !aliveRoles.includes("Renegade"))) {
+                message.push("Renegade wictory!");
+                message.push("Game ended");
+                this.endGame();
             }
-            return message;
         }
 
+        return message;
     }
 
     jesseJonesTarget(target, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -1673,12 +1702,15 @@ class Game {
     }
 
     endGame() {
-        // turns off all playable cards
         for (const player of Object.keys(this.players)) {
+            // turns off all playable cards
             this.setAllNotPlayable(player);
             for (const card of this.players[player].table) {
                 this.setCardOnTableNotPlayable(card, player);
             }
+
+            // uncover known roles
+            this.knownRoles[player] = this.players[player].character.role;
         }
     }
 }
