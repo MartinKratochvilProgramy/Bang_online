@@ -510,6 +510,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("request_players_in_range", (data) => {
+    console.log("request_players_in_range", data, rooms[data.currentRoom].game.getPlayersInRange(data.username, data.range));
     socket.emit("players_in_range", rooms[data.currentRoom].game.getPlayersInRange(data.username, data.range))
   })
 });

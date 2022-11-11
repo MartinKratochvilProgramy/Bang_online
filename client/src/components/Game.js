@@ -60,6 +60,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   }, [playersActionRequiredOnStart, username, setCharacterUsable, character])
 
   socket.on("players_in_range", players => {
+    console.log("players: ", players);
     setPlayersInRange(players);
   })
 

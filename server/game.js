@@ -1312,16 +1312,6 @@ class Game {
             }
         }
 
-        if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
-            // if player has Apaloosa, increase range by 1
-            range += 1;
-        }
-
-        if (this.players[playerName].character.name === 'Rose Doolan') {
-            // Rose Doolan works as Apaloosa
-            range += 1;
-        }
-
         if  (range === "max" || range === "max_not_sheriff") {
             // ******** MAX RANGE ********
             let result = [];
@@ -1342,6 +1332,7 @@ class Game {
             }
             console.log("range 1: ", result);
             return result;
+
 
         } else if (range === "one_not_gun") {
             // ******** CUSTOM RANGE ********
@@ -1367,6 +1358,17 @@ class Game {
                 
             return result;
         } else {
+
+            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
+                // if player has Apaloosa, increase range by 1
+                range += 1;
+            }
+    
+            if (this.players[playerName].character.name === 'Rose Doolan') {
+                // Rose Doolan works as Apaloosa
+                range += 1;
+            }
+            
             // ******** CUSTOM RANGE ********
             let result = [];
             // if player has Apaloosa, increase range by 1
@@ -1674,6 +1676,7 @@ class Game {
     }
 
     endGame() {
+        // turns off all playable cards
         for (const player of Object.keys(this.players)) {
             this.setAllNotPlayable(player);
             for (const card of this.players[player].table) {

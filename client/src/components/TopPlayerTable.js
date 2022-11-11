@@ -3,7 +3,7 @@ import getCharacterDescription from '../utils/getCharacterDescription';
 import OponentCardOnTable from './OponentCardOnTable';
 
 export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
-     character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, smallMagicConstant }) {
+     character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, largeMagicConstant, smallMagicConstant }) {
 
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
@@ -17,6 +17,8 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   }
 
   let characterStyles = {};
+  console.log("selectPlayerTarget: ", selectPlayerTarget);
+  console.log("playersInRange: ", playersInRange);
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
     characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }
@@ -68,7 +70,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
                 let magicConstant = 222;
                 let cardWidth = 60;
                 if (document.getElementById('top-cards') !== null) {
-                  document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = 402 : magicConstant = smallMagicConstant;
+                  document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = largeMagicConstant : magicConstant = smallMagicConstant;
                   document.getElementById('top-cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
                 }
                 console.log("Magic: ", magicConstant);

@@ -36,6 +36,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 health={oponentsInfo[0].health}
                 playersInRange={playersInRange}
                 confirmPlayerTarget={confirmPlayerTarget}
+                largeMagicConstant={402}
                 smallMagicConstant={222}
               />
           </div>
@@ -87,6 +88,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={402}
                             smallMagicConstant={238}
                         />
                     </div>
@@ -162,6 +164,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={402}
                             smallMagicConstant={238}
                         />
                     </div>
@@ -184,6 +187,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={402}
                             smallMagicConstant={232}
                         />
                     </div>
@@ -217,7 +221,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
     if (oponentsInfo.length === 5) {
         return (
             <div className=''>
-                <div className='fixed z-10 flex items-end justify-start min-h-[352px] w-[490px] left-[-70px] top-[180px] xs:top-[200px] rotate-90 '>
+                <div className='fixed z-10 flex items-end justify-start min-h-[352px] w-[490px] left-[-70px] top-[180px] xs:top-[360px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -259,6 +263,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={362}
                             smallMagicConstant={122}
                         />
                     </div>
@@ -281,6 +286,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={362}
                             smallMagicConstant={122}
                         />
                     </div>
@@ -303,11 +309,12 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
+                            largeMagicConstant={362}
                             smallMagicConstant={122}
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[200px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[360px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

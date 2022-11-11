@@ -1,3 +1,5 @@
+after placing horse on table, can't target for prigione
+
 sid ketchum should probably have separate discard from ability
 není potřeba posílat celej chat naráz
     -ale když se přidá hráč pozdě, neuvidí stávající chat

@@ -17,6 +17,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
   }
 
   let characterStyles = {};
+  console.log("selectPlayerTarget: ", selectPlayerTarget);
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
     characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }
