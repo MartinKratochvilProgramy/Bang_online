@@ -7,9 +7,10 @@ import StackDeck from './StackDeck';
 import DrawChoice from './DrawChoice';
 import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
+import GameEnd from './GameEnd';
 
-export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
-  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages, consoleOutput }) { 
+export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, setCurrentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
+  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages, consoleOutput, winner }) { 
   
   const [characterUsable, setCharacterUsable] = useState(false);
   const [nextTurn, setNextTurn] = useState(true);
@@ -240,6 +241,9 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             </div>
             <div className='absolute mt-8'>
               {emporioState.length > 0 && <EmporionChoice cards={emporioState} getEmporioCard={getEmporioCard} username={username} nextEmporioTurn={nextEmporioTurn} />}
+            </div>
+            <div className='absolute mt-8'>
+              {winner && <GameEnd winner={winner} setCurrentRoom={setCurrentRoom} />}
             </div>
           </div>
 

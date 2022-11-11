@@ -37,6 +37,8 @@ function App() {
   const [emporioState, setEmporioState] = useState([]);
   const [nextEmporioTurn, setNextEmporioTurn] = useState("");
 
+  const [winner, setWinner] = useState(null);
+
   const newRoomRef = useRef();
 
   useEffect(() => {
@@ -150,6 +152,10 @@ function App() {
       setNextEmporioTurn(state.nextEmporioTurn);
     })
 
+    socket.on("game_ended", (winner) => {
+      setWinner(winner);
+    })
+
   }, [username, currentRoom, character, consoleOutput])
   
   const leaveRoom = () => {
@@ -213,6 +219,7 @@ function App() {
         knownRoles={knownRoles}
         socket={socket}
         currentRoom={currentRoom}
+        setCurrentRoom={setCurrentRoom}
         currentPlayer={currentPlayer}
         playersLosingHealth={playersLosingHealth}
         playersActionRequiredOnStart={playersActionRequiredOnStart}
@@ -225,6 +232,7 @@ function App() {
         sendMessage={sendMessage}
         messages={messages}
         consoleOutput={consoleOutput}
+        winner={winner}
       />
       :
        null

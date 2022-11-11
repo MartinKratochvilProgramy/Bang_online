@@ -386,7 +386,8 @@ io.on("connection", (socket) => {
   socket.on("lose_health", (data) => {
     const roomName = data.currentRoom;
     
-    io.to(roomName).emit("console", rooms[roomName].game.loseHealth(data.username));
+    const message = rooms[roomName].game.loseHealth(data.username)
+    io.to(roomName).emit("console", message);
     
     // player death -> show his role
     if (rooms[roomName].game.players[data.username].character.health <= 0) {
@@ -400,6 +401,12 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("update_hands");
     io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
     io.to(roomName).emit("update_all_players_info", rooms[roomName].game.getAllPlayersInfo());
+    
+    if (message[message.length - 1] === "Game ended") {
+      // game over      
+      // emit who won
+      io.to(roomName).emit("game_ended", message[message.length - 2]);
+    }
   })
   
   socket.on("use_barel", (data) => {
