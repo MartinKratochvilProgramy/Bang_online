@@ -38,6 +38,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 confirmPlayerTarget={confirmPlayerTarget}
                 largeMagicConstant={402}
                 smallMagicConstant={222}
+                cardClampLimit={4}
               />
           </div>
         )
