@@ -225,7 +225,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             confirmPlayerTarget={confirmPlayerTarget}
           />
 
-          <div className='fixed items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed flex justify-center items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
             <StackDeck 
               socket={socket} 
               username={username} 
