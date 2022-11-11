@@ -268,6 +268,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
+                            cardClampLimit={4}
                         />
                     </div>
                     <div className='w-[320px] xs:w-[620px]'>                        
@@ -291,6 +292,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
+                            cardClampLimit={4}
                         />
                     </div>
                     <div className='w-[320px] xs:w-[620px]'>                        
@@ -314,6 +316,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
+                            cardClampLimit={4}
                         />
                     </div>
                 </div>
