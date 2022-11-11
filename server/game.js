@@ -460,8 +460,6 @@ class Game {
                 // remove card from table
                 const cardOnTableIndex = this.players[playerName].table.findIndex(foundCard => (foundCard.name === card.name));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
-                console.log("Splice ", removedCard);
-                console.log("class ", card.class);
                 if (removedCard.name === "Vulcanic") this.bangCanBeUsed = false;
                 this.stack.push(removedCard);
             }
@@ -1330,7 +1328,6 @@ class Game {
                     }
                 }
             }
-            console.log("range 1: ", result);
             return result;
 
 

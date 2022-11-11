@@ -122,7 +122,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       <img src={cardSource} alt="" />
       <div className='hidden p-1 z-40 font-rye absolute group-hover:flex group-hover:flex-col group-hover:justify-center translate-y-[-60px] bg-transparentBlack text-white'>
         <div className='text-xl'>
-          {cardName} 
+          {cardName}
         </div>
         <div className='text-xs'>
           {cardDigit} {cardType}

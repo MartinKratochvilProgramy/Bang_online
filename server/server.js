@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
     if(rooms[roomName].players.length <= 0) {
       // if room empty, delete it
       delete rooms[roomName];
-      console.log("Room ", room, " deleted")
+      console.log("Room ", roomName, " deleted")
       socket.emit("rooms", getRoomsInfo()); 
     } else {
       if (rooms[roomName].game !== null) {
@@ -510,7 +510,6 @@ io.on("connection", (socket) => {
   })
 
   socket.on("request_players_in_range", (data) => {
-    console.log("request_players_in_range", data, rooms[data.currentRoom].game.getPlayersInRange(data.username, data.range));
     socket.emit("players_in_range", rooms[data.currentRoom].game.getPlayersInRange(data.username, data.range))
   })
 });

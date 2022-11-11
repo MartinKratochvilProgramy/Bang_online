@@ -5,8 +5,6 @@ import OponentCardOnTable from './OponentCardOnTable';
 export default function SidePlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
      character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, rotateDescription }) {
 
-  console.log("role: ", role);
-
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 
   let roleSource;
@@ -17,7 +15,6 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
   }
 
   let characterStyles = {};
-  console.log("selectPlayerTarget: ", selectPlayerTarget);
   if (oponentName === currentPlayer || (playersInRange.includes(oponentName) && selectPlayerTarget)) {
     characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }

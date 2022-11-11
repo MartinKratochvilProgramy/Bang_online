@@ -18,14 +18,14 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
     <div className='flex space-x-4'>
 
         {topStackCard !== null && 
-        <Card 
-            socket={socket}
-            card={topStackCard}
-            key={topStackCard.digit + topStackCard.type}
-            currentRoom={currentRoom}
-            username={username}
-            currentPlayer={currentPlayer}
-        />       
+          <Card 
+              socket={socket}
+              card={topStackCard}
+              key={topStackCard.digit + topStackCard.type}
+              currentRoom={currentRoom}
+              username={username}
+              currentPlayer={currentPlayer}
+          />       
         }
         <img 
             className='w-[60px] xs:w-[80px] rounded-md'

@@ -60,7 +60,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   }, [playersActionRequiredOnStart, username, setCharacterUsable, character])
 
   socket.on("players_in_range", players => {
-    console.log("players: ", players);
     setPlayersInRange(players);
   })
 
@@ -226,7 +225,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             confirmPlayerTarget={confirmPlayerTarget}
           />
 
-          <div className='fixed flex flex-col items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
             <StackDeck 
               socket={socket} 
               username={username} 
