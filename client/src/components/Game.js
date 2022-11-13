@@ -207,6 +207,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
         </div>
       : 
         <>
+          <div id='oponents' className='fixed z-10'>
           <Oponents
             socket={socket}
             myHand={myHand}
@@ -224,8 +225,10 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             playersInRange={playersInRange}
             confirmPlayerTarget={confirmPlayerTarget}
           />
+            
+          </div>
 
-          <div className='fixed flex justify-center items-center z-30 top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
             <StackDeck 
               socket={socket} 
               username={username} 
@@ -243,7 +246,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             </div>
           </div>
 
-          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-40'>
+          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0'>
             <Chat sendMessage={sendMessage} messages={messages} width={260} />
             <PlayerTable
               socket={socket}

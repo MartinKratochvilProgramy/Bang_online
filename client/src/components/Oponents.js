@@ -46,8 +46,8 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
 
     if (oponentsInfo.length === 3) {
         return (
-            <div className=''>
-                <div className='fixed z-10 flex items-end justify-center min-h-[352px] w-[490px] left-[-70px] top-[50px] xs:top-[200px] rotate-90 '>
+            <div>
+                <div className='fixed z-10 flex items-end justify-center min-h-[352px] w-[490px] left-[-288px] top-[50px] xs:top-[200px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -95,7 +95,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] right-[-70px] top-[50px] xs:top-[200px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-center min-h-[352px] w-[490px] right-[-288px] top-[50px] xs:top-[200px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -124,7 +124,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
     if (oponentsInfo.length === 4) {
         return (
             <div className=''>
-                <div className='fixed z-10 flex items-end justify-start min-h-[352px] w-[490px] left-[-70px] top-[180px] xs:top-[200px] rotate-90 '>
+                <div className='fixed z-10 flex items-end justify-start w-[490px] left-[-70px] top-[288px] xs:top-[200px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -196,7 +196,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[200px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-end w-[490px] right-[-288px] top-[180px] xs:top-[200px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -225,7 +225,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
     if (oponentsInfo.length === 5) {
         return (
             <div className=''>
-                <div className='fixed z-10 flex items-end justify-start min-h-[352px] w-[490px] left-[-70px] top-[180px] xs:top-[360px] rotate-90 '>
+                <div className='fixed flex items-end justify-start w-[490px] left-[-172px] top-[288px] xs:top-[360px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -321,7 +321,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-end min-h-[352px] w-[490px] right-[-70px] top-[180px] xs:top-[360px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-end w-[490px] right-[-172px] top-[288px] xs:top-[360px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

@@ -25,8 +25,8 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
   }
 
   return (
-    <div className='w-[300px] xs:w-full z-50'>
-      <div className='space-x-2 flex justify-center mb-1 xs:mb-2 translate-y-[0] xs:translate-y-[-px]'>
+    <div className='w-[300px] xs:w-full z-50 relative'>
+      <div className='space-x-2 absolute left-[50%] translate-x-[-50%] flex justify-center mb-1 xs:mb-2 translate-y-[-95px] xs:translate-y-[-105px]'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
@@ -56,7 +56,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
             </img>
             <div 
               style={{rotate: `${rotateDescription}deg`}}
-              className={`hidden p-1 z-10 rounded group-hover:flex group-hover:flex-col group-hover:justify-center top-[-146px] w-[200px] mx-auto bg-transparentBlack text-white absolute`}>
+              className={`hidden p-1 z-10 rounded group-hover:flex group-hover:flex-col group-hover:justify-center left-[-10px] top-[-50px] w-[200px] mx-auto bg-transparentBlack text-white absolute`}>
               <div className='text-xl'>
                 {character} 
               </div>
