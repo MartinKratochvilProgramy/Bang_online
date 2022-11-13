@@ -2,7 +2,7 @@ class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
         this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["Lucky Duke", "Black Jack", "Pedro Ramirez", "El Gringo"] 
+        // this.namesOfCharacters = ["Vulture Sam", "Black Jack", "Pedro Ramirez", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke"] 
         this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
@@ -42,7 +42,7 @@ class Game {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         
-        if (this.deck.length <= 0) {
+        if (this.deck.length <= 4) {
             this.putStackIntoDeck();
         }
         for (let i = 0; i < numToDraw; i++) {
@@ -630,6 +630,9 @@ class Game {
         
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", playerName);
+        }
         
         return [`${playerName} used Diligenza`];
     }
@@ -638,8 +641,12 @@ class Game {
         this.discard("Wells Fargo", cardDigit, cardType);
         
         this.draw(3, playerName);
+
         this.setAllPlayable(playerName);
         this.setMancatoBeerNotPlayable(playerName);
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", playerName);
+        }
         
         return [`${playerName} used Wells Fargo`];
     }
@@ -963,13 +970,14 @@ class Game {
         // Mancato! has also be in stack because of CJ
         if (this.players[playerName].character.name === "El Gringo" && (this.getTopStackCard().name === "Bang!" || this.getTopStackCard().name === "Mancato!" || this.getTopStackCard().name === "Gatling")) {
             const playerHandLenght = this.players[this.getNameOfCurrentTurnPlayer()].hand.length;
-            if (playerHandLenght === 0) return;
-            
-            const randomCardIndex = Math.floor(Math.random() * playerHandLenght);
-            const randomCard = this.players[this.getNameOfCurrentTurnPlayer()].hand.shift(randomCardIndex, 1);
-            randomCard.isPlayable = false;
-            this.players[playerName].hand.push(randomCard);
-            message.push("El Gringo was hit, so he draws 1 card");
+            if (playerHandLenght > 0) {
+                
+                const randomCardIndex = Math.floor(Math.random() * playerHandLenght);
+                const randomCard = this.players[this.getNameOfCurrentTurnPlayer()].hand.shift(randomCardIndex, 1);
+                randomCard.isPlayable = false;
+                this.players[playerName].hand.push(randomCard);
+                message.push("El Gringo was hit, so he draws 1 card");
+            }
         }
 
         if (!this.gatlingActive && !this.indianiActive) {

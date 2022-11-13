@@ -4,8 +4,8 @@ import Button from './Button'
 export default function GameEnd({ winner, setCurrentRoom }) {
   return (
     <div 
-        id="draw-choice" 
-        className='flex flex-col justify-center w-[220px] xs:w-[350px] items-center bg-beige py-2 px-4 rounded'
+        id="game-end" 
+        className='flex flex-col justify-center w-full xs:w-[350px] items-center bg-beige py-2 px-4 rounded'
     >
         <div className='text-black p-4 space-y-4 flex flex-col font-rye text-3xl'>
             <div>

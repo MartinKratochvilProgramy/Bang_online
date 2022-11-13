@@ -242,7 +242,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             <div className='absolute mt-8'>
               {emporioState.length > 0 && <EmporionChoice cards={emporioState} getEmporioCard={getEmporioCard} username={username} nextEmporioTurn={nextEmporioTurn} />}
             </div>
-            <div className='absolute mt-8'>
+            <div className='absolute flex mt-8 min-w-[400px]'>
               {winner && <GameEnd winner={winner} setCurrentRoom={setCurrentRoom} />}
             </div>
           </div>
