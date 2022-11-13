@@ -251,6 +251,41 @@ const deckTwoBarrelsVulcanic = [
         digit: 85781814,
         type: "hearts",
         isPlayable: false
+    },   
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 1651576535620,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 2185741857181,
+        type: "hearts",
+        isPlayable: false
+    },   
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 41571871,
+        type: "hearts",
+        isPlayable: false
+    },   
+    {
+        name: "Bang!",
+        rimColor: "yellow",
+        digit: 7171781,
+        type: "hearts",
+        isPlayable: false
+    },
+    {
+        name: "Mancato!",
+        rimColor: "yellow",
+        digit: 857818141,
+        type: "hearts",
+        isPlayable: false
     }   
 ]
 

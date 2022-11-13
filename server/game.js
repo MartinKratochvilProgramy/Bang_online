@@ -1065,13 +1065,25 @@ class Game {
                 }
                 break;
             }
+
             if (playerName === this.getNameOfCurrentTurnPlayer()) {
                 // if is current players' turn and he dies, end his turn
                 message.push(this.endTurn());
             }
+
+            if (this.players[this.playerPlaceHolder].character.role === "Sheriff" && this.players[this.playerPlaceHolder].character.role === "Vice") {
+                // Sheriff killed Vice, discard his hand
+                for (const card of this.players[this.playerPlaceHolder].hand) {
+                    this.discard(card.name, card.digit, card.type, this.playerPlaceHolder);
+                }
+                message.push("Sheriff killed Vice!");
+            }
+
             this.knownRoles[playerName] = this.players[playerName].character.role;
+            
             message.push(`${playerName} has died!`);
 
+            // ********* GAME END *********
             let aliveRoles = [];
             let deadRoles = [];
             for (const player of Object.keys(this.players)) {
@@ -1394,8 +1406,17 @@ class Game {
 
 
         } else if (range === "one_not_gun") {
-            // ******** CUSTOM RANGE ********
+            // ******** Panico range ********
             let result = [];
+
+            range = 1;
+
+            if (this.players[playerName].character.name === 'Rose Doolan') {
+                // Rose Doolan works as Apaloosa
+                range += 1;
+            }
+            // if player has Apaloosa, increase range by 1
+            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) range += 1;
             
             const playerIndex = playerNames.indexOf(playerName) + playerNames.length;
             const concatArray = playerNames.concat(playerNames.concat(playerNames));    // = [...arr, ...arr, ...arr]
@@ -1404,7 +1425,7 @@ class Game {
                 let currentName = concatArray[i];
                 
                 if (currentName !== playerName && this.players[currentName].character.health > 0) {
-                    let currentRange = 1;
+                    let currentRange = range;
                     if (this.players[currentName].table.some(card => card.name === 'Mustang')) currentRange -= 1;
                     if (this.players[currentName].character.name === "Paul Regret") currentRange -= 1;
                     
@@ -1417,19 +1438,14 @@ class Game {
                 
             return result;
         } else {
-
-            if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) {
-                // if player has Apaloosa, increase range by 1
-                range += 1;
-            }
+            // ******** CUSTOM RANGE ********
+            let result = [];
     
             if (this.players[playerName].character.name === 'Rose Doolan') {
                 // Rose Doolan works as Apaloosa
                 range += 1;
             }
             
-            // ******** CUSTOM RANGE ********
-            let result = [];
             // if player has Apaloosa, increase range by 1
             if (this.players[playerName].table.some(card => card.name === 'Apaloosa')) range += 1;
             // if player has Schofield, increase range by 1
