@@ -50,7 +50,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
 
   function handleCharacterClick() {
-    if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum")) && nextTurn) {
+    if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum") && nextTurn)) {
       activateCharacter()
     }
   }
