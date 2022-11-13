@@ -540,7 +540,6 @@ function endTurn(io, currentRoom) {
   
   io.to(currentRoom).emit("current_player", currentPlayer);
   io.to(currentRoom).emit("update_players_with_action_required", rooms[currentRoom].game.getPlayersWithActionRequired());
-  console.log("getPlayersWithActionRequired ", rooms[currentRoom].game.getPlayersWithActionRequired());
   updateGameState(io, currentRoom)
 
   if (rooms[currentRoom].game.getPlayerIsInPrison(currentPlayer)) return;

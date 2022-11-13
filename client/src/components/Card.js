@@ -112,7 +112,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
-    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '') + ".png");
+    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '').replace(/\./, '')+ ".png");
 
   return (
     <button 

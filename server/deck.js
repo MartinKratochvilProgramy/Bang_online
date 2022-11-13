@@ -593,6 +593,15 @@ const deck = [
         isPlayable: false,
         actionReqOnStart: false,
     },  
+    {
+        name: "Dynamite",
+        rimColor: "blue",
+        digit: 2,
+        type: "dynamite",
+        class: "hearts",
+        isPlayable: false,
+        actionReqOnStart: false,
+    },  
 ]
 
 module.exports = deck;

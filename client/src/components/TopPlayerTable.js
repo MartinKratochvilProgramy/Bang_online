@@ -97,7 +97,7 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
               selectCardTarget={selectCardTarget && playersInRange.includes(oponentName)}
               confirmCardTarget={confirmCardTarget}
               currentRoom={currentRoom}
-              key={card.digit + card.type}
+              key={card.name + card.digit + card.type}
               card={card}
             />
           )

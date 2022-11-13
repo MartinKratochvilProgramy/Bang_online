@@ -118,7 +118,7 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
               <Card 
                   socket={socket}
                   card={card}
-                  key={card.digit + card.type}
+                  key={card.name + card.digit + card.type}
                   setSelectPlayerTarget={setSelectPlayerTarget}
                   setSelectCardTarget={setSelectCardTarget}
                   currentRoom={currentRoom}

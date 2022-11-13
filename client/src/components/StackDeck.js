@@ -21,7 +21,7 @@ export default function StackDeck({ socket, username, currentRoom, currentPlayer
           <Card 
               socket={socket}
               card={topStackCard}
-              key={topStackCard.digit + topStackCard.type}
+              key={topStackCard.name + topStackCard.digit + topStackCard.type}
               currentRoom={currentRoom}
               username={username}
               currentPlayer={currentPlayer}

@@ -18,7 +18,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
 
     if (oponentsInfo.length === 1) {
         return (
-          <div className='min-w-[420px] xs:min-w-[600px] w-full z-50'>
+          <div className='w-[490px] z-50 fixed left-[50%] translate-x-[-50%]'>
               <TopPlayerTable
                 socket={socket}
                 cardsInHand={new Array(oponentsInfo[0].numberOfCards).fill(0)}
@@ -38,7 +38,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 confirmPlayerTarget={confirmPlayerTarget}
                 largeMagicConstant={402}
                 smallMagicConstant={222}
-                cardClampLimit={4}
+                cardClampLimit={5}
               />
           </div>
         )
