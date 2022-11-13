@@ -45,12 +45,12 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
 
   let characterStyles = {};
-  if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum"))) {
+  if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum") && nextTurn)) {
     characterStyles = {color: "red", border: "solid 2px red", cursor: "pointer"};
   }
 
   function handleCharacterClick() {
-    if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum"))) {
+    if ((characterUsable && (character !== "Kit Carlson" || character === "Jesse Jones")) || (currentPlayer === username && (character === "Sid Ketchum")) && nextTurn) {
       activateCharacter()
     }
   }

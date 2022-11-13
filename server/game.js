@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["Vulture Sam", "Black Jack", "Pedro Ramirez", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["Vulture Sam", "Sid Ketchum", "Pedro Ramirez", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke"] 
         this.knownRoles = {}
         this.deck = deck;
         this.stack = [];
@@ -1071,7 +1071,7 @@ class Game {
                 message.push(this.endTurn());
             }
 
-            if (this.players[this.playerPlaceHolder].character.role === "Sheriff" && this.players[this.playerPlaceHolder].character.role === "Vice") {
+            if (this.players[this.playerPlaceHolder].character.role === "Sheriff" && this.players[playerName].character.role === "Vice") {
                 // Sheriff killed Vice, discard his hand
                 for (const card of this.players[this.playerPlaceHolder].hand) {
                     this.discard(card.name, card.digit, card.type, this.playerPlaceHolder);

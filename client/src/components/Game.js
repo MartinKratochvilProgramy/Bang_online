@@ -52,6 +52,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
       if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
         if (character !== "Pedro Ramirez") {
+          console.log("character ", character);
           setCharacterUsable(false);
         }
         break;
@@ -228,7 +229,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             
           </div>
 
-          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'>
+          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto z-50'>
             <StackDeck 
               socket={socket} 
               username={username} 

@@ -98,17 +98,17 @@ function App() {
     })
 
     socket.on("my_role", role => {
-      console.log("my role: ", role); // TODO: this runs multiple times??? 
+      // console.log("my role: ", role); // TODO: this runs multiple times??? 
       setRole(role);
     })
 
     socket.on("known_roles", roles => {
-      console.log("known roles: ", roles); // TODO: this runs multiple times??? 
+      // console.log("known roles: ", roles); // TODO: this runs multiple times??? 
       setKnownRoles(roles);
     })
 
     socket.on("my_hand", hand => {
-      console.log("my hand: ", hand); // TODO: this runs multiple times??? 
+      // console.log("my hand: ", hand); // TODO: this runs multiple times??? 
       setMyHand(hand);
     })
 
