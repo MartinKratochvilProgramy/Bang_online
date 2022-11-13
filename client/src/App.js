@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
-
+import GameEnd from './components/GameEnd';
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
 const socket = io.connect("http://localhost:3001");
@@ -205,37 +205,41 @@ function App() {
           admin={admin}
           />
       }
-      {gameStarted ? 
-      <Game 
-        myCharacterChoice={myCharacterChoice}
-        characterChoiceInProgress={characterChoiceInProgress}
-        setCharacter={setCharacter}
-        myHand={myHand}
-        allPlayersInfo={allPlayersInfo}
-        setAllPlayersInfo={setAllPlayersInfo}
-        username={username}
-        character={character}
-        role={role}
-        knownRoles={knownRoles}
-        socket={socket}
-        currentRoom={currentRoom}
-        setCurrentRoom={setCurrentRoom}
-        currentPlayer={currentPlayer}
-        playersLosingHealth={playersLosingHealth}
-        playersActionRequiredOnStart={playersActionRequiredOnStart}
-        topStackCard={topStackCard}
-        duelActive={duelActive}
-        indianiActive={indianiActive}
-        emporioState={emporioState}
-        myDrawChoice={myDrawChoice}
-        nextEmporioTurn={nextEmporioTurn}
-        sendMessage={sendMessage}
-        messages={messages}
-        consoleOutput={consoleOutput}
-        winner={winner}
-      />
-      :
-       null
+      {gameStarted && 
+        <>
+          <Game 
+            myCharacterChoice={myCharacterChoice}
+            characterChoiceInProgress={characterChoiceInProgress}
+            setCharacter={setCharacter}
+            myHand={myHand}
+            allPlayersInfo={allPlayersInfo}
+            setAllPlayersInfo={setAllPlayersInfo}
+            username={username}
+            character={character}
+            role={role}
+            knownRoles={knownRoles}
+            socket={socket}
+            currentRoom={currentRoom}
+            setCurrentRoom={setCurrentRoom}
+            currentPlayer={currentPlayer}
+            playersLosingHealth={playersLosingHealth}
+            playersActionRequiredOnStart={playersActionRequiredOnStart}
+            topStackCard={topStackCard}
+            duelActive={duelActive}
+            indianiActive={indianiActive}
+            emporioState={emporioState}
+            myDrawChoice={myDrawChoice}
+            nextEmporioTurn={nextEmporioTurn}
+            sendMessage={sendMessage}
+            messages={messages}
+            consoleOutput={consoleOutput}
+          />
+          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%]  z-[1000] m-auto'>
+            <div className='absolute flex mt-8 min-w-[400px]'>
+              {winner && <GameEnd winner={winner} setCurrentRoom={setCurrentRoom} />}
+            </div>
+          </div>
+        </>
       }
     </div>
   );
