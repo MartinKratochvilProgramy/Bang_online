@@ -1,13 +1,12 @@
-const Game = require('./game.js')
 const deck = require('./deck.js')
 
-const game = new Game(["Sbeve", "Joe", "Kevin", "Post Malone"], deck);
-
-game.initRoles();
-
-console.log(game.knownRoles);
-console.log(game.knownRoles["Post Malone"]);
-console.log(game.knownRoles["Sbeve"]);
+for (let i = 0; i < deck.length; i++) {
+    for (let j = i + 1; j < deck.length; j++) {
+        if (deck[i].digit === deck[j].digit && deck[i].type === deck[j].type) {
+            console.log(deck[i].name, deck[i].digit, deck[i].type, " === ", deck[j].name, deck[j].digit, deck[j].type);
+        }
+    }
+}
 
 
 

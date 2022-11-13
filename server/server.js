@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const deckTwoBarrelsVulcanic = require('./deck.js')
+const deck = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
@@ -141,7 +141,7 @@ io.on("connection", (socket) => {
   socket.on("start_game", (data) => {
     const roomName = data.currentRoom;
 
-    rooms[roomName].game = new Game(data.players, deckTwoBarrelsVulcanic);
+    rooms[roomName].game = new Game(data.players, deck);
     console.log("Game started in room ", roomName);
 
     io.to(roomName).emit("get_character_choices", rooms[roomName].game.genCharacterChoices());
