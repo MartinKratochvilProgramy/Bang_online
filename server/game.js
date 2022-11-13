@@ -762,11 +762,11 @@ class Game {
             if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
                 // attacked by Slab the Killer
                 // discard Mancato!
-                if (this.players[target].table.filter(card => card.name === "Mancato!").length >= 1) {
+                if (this.players[playerName].table.filter(card => card.name === "Mancato!").length >= 1) {
                     this.discard("Mancato!", playerName);
                     return message
                 // CJ discard BAng!
-                } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[target].table.filter(card => card.name === "Bang!").length >= 1) {
+                } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].table.filter(card => card.name === "Bang!").length >= 1) {
                     this.discard("Bang!", playerName);
                     return message
                 }
