@@ -25,7 +25,7 @@ export default function CardOnTable({ socket, username, selectCardTarget, curren
     } 
 
 
-const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').replace(/\s/, '') + ".png");
+const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').replace(/\s/, '').replace(/\./g, '') + ".png");
 
   return (
     <button 

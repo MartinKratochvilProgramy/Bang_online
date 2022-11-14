@@ -117,11 +117,12 @@ class Game {
         
         if (!this.players[playerName].character.name === "Slab the Killer") {
             // not StK
+            this.setCardOnTablePlayable("Barilo", target);
+            console.log("Activating barel for ", target);
             this.setPlayable("Mancato!", target);
             if (this.players[target].character.name === "Calamity Janet") {
                 this.setPlayable("Bang!", target);
             }
-            this.setCardOnTablePlayable("Barilo", target);
         } else {
             // StK
             if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 2) {
@@ -771,7 +772,7 @@ class Game {
             } else {
                 this.setAllNotPlayable(playerName);
             }
-        } else if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 2) {
+        } else if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 1) {
             this.setPlayable("Mancato!", playerName);
         } else {
             this.setAllNotPlayable(playerName);
@@ -1017,6 +1018,7 @@ class Game {
                             this.setNotPlayable("Mancato!", this.playerPlaceHolder);
                         }
                     }
+                    message.push(`${playerName} had Beer, so he used it`)
                     return message;
                 }
             }
@@ -1048,8 +1050,8 @@ class Game {
                         this.players[player].hand.push(card);
                     }
                     this.players[playerName].hand = [];
+                    break;
                 }
-                break;
             }
 
             if (playerName === this.getNameOfCurrentTurnPlayer()) {

@@ -8,7 +8,7 @@ export default function OponentCardOnTable({ selectCardTarget, card, confirmCard
     } 
 
 
-const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').replace(/\s/, '') + ".png");
+const cardSource = require("../img/gfx/cards/" + card.name.replace(/!/, '').replace(/\s/, '').replace(/\./g, '') + ".png");
 
   return (
     <button 
