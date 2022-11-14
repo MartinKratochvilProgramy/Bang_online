@@ -79,7 +79,6 @@ class Game {
         }
 
         this.setAllPlayable(playerName);
-        this.setMancatoBeerNotPlayable(playerName);
 
         if (this.players[playerName].character.name === "Jesse Jones" || this.players[playerName].character.name === "Pedro Ramirez") {
             this.awaitDrawChoice = false;
@@ -219,7 +218,6 @@ class Game {
             if (player.isLosingHealth) return message;
         }
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
 
         return message;
     }
@@ -236,7 +234,6 @@ class Game {
             if (player.isLosingHealth) return [`${playerName} used Bang!`];
         }
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         this.indianiActive = false;
 
         return [`${playerName} used Bang!`];
@@ -319,7 +316,6 @@ class Game {
         }
         this.gatlingActive = false;
         this.setAllPlayable(this.playerPlaceHolder);
-        this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
         
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", this.playerPlaceHolder);
@@ -550,7 +546,6 @@ class Game {
         if (this.emporio.length <= 0) {
             // end when no cards to draw
             this.setAllPlayable(this.playerPlaceHolder);
-            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
             this.emporio = [];
             this.nextEmporioTurn = "";
             return;
@@ -585,7 +580,6 @@ class Game {
             this.stack.push(this.drawChoice[0]);
             // end when no cards to draw
             this.setAllPlayable(playerName);
-            this.setMancatoBeerNotPlayable(playerName);
             this.drawChoice = [];
             return;
         }
@@ -614,7 +608,6 @@ class Game {
         } else {
             this.stack.push(this.drawChoice[0])
             this.setAllPlayable(playerName);
-            this.setMancatoBeerNotPlayable(playerName);
             this.drawChoice = [];
             this.luckyDukeFirstDraw = true;
             return;
@@ -630,7 +623,6 @@ class Game {
         this.draw(1, playerName);
         
         this.setAllPlayable(playerName);
-        this.setMancatoBeerNotPlayable(playerName);
         
         this.awaitDrawChoice = false;
         
@@ -643,7 +635,6 @@ class Game {
         this.draw(2, playerName);
         
         this.setAllPlayable(playerName);
-        this.setMancatoBeerNotPlayable(playerName);
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", playerName);
         }
@@ -657,7 +648,6 @@ class Game {
         this.draw(3, playerName);
 
         this.setAllPlayable(playerName);
-        this.setMancatoBeerNotPlayable(playerName);
         if (!this.bangCanBeUsed) {
             this.setNotPlayable("Bang!", playerName);
         }
@@ -782,7 +772,6 @@ class Game {
                 this.setAllNotPlayable(playerName);
     
                 this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-                this.setMancatoBeerNotPlayable(this.getNameOfCurrentTurnPlayer());
                 if (!this.bangCanBeUsed) {
                     this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
                     if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
@@ -875,7 +864,6 @@ class Game {
             if (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length > 0) {
                 this.draw(2, playerName);
                 this.setAllPlayable(playerName);
-                this.setMancatoBeerNotPlayable(playerName);
             }  
         }
         return message;
@@ -936,7 +924,6 @@ class Game {
                 if (this.players[playerName].character.name !== "Pedro Ramirez" && this.stack.length > 0) {
                     this.draw(2, playerName);
                     this.setAllPlayable(playerName);
-                    this.setMancatoBeerNotPlayable(playerName);
                     return message;
                 }
             }
@@ -984,7 +971,6 @@ class Game {
                 const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
                 this.setAllPlayable(currentPlayer);
-                this.setMancatoBeerNotPlayable(currentPlayer);
             }
         }
         //El Gringo can draw from oponent when hit by Bang! or Gatling
@@ -1004,7 +990,6 @@ class Game {
         if (!this.gatlingActive && !this.indianiActive) {
             // if no gatling, continue
             this.setAllPlayable(this.playerPlaceHolder);
-            this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
             if (!this.bangCanBeUsed) {
                 this.setNotPlayable("Bang!", this.playerPlaceHolder);
                 if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
@@ -1025,7 +1010,6 @@ class Game {
                 this.indianiActive = false;
     
                 this.setAllPlayable(this.playerPlaceHolder);
-                this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
                 if (!this.bangCanBeUsed) {
                     this.setNotPlayable("Bang!", this.playerPlaceHolder);
                     if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
@@ -1044,7 +1028,6 @@ class Game {
                     this.useBeer(playerName, card.digit, card.type);
 
                     this.setAllPlayable(this.playerPlaceHolder);
-                    this.setMancatoBeerNotPlayable(this.playerPlaceHolder);
                     if (!this.bangCanBeUsed) {
                         this.setNotPlayable("Bang!", this.playerPlaceHolder);
                         if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
@@ -1187,7 +1170,6 @@ class Game {
         // continue with turn
         this.draw(1, playerName);
         this.setAllPlayable(playerName);
-        this.setMancatoBeerNotPlayable(playerName);
         
         this.awaitDrawChoice = false;
         return `${playerName} stole 1 card from ${target} because he's Jesse Jones`;
@@ -1202,7 +1184,6 @@ class Game {
             this.setIsLosingHealth(false, playerName);
             this.setNotPlayable("Mancato!", playerName);
             this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-            this.setMancatoBeerNotPlayable(this.getNameOfCurrentTurnPlayer());
             if (!this.bangCanBeUsed) {
                 this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
                 if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
@@ -1253,6 +1234,10 @@ class Game {
         for (var card of this.players[playerName].hand) {
             card.isPlayable = true;
         }
+        if (!this.bangCanBeUsed) {
+            this.setNotPlayable("Bang!", playerName);
+        }
+        this.setMancatoBeerNotPlayable(playerName);
     }
 
     setAllNotPlayable(playerName) {
@@ -1610,7 +1595,6 @@ class Game {
         } else {
             this.draw(2, firstPlayerName);
             this.setAllPlayable(firstPlayerName);
-            this.setMancatoBeerNotPlayable(firstPlayerName)
         }
 
         return ["Game started!"];
@@ -1717,7 +1701,6 @@ class Game {
                 message.push(this.draw(2, currentPlayerName));
             }
             this.setAllPlayable(currentPlayerName);     
-            this.setMancatoBeerNotPlayable(currentPlayerName);
         }
 
         return message;
