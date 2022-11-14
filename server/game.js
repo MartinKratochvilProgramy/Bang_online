@@ -28,7 +28,6 @@ class Game {
                 hand: [],
                 table: [],
                 isLosingHealth: false,
-                canUseBarel: true,
                 hasDynamite: false,
                 character: {
                     name: null,
@@ -122,25 +121,19 @@ class Game {
             if (this.players[target].character.name === "Calamity Janet") {
                 this.setPlayable("Bang!", target);
             }
-            if (this.players[target].canUseBarel) {
-                this.setCardOnTablePlayable("Barilo", target);
-            }
+            this.setCardOnTablePlayable("Barilo", target);
         } else {
             // StK
             if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 2) {
                 // two Mancato! in hand
                 this.setPlayable("Mancato!", target);
-                if (this.players[target].canUseBarel) {
-                    this.setCardOnTablePlayable("Barilo", target);
-                }
+                this.setCardOnTablePlayable("Barilo", target);
                 
             } else if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 1 && this.players[target].table.filter(card => card.name === "Barilo").length >= 1) {
                 // Mancato! and Barel in hand
                 this.setPlayable("Mancato!", target);
                 this.setCardOnTablePlayable("Barel", target);
-                if (this.players[target].canUseBarel) {
-                    this.setCardOnTablePlayable("Barilo", target);
-                }
+                this.setCardOnTablePlayable("Barilo", target);
 
             } else if (this.players[target].character.name === "Calamity Janet") {
                 // target is CJ
@@ -199,8 +192,6 @@ class Game {
             this.discard("Bang!", cardDigit, cardType, playerName);
              message.push(`${playerName} used Bang! as Mancato!`);
         }
-
-        this.players[playerName].canUseBarel = true;
 
         this.setCardOnTableNotPlayable("Barilo", playerName);
         this.setNotPlayable("Bang!", playerName);
@@ -297,8 +288,6 @@ class Game {
             message.push(`${playerName} used Mancato!`);
         }
 
-        this.players[playerName].canUseBarel = true;
-
         this.setMancatoBeerNotPlayable(playerName);
         this.setCardOnTableNotPlayable("Barilo", playerName);
         
@@ -351,9 +340,7 @@ class Game {
         this.discard("Mancato!", cardDigit, cardType, playerName);
 
         this.setPlayable("Mancato!", target);
-        if (this.players[target].canUseBarel) {
-            this.setCardOnTablePlayable("Barilo", target);
-        }
+        this.setCardOnTablePlayable("Barilo", target);
 
         this.setAllNotPlayable(playerName);
         if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
@@ -683,9 +670,7 @@ class Game {
             // put hit on all players, except playerName and dead players
             if (target !== playerName && this.players[target].character.health > 0) {
                 this.setPlayable("Mancato!", target);
-                if (this.players[target].canUseBarel) {
-                    this.setCardOnTablePlayable("Barilo", target);
-                }
+                this.setCardOnTablePlayable("Barilo", target);
                 
                 this.setIsLosingHealth(true, target);
             }
@@ -747,7 +732,6 @@ class Game {
             message = [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`];
         }
 
-        this.players[playerName].canUseBarel = false;
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
         if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
@@ -940,8 +924,6 @@ class Game {
         let message = [`${playerName} lost health`];
 
         this.players[playerName].character.health -= 1;
-
-        this.players[playerName].canUseBarel = true;
 
         this.setIsLosingHealth(false, playerName);
         this.setNotPlayable("Mancato!", playerName);
