@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const deck = require('./deckDuel.js')
+const deck = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
