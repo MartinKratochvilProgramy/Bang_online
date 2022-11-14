@@ -78,7 +78,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
           <div className='max-h-full w-[272px] flex relative'>
             {cardsInHand.map((card, index) => {
                 let translate = 0;
-                if (cardsInHand.length >= 3) {
+                if (cardsInHand.length >= 4) {
                   let magicConstant = 72;
                   let cardWidth = 60;
                   if (document.getElementById('cards') !== null) {
