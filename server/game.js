@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Pedro Ramirez", "El Gringo"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["Lucky Duke", "Calamity Janet", "Pedro Ramirez", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
         this.stack = [];
@@ -115,15 +115,7 @@ class Game {
     useBang(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Bang!", cardDigit, cardType, playerName);
         
-        if (!this.players[playerName].character.name === "Slab the Killer") {
-            // not StK
-            this.setCardOnTablePlayable("Barilo", target);
-            console.log("Activating barel for ", target);
-            this.setPlayable("Mancato!", target);
-            if (this.players[target].character.name === "Calamity Janet") {
-                this.setPlayable("Bang!", target);
-            }
-        } else {
+        if (this.players[playerName].character.name === "Slab the Killer") {
             // StK
             if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 2) {
                 // two Mancato! in hand
@@ -152,6 +144,14 @@ class Game {
                     this.setCardOnTablePlayable("Barilo", target)
                 
                 }
+            }
+        } else {
+            // not StK
+            this.setCardOnTablePlayable("Barilo", target);
+            console.log("Activating barel for ", target);
+            this.setPlayable("Mancato!", target);
+            if (this.players[target].character.name === "Calamity Janet") {
+                this.setPlayable("Bang!", target);
             }
         }
 
@@ -723,9 +723,11 @@ class Game {
         this.deck.shift();
         this.stack.push(drawnCard);
         
+        let secondDrawnCard;
+
         if (this.players[playerName].character.name === "Lucky Duke") {
             // Lucky Duke second card
-            const secondDrawnCard = this.deck[0];
+            secondDrawnCard = this.deck[0];
             this.deck.shift();
             this.stack.push(secondDrawnCard);
             message = [`${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Barel`];
