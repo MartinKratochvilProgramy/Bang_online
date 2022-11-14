@@ -148,7 +148,9 @@ class Game {
                 if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length >= 2) {
                     this.setPlayable("Bang!", target);
                     this.setPlayable("Mancato!", target);
-                    this.setCardOnTablePlayable("Barilo", target)
+                    if (this.players[target].table.filter(card => (card.name === "Barilo")).length >= 1) {
+                        this.setCardOnTablePlayable("Barilo", target)
+                    }
                     
                 } else if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length === 1 && this.players[target].table.filter(card => (card.name === "Barilo")).length >= 1) {
                     // CJ has one Barel and one Mancato! or Bang!
@@ -759,15 +761,21 @@ class Game {
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
         if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
+            console.log("Drew hearts");
             if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
+                console.log("On StK ", this.players[playerName].hand.filter(card => card.name === "Mancato!").length);
                 // attacked by Slab the Killer
-                // discard Mancato!
-                if (this.players[playerName].table.filter(card => card.name === "Mancato!").length >= 1) {
-                    this.discard("Mancato!", playerName);
+                if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 1) {
+                    // discard Mancato!
+                    const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Mancato!"));
+                    this.discard("Mancato!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
+                    this.setIsLosingHealth(false, playerName);
                     return message
-                // CJ discard BAng!
-                } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].table.filter(card => card.name === "Bang!").length >= 1) {
-                    this.discard("Bang!", playerName);
+                } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].hand.filter(card => card.name === "Bang!").length >= 1) {
+                    // CJ discard Bang!
+                    const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Bang!"));
+                    this.discard("Bang!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
+                    this.setIsLosingHealth(false, playerName);
                     return message
                 }
             } else {
@@ -785,7 +793,19 @@ class Game {
                     }
                 }
             }
+        } else if (this.players[playerName].character.name === "Calamity Janet") {
+            if (this.players[playerName].hand.filter(card => card.name === "Bang!" || card.name === "Mancato!").length >= 2) {
+                this.setPlayable("Bang!", playerName);
+                this.setPlayable("Mancato!", playerName);
+            } else {
+                this.setAllNotPlayable(playerName);
+            }
+        } else if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 2) {
+            this.setPlayable("Mancato!", playerName);
+        } else {
+            this.setAllNotPlayable(playerName);
         }
+
         return message;
     }
 

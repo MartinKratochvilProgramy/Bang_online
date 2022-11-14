@@ -3,14 +3,14 @@ const deck = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 4,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 6,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -24,28 +24,28 @@ const deck = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 9,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 9,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 6,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 12,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -59,28 +59,28 @@ const deck = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 3,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 5,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 7,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 11,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -94,203 +94,203 @@ const deck = [
         name: "Bang!",
         rimColor: "yellow",
         digit: 8,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 5,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 8,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 2,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 10,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 2,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 3,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 4,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 1,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 7,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 13,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Bang!",
         rimColor: "yellow",
         digit: 7,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     }, 
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 8,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 3,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 11,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 6,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 4,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 5,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 13,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 7,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 12,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 1,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 10,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Mancato!",
         rimColor: "yellow",
         digit: 2,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Duel",
         rimColor: "yellow",
         digit: 12,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Duel",
         rimColor: "yellow",
         digit: 8,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Duel",
         rimColor: "yellow",
         digit: 11,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Indiani",
         rimColor: "yellow",
         digit: 13,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Indiani",
         rimColor: "yellow",
         digit: 1,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -311,7 +311,7 @@ const deck = [
         name: "Panico",
         rimColor: "yellow",
         digit: 8,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -332,7 +332,7 @@ const deck = [
         name: "Cat Balou",
         rimColor: "yellow",
         digit: 10,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -346,14 +346,14 @@ const deck = [
         name: "Cat Balou",
         rimColor: "yellow",
         digit: 9,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Cat Balou",
         rimColor: "yellow",
         digit: 11,
-        type: "diamonds",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -367,14 +367,14 @@ const deck = [
         name: "Emporio",
         rimColor: "yellow",
         digit: 12,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Emporio",
         rimColor: "yellow",
         digit: 9,
-        type: "clubs",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -423,14 +423,14 @@ const deck = [
         name: "Diligenza",
         rimColor: "yellow",
         digit: 9,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
         name: "Beer",
         rimColor: "yellow",
         digit: 9,
-        type: "spades",
+        type: "hearts",
         isPlayable: false
     },  
     {
@@ -444,7 +444,7 @@ const deck = [
         name: "Vulcanic",
         rimColor: "blue",
         digit: 10,
-        type: "spades",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -453,7 +453,7 @@ const deck = [
         name: "Vulcanic",
         rimColor: "blue",
         digit: 10,
-        type: "clubs",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -462,7 +462,7 @@ const deck = [
         name: "Remington",
         rimColor: "blue",
         digit: 13,
-        type: "clubs",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -471,7 +471,7 @@ const deck = [
         name: "Schofield",
         rimColor: "blue",
         digit: 12,
-        type: "clubs",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -480,7 +480,7 @@ const deck = [
         name: "Schofield",
         rimColor: "blue",
         digit: 11,
-        type: "clubs",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -489,7 +489,7 @@ const deck = [
         name: "Schofield",
         rimColor: "blue",
         digit: 13,
-        type: "spades",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -498,7 +498,7 @@ const deck = [
         name: "Rev. Carabine",
         rimColor: "blue",
         digit: 1,
-        type: "clubs",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -507,7 +507,7 @@ const deck = [
         name: "Winchester",
         rimColor: "blue",
         digit: 8,
-        type: "spades",
+        type: "hearts",
         class: "gun",
         isPlayable: false,
         actionReqOnStart: false,
@@ -534,7 +534,7 @@ const deck = [
         name: "Apaloosa",
         rimColor: "blue",
         digit: 1,
-        type: "spades",
+        type: "hearts",
         class: "horse",
         isPlayable: false,
         actionReqOnStart: false,
@@ -543,7 +543,7 @@ const deck = [
         name: "Apaloosa",
         rimColor: "blue",
         digit: 2,
-        type: "spades",
+        type: "hearts",
         class: "horse",
         isPlayable: false,
         actionReqOnStart: false,
@@ -552,7 +552,7 @@ const deck = [
         name: "Prigione",
         rimColor: "blue",
         digit: 10,
-        type: "spades",
+        type: "hearts",
         class: "prison",
         isPlayable: false,
         actionReqOnStart: false,
@@ -561,7 +561,7 @@ const deck = [
         name: "Prigione",
         rimColor: "blue",
         digit: 11,
-        type: "spades",
+        type: "hearts",
         class: "prison",
         isPlayable: false,
         actionReqOnStart: false,
@@ -579,8 +579,8 @@ const deck = [
         name: "Barilo",
         rimColor: "blue",
         digit: 13,
-        type: "barel",
-        class: "spades",
+        type: "hearts",
+        class: "barel",
         isPlayable: false,
         actionReqOnStart: false,
     },  
@@ -588,8 +588,8 @@ const deck = [
         name: "Barilo",
         rimColor: "blue",
         digit: 12,
-        type: "barel",
-        class: "spades",
+        type: "hearts",
+        class: "barel",
         isPlayable: false,
         actionReqOnStart: false,
     },  
