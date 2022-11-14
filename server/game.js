@@ -761,9 +761,7 @@ class Game {
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
         if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
-            console.log("Drew hearts");
             if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-                console.log("On StK ", this.players[playerName].hand.filter(card => card.name === "Mancato!").length);
                 // attacked by Slab the Killer
                 if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 1) {
                     // discard Mancato!
