@@ -41,7 +41,7 @@ class Game {
         // put nomToDraw cards into hand of current playerRoundId
         // remove top card from deck
         
-        if (this.deck.length <= 4) {
+        if (this.deck.length <= 8) {
             this.putStackIntoDeck();
         }
         for (let i = 0; i < numToDraw; i++) {
@@ -786,9 +786,16 @@ class Game {
     useDynamite(playerName, card) {
         card.isPlayable = false;
         const drawnCard = this.deck[0];
+        let secondDrawnCard;
         this.deck.shift();
         this.stack.push(drawnCard)
         let message = [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on dynamite`];
+        
+        if (this.players[playerName].character.name === "Lucky Duke") {
+            secondDrawnCard = this.deck[0];
+            message.push(`${playerName} drew ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on dynamite as Lucky Duke`);
+            this.deck.shift();
+        }
 
         // remove from playerName table card object
         this.players[playerName].table = this.players[playerName].table.filter(function( tableCard ) {
@@ -796,16 +803,52 @@ class Game {
         });
 
         if (drawnCard.type === "spades" && (2 <= drawnCard.digit && drawnCard.digit <= 9)) {
-            message.push("Dynamite exploded!");
-            this.players[playerName].character.health -= 3; // lose 3 HP
-            if (this.players[playerName].character.health <= 3) {
-              // player DIED
-                this.setAllNotPlayable(playerName);
-                this.setAllCardsOnTableNotPlayable(playerName);
-                // endTurn() is handled in the server
-                message.push(`${playerName} has died!`);
-                return message;
-            } 
+            if ((this.players[playerName].character.name === "Lucky Duke" && (secondDrawnCard.type =! "spades" && 2 >= secondDrawnCard.digit && secondDrawnCard.digit >= 9))) {
+                // LD drew second outside
+                // find next alive player
+                let currentPlayerId = this.playerRoundId + 1;
+                if (currentPlayerId >= this.numOfPlayers) {
+                    currentPlayerId = 0;
+                }
+                for (let i = 0; i < this.numOfPlayers; i++) {
+                    const nextPlayer = Object.keys(this.players).find(key => this.players[key].id === currentPlayerId);
+                    if (this.players[nextPlayer].character.health > 0) {
+                        this.players[nextPlayer].table.push(card);
+                        break;
+                    }
+                    currentPlayerId += 1;
+                    // clamp player ID
+                    if (currentPlayerId >= this.numOfPlayers) {
+                        currentPlayerId = 0;
+                    }
+                }
+
+            } else {
+                // rest of the players
+                message.push("Dynamite exploded!");
+                for (let i = 0; i < 3; i++) {
+                    this.loseHealth(playerName)
+                }
+                // this.players[playerName].character.health -= 3; // lose 3 HP
+                // if (this.players[playerName].character.health <= 0) {
+                //     if (this.players[playerName].hand.filter(card => card.name === "beer").length < Math.abs(this.players[playerName].character.health)) {
+                //         // player DIED, has no beer
+                //         this.setAllNotPlayable(playerName);
+                //         this.setAllCardsOnTableNotPlayable(playerName);
+                //         // endTurn() is handled in the server
+                //         message.push(`${playerName} has died!`);
+                //         return message;
+                //     } else {
+                //         // player has beer, so use it
+                //         for (const card of this.players[playerName].hand) {
+                //             if (card.name === "Beer"){
+                //                 this.useBeer(card.name, card.digit, card.type);
+                //             }
+                //         }
+                //         message.push("Player used beer to save himself")
+                //     }
+                // } 
+            }
         } else {
             // find next alive player
             let currentPlayerId = this.playerRoundId + 1;
