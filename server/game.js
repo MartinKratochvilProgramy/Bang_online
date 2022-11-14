@@ -2,7 +2,7 @@ class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
         // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["Lucky Duke", "Calamity Janet", "Pedro Ramirez", "El Gringo"] 
+        this.namesOfCharacters = ["Bart Cassidy", "Calamity Janet", "Pedro Ramirez", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
         this.stack = [];
@@ -16,7 +16,6 @@ class Game {
         this.gatlingActive = false;
         this.duelPlayers = [];
         this.duelTurnIndex = 0;
-        this.playerPlaceHolder = null;
         this.luckyDukeFirstDraw = true;
         this.sidKetchumDiscarded = false;
         this.awaitDrawChoice = false;
@@ -158,14 +157,11 @@ class Game {
         this.setAllNotPlayable(playerName);
         if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
             // if player has Volcanic or is Willy the Kid don't block Bang!s
-            // TODO: implement this for Billy the Kid
             this.bangCanBeUsed = true;
         } else {
             this.bangCanBeUsed = false;
         }
 
-        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
-        
         this.setIsLosingHealth(true, target);
 
         return [`${playerName} used Bang! on ${target}`];
@@ -199,7 +195,7 @@ class Game {
         this.setNotPlayable("Mancato!", playerName);
         
         if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.playerPlaceHolder);
+            this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
         }
         
         this.setIsLosingHealth(false, playerName);
@@ -209,7 +205,7 @@ class Game {
         for (const player of this.getPlayersLosingHealth()) {
             if (player.isLosingHealth) return message;
         }
-        this.setAllPlayable(this.playerPlaceHolder);
+        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
 
         return message;
     }
@@ -225,7 +221,7 @@ class Game {
         for (const player of this.getPlayersLosingHealth()) {
             if (player.isLosingHealth) return [`${playerName} used Bang!`];
         }
-        this.setAllPlayable(this.playerPlaceHolder);
+        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
         this.indianiActive = false;
 
         return [`${playerName} used Bang!`];
@@ -243,7 +239,6 @@ class Game {
         // shift to the next player in duel (duelPlayers.length should always = 2)
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
         // set next players Ban!g cards playable
-        // TODO: character exception
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
         
@@ -305,13 +300,13 @@ class Game {
             if (player.isLosingHealth) return message;
         }
         this.gatlingActive = false;
-        this.setAllPlayable(this.playerPlaceHolder);
+        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
         
         if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.playerPlaceHolder);
-            if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+            this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
+            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
                 // also disable Mancato! for CJ
-                this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
             }
         }
         return message;
@@ -330,7 +325,6 @@ class Game {
         // shift to the next player in duel (duelPlayers.length should always = 2)
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
         // set next players Ban!g cards playable
-        // TODO: character exception
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
 
@@ -346,21 +340,17 @@ class Game {
         this.setAllNotPlayable(playerName);
         if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
             // if player has Volcanic or is Willy the Kid don't block Bang!s
-            // TODO: implement this for Billy the Kid
             this.bangCanBeUsed = true;
         } else {
             this.bangCanBeUsed = false;
         }
 
-        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
-        
         this.setIsLosingHealth(true, target);
 
         return [`${playerName} discarded Mancato! as Bang! on ${target}`];
     }
 
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
-        // TODO: this only works on cards in hand, not table
         let message = [];
         this.discard("Cat Balou", cardDigit, cardType, playerName);
         message.push(`${playerName} used Cat Balou`);
@@ -517,7 +507,6 @@ class Game {
             }
         }
         this.nextEmporioTurn = playerName;
-        this.playerPlaceHolder = playerName;
         
         return [`${playerName} used Emporio`];
     }
@@ -533,7 +522,7 @@ class Game {
 
         if (this.emporio.length <= 0) {
             // end when no cards to draw
-            this.setAllPlayable(this.playerPlaceHolder);
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
             this.emporio = [];
             this.nextEmporioTurn = "";
             return;
@@ -655,7 +644,6 @@ class Game {
         this.setAllNotPlayable(playerName);
         
         this.duelActive = true;
-        this.playerPlaceHolder = playerName;    // save the name of player who used duel, so that his hand could be enabled after target player reaction
         
         return [`${playerName} used Duel on ${target}`];
     }
@@ -679,8 +667,6 @@ class Game {
         
         this.setAllNotPlayable(playerName);
         
-        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
-        
         return [`${playerName} used Gatling`];
     }
 
@@ -699,8 +685,6 @@ class Game {
         this.indianiActive = true;
         
         this.setAllNotPlayable(playerName);
-        
-        this.playerPlaceHolder = playerName;    // save the name of player who used Bang!, so that his hand could be enabled after target player reaction
         
         return [`${playerName} used Indiani`];
     }
@@ -824,30 +808,15 @@ class Game {
                 }
 
             } else {
-                // rest of the players
+                // DEATH rest of the players
                 message.push("Dynamite exploded!");
                 for (let i = 0; i < 3; i++) {
-                    this.loseHealth(playerName)
+                    message.push(...this.loseHealth(playerName));
                 }
-                // this.players[playerName].character.health -= 3; // lose 3 HP
-                // if (this.players[playerName].character.health <= 0) {
-                //     if (this.players[playerName].hand.filter(card => card.name === "beer").length < Math.abs(this.players[playerName].character.health)) {
-                //         // player DIED, has no beer
-                //         this.setAllNotPlayable(playerName);
-                //         this.setAllCardsOnTableNotPlayable(playerName);
-                //         // endTurn() is handled in the server
-                //         message.push(`${playerName} has died!`);
-                //         return message;
-                //     } else {
-                //         // player has beer, so use it
-                //         for (const card of this.players[playerName].hand) {
-                //             if (card.name === "Beer"){
-                //                 this.useBeer(card.name, card.digit, card.type);
-                //             }
-                //         }
-                //         message.push("Player used beer to save himself")
-                //     }
-                // } 
+                if (this.players[playerName].character.health <= 0) {
+                    this.setAllNotPlayable(playerName);
+                    this.setAllCardsOnTableNotPlayable(playerName);
+                }
             }
         } else {
             // find next alive player
@@ -869,6 +838,7 @@ class Game {
             }
         }
         
+        console.log("message: ", message);
         if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
             const currentPlayerName = this.getNameOfCurrentTurnPlayer();
             if (this.players[currentPlayerName].character.name === "Lucky Duke") {
@@ -979,10 +949,16 @@ class Game {
         this.setCardOnTableNotPlayable("Barilo", playerName)
         
         
-        if (!this.indianiActive && this.players[playerName].character.name === "Bart Cassidy") {
+        if (this.players[playerName].character.name === "Bart Cassidy" && !this.indianiActive) {
             // Bart Cassidy draws a card on hit
             // this works on all damage taken except Indiani -> could cause problems
-            message.push(this.draw(1, playerName));
+            if (this.players[playerName].table.filter(foundCard => foundCard.name === "Dynamite").lenght === 0) {
+                message.push(this.draw(1, playerName));
+            } else {
+                if (this.getNameOfCurrentTurnPlayer() !== playerName) {
+                    message.push(this.draw(1, playerName));
+                }
+            }
         }
         
         if (playerName !== this.getNameOfCurrentTurnPlayer()) {
@@ -1017,12 +993,12 @@ class Game {
 
         if (!this.gatlingActive && !this.indianiActive) {
             // if no gatling, continue
-            this.setAllPlayable(this.playerPlaceHolder);
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
             if (!this.bangCanBeUsed) {
-                this.setNotPlayable("Bang!", this.playerPlaceHolder);
-                if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
+                if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
                     // also disable Mancato! for CJ
-                    this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                    this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
                 }
             }
         } else {
@@ -1037,12 +1013,12 @@ class Game {
                 this.gatlingActive = false;
                 this.indianiActive = false;
     
-                this.setAllPlayable(this.playerPlaceHolder);
+                this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
                 if (!this.bangCanBeUsed) {
-                    this.setNotPlayable("Bang!", this.playerPlaceHolder);
-                    if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                    this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
+                    if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
                         // also disable Mancato! for CJ
-                        this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                        this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
                     }
                 }
             }
@@ -1055,12 +1031,12 @@ class Game {
                 if (card.name === "Beer") {
                     this.useBeer(playerName, card.digit, card.type);
 
-                    this.setAllPlayable(this.playerPlaceHolder);
+                    this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
                     if (!this.bangCanBeUsed) {
-                        this.setNotPlayable("Bang!", this.playerPlaceHolder);
-                        if (this.players[this.playerPlaceHolder].character.name === "Calamity Janet") {
+                        this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
+                        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
                             // also disable Mancato! for CJ
-                            this.setNotPlayable("Mancato!", this.playerPlaceHolder);
+                            this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
                         }
                     }
                     message.push(`${playerName} had Beer, so he used it`)
@@ -1101,17 +1077,17 @@ class Game {
 
             if (playerName === this.getNameOfCurrentTurnPlayer()) {
                 // if is current players' turn and he dies, end his turn
-                message.push(this.endTurn());
+                message.push(...this.endTurn());
             }
 
-            if (this.players[this.playerPlaceHolder].character.role === "Sheriff" && this.players[playerName].character.role === "Vice") {
+            if (this.players[this.getNameOfCurrentTurnPlayer()].character.role === "Sheriff" && this.players[playerName].character.role === "Vice") {
                 // Sheriff killed Vice, discard his hand
-                for (let i = 0; i < this.players[this.playerPlaceHolder].hand.length; i++) {
-                    const card = this.players[this.playerPlaceHolder].hand[i]
+                for (let i = 0; i < this.players[this.getNameOfCurrentTurnPlayer()].hand.length; i++) {
+                    const card = this.players[this.getNameOfCurrentTurnPlayer()].hand[i]
 
-                    this.discard(card.name, card.digit, card.type, this.playerPlaceHolder);
+                    this.discard(card.name, card.digit, card.type, this.getNameOfCurrentTurnPlayer());
                 }
-                this.players[this.playerPlaceHolder].hand = [];
+                this.players[this.getNameOfCurrentTurnPlayer()].hand = [];
                 message.push("Sheriff killed Vice!");
             }
 
@@ -1169,7 +1145,7 @@ class Game {
 
             } else if (this.numOfPlayers === 2) {
                 // 1v1 WIN
-                message.push(`${this.playerPlaceHolder} is winner!`);
+                message.push(`${this.getNameOfCurrentTurnPlayer()} is winner!`);
                 message.push("Game ended");
                 this.endGame();
             }
@@ -1547,6 +1523,15 @@ class Game {
     getNameOfCurrentTurnPlayer () {
         // returns name of player who is on turn
         return Object.keys(this.players).find(key => this.players[key].id === this.playerRoundId)
+    }
+
+    getNameOfPreviousTurnPlayer () {
+        // returns name of player who was on turn before this turn
+        let prevId = this.playerRoundId - 1;
+        if (prevId < 0) {
+            prevId = this.numOfPlayers;
+        }
+        return Object.keys(this.players).find(key => this.players[key].id === prevId)
     }
 
     getAllPlayersChoseCharacter() {

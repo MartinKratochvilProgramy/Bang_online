@@ -421,8 +421,17 @@ io.on("connection", (socket) => {
   socket.on("use_dynamite", (data) => {
     const roomName = data.currentRoom;
     
-    io.to(roomName).emit("console", rooms[roomName].game.useDynamite(data.username, data.card));
+    const message = rooms[roomName].game.useDynamite(data.username, data.card);
+    io.to(roomName).emit("console", message);
+    
     updateGameState(io, roomName);
+    
+    if (message[message.length - 1] === "Game ended") {
+      // game over      
+      // emit who won
+      io.to(roomName).emit("game_ended", message[message.length - 2]);
+      return;
+    }
     if (rooms[roomName].game.players[data.username].character.health <= 0) {
       endTurn(io, roomName);
       return;
