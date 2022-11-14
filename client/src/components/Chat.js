@@ -17,7 +17,7 @@ export default function Chat({ sendMessage, messages }) {
     }, [messages])
 
   return (
-    <div className='mt-8 w-[280px] xs:w-[340px]'>
+    <div className='w-[280px] xs:w-[340px]'>
 
         <div 
             id="text" 

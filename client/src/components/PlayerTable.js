@@ -56,8 +56,8 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
   }
 
   return (
-    <div className='max-w-[600px] xs:max-w-[900px] w-full'>
-      <div className='mb-1 xs:mb-2 space-x-2 flex justify-center'>
+    <div className='relative max-w-[600px] xs:max-w-[900px] w-full'>
+      <div className='absolute mb-1 xs:mb-2 space-x-2 flex justify-center left-[50%] translate-x-[-50%] translate-y-[-94px] xs:translate-y-[-130px]'>
         {table.map(card => {
           return(
             <CardOnTable 
