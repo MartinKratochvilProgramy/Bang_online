@@ -21,7 +21,7 @@ export default function Room({ users, messages, sendMessage, roomName, leaveRoom
           <Button onClick={() => startGame()} value={"Start game"} size={2} />
         }
 
-        <div className='flex justify-center'>
+        <div className='flex justify-center mt-8'>
           <Chat sendMessage={sendMessage} messages={messages} width={480} />
         </div>
     </div>

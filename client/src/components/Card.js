@@ -44,11 +44,13 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         }
 
       } else if (cardName === "Mancato!") {
-        if (username === currentPlayer && character === "Calamity Janet") {
+        if (username === currentPlayer && !duelActive && character === "Calamity Janet") {
           setActiveCard(card);
           setSelectPlayerTarget(true);
+          console.log("Mancato as bang");
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
-        } else if (duelActive){
+        } else if (duelActive && character === "Calamity Janet"){
+          console.log("Mancato in duel");
           socket.emit("play_mancato_in_duel", {username, currentRoom, cardDigit, cardType});
         } else {
           socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
@@ -112,7 +114,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       styles = {color: "red", border: "solid 2px red", cursor: "pointer"}
     } 
 
-    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '').replace(/\./, '')+ ".png");
+    const cardSource = require("../img/gfx/cards/" + cardName.replace(/!/, '').replace(/\s/, '').replace(/\./g, '')+ ".png");
 
   return (
     <button 

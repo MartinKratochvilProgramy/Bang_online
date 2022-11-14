@@ -195,7 +195,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     <div id='game'>
       {characterChoiceInProgress ? 
         <div 
-          className='fixed flex flex-col items-center justify-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto'
+          className='fixed flex flex-col items-center justify-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] m-auto space-y-4 xs:space-y-8'
           id="character-choice">
           <CharacterChoice 
             socket={socket} 
@@ -247,7 +247,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             </div>
           </div>
 
-          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-20'>
+          <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-[50]'>
             <Chat sendMessage={sendMessage} messages={messages} width={260} />
             <PlayerTable
               socket={socket}

@@ -26,7 +26,7 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
 
   return (
     <div className='w-[300px] xs:w-full z-50 relative'>
-      <div className='space-x-2 absolute left-[50%] translate-x-[-50%] flex justify-center mb-1 xs:mb-2 translate-y-[-95px] xs:translate-y-[-105px]'>
+      <div className='space-x-2 absolute left-[50%] translate-x-[-50%] flex justify-center mb-1 xs:mb-2 translate-y-[-95px] xs:translate-y-[-125px]'>
         {table.map(card => {
           return(
             <OponentCardOnTable 
