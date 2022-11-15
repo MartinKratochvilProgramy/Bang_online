@@ -4,14 +4,11 @@ import Oponents from './Oponents';
 import Chat from './Chat';
 import Console from './Console';
 import StackDeck from './StackDeck';
-import DrawChoice from './DrawChoice';
-import EmporionChoice from './EmporionChoice';
 import CharacterChoice from './CharacterChoice';
 
-export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, role, knownRoles, socket, currentRoom, setCurrentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
-  indianiActive, emporioState, myDrawChoice, nextEmporioTurn, sendMessage, messages, consoleOutput }) { 
+export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, characterUsable, setCharacterUsable, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
+  indianiActive, emporioState, myDrawChoice, sendMessage, messages, consoleOutput }) { 
   
-  const [characterUsable, setCharacterUsable] = useState(false);
   const [nextTurn, setNextTurn] = useState(true);
   const [activeCard, setActiveCard] = useState({});
   const [playersInRange, setPlayersInRange] = useState([]);
@@ -145,21 +142,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     setActiveCard({});
   }
 
-  function getEmporioCard(card) {
-    if (username !== nextEmporioTurn) return;
-    socket.emit("get_emporio_card", {username, currentRoom, card});
-  }
-  
-  function getChoiceCard(card) {
-    setCharacterUsable(false);
-    if (character === "Kit Carlson") {
-      socket.emit("get_choice_card_KC", {username, currentRoom, card});
-    } else if (character === "Lucky Duke") {
-      socket.emit("get_choice_card_LD", {username, currentRoom, card});
-    }
-  }
-
-
   function activateCharacter() {
     if (!characterUsable && character !== "Sid Ketchum") return;
 
@@ -239,12 +221,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
               deckActive={deckActive}
               drawFromDeck={drawFromDeck}
             />
-            <div className='absolute top-1/2 translate-y-[-50%]'>
-              {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
-            </div>
-            <div className='absolute mt-8'>
-              {emporioState.length > 0 && <EmporionChoice cards={emporioState} getEmporioCard={getEmporioCard} username={username} nextEmporioTurn={nextEmporioTurn} />}
-            </div>
           </div>
 
           <div className='fixed flex justify-between items-end bottom-0 left-0 right-0 z-[50]'>

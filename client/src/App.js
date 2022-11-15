@@ -5,6 +5,8 @@ import RoomSelect from "./components/RoomSelect";
 import Room from "./components/Room";
 import Game from "./components/Game";
 import GameEnd from './components/GameEnd';
+import EmporionChoice from './components/EmporionChoice';
+import DrawChoice from './components/DrawChoice';
 
 // SRC: https://github.com/machadop1407/socket-io-react-example
 const socket = io.connect("http://localhost:3001");
@@ -24,6 +26,7 @@ function App() {
   const [role, setRole] = useState("");
   const [knownRoles, setKnownRoles] = useState({});
   const [character, setCharacter] = useState("");
+  const [characterUsable, setCharacterUsable] = useState(false);
 
   const [myHand, setMyHand] = useState([]);
   const [myDrawChoice, setMyDrawChoice] = useState([]);
@@ -175,7 +178,20 @@ function App() {
     })
     socket.emit("start_game", {players, currentRoom})
   }
-
+  
+  function getEmporioCard(card) {
+    if (username !== nextEmporioTurn) return;
+    socket.emit("get_emporio_card", {username, currentRoom, card});
+  }
+    
+  function getChoiceCard(card) {
+    setCharacterUsable(false);
+    if (character === "Kit Carlson") {
+      socket.emit("get_choice_card_KC", {username, currentRoom, card});
+    } else if (character === "Lucky Duke") {
+      socket.emit("get_choice_card_LD", {username, currentRoom, card});
+    }
+  }
 
   return (
     <div className="App flex flex-col justify-start items-center h-screen">
@@ -216,6 +232,8 @@ function App() {
             setAllPlayersInfo={setAllPlayersInfo}
             username={username}
             character={character}
+            characterUsable={characterUsable}
+            setCharacterUsable={setCharacterUsable}
             role={role}
             knownRoles={knownRoles}
             socket={socket}
@@ -237,6 +255,12 @@ function App() {
           <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1000] m-auto'>
             <div className='absolute flex mt-8 min-w-[400px]'>
               {winner && <GameEnd winner={winner} setCurrentRoom={setCurrentRoom} />}
+            </div>
+            <div className=''>
+              {myDrawChoice.length > 0 && <DrawChoice cards={myDrawChoice} getChoiceCard={getChoiceCard} />}
+            </div>
+            <div className=''>
+              {emporioState.length > 0 && <EmporionChoice cards={emporioState} getEmporioCard={getEmporioCard} username={username} nextEmporioTurn={nextEmporioTurn} />}
             </div>
           </div>
         </>

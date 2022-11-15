@@ -48,6 +48,7 @@ class Game {
             if (this.deck.length <= 0) this.putStackIntoDeck();
 
             const card = this.deck[0];
+            card.isPlayable = false; // TODO: this was not tested!!!
             this.players[playerName].hand.push(card);
             this.deck.shift();
         }
