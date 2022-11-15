@@ -47,7 +47,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
     if (oponentsInfo.length === 3) {
         return (
             <div>
-                <div className='fixed z-10 flex items-end justify-start w-[490px] left-[-158px] top-[248px] xs:top-[360px] rotate-90'>
+                <div className='fixed z-10 flex items-end justify-start w-[490px] left-[-172px] xs:left-[-158px] top-[248px] xs:top-[360px] rotate-90'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -67,9 +67,6 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         playersInRange={playersInRange}
                         confirmPlayerTarget={confirmPlayerTarget}
                         rotateDescription={-90}
-                        largeMagicConstant={360}
-                        smallMagicConstant={238}
-                        cardClampLimit={4}
                     />
                 </div>
                 <div className='fixed top-0 left-[50%] translate-x-[-50%] z-5'>
@@ -98,7 +95,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                         />
                     </div>
                 </div>
-                <div className='fixed z-10 flex items-end justify-end w-[490px] right-[-158px] top-[248px] xs:top-[360px] rotate-[270deg]'>
+                <div className='fixed z-10 flex items-end justify-end w-[490px] right-[-172px] xs:right-[-158px] top-[248px] xs:top-[360px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}

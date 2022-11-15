@@ -72,9 +72,9 @@ export default function PlayerTable({ socket, myHand, table, setSelectPlayerTarg
       <div 
         className='flex justify-between items-end mx-4 h-[135px] xs:h-[176px] bg-beige rounded p-2 pt-3 relative font-rye'
       >
-        <div className='flex w-[120px] flex-col text-xs xs:text-sm items-start'>
+        <div className='flex min-w-[65px] w-[70px] xs:w-[90px] flex-col text-xs xs:text-sm items-start'>
           <div className='flex flex-col justify-start items-start'>
-            <div className='overflow-visible'>{username}</div>
+            <div className='overflow-hidden '>{username}</div>
             <div className=''>HP: {myHealth}</div>
           </div>
           <div className='relative group'>
