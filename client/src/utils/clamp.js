@@ -9,5 +9,3 @@ export default function clamp(num, max) {
     }
 }
 
-
-console.log(clamp(5, 4));

@@ -2,8 +2,6 @@ import React from 'react';
 import Card from './Card';
 
 export default function StackDeck({ socket, username, currentRoom, currentPlayer, topStackCard, deckActive, drawFromDeck}) {
-  console.log(topStackCard === null);
-
   function handleClick() {
     if (!deckActive) return;
     drawFromDeck();

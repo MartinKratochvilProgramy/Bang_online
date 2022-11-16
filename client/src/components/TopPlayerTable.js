@@ -12,7 +12,6 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
   if (role === null || role === undefined) {
     roleSource = require("../img/gfx/roles/back-role.png");
   } else {
-    console.log("REQ ROLE: ", role);
     roleSource = require("../img/gfx/roles/" + role + ".png");
   }
 
@@ -71,7 +70,6 @@ export default function TopPlayerTable({ socket, cardsInHand, table, oponentName
                   document.getElementById('top-cards').offsetWidth > 260 ? magicConstant = largeMagicConstant : magicConstant = smallMagicConstant;
                   document.getElementById('top-cards').offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
                 }
-                console.log("Magic: ", magicConstant);
                 if (cardsInHand.length >= cardClampLimit) {
                     translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }

@@ -49,7 +49,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
       if (player.name === username && (player.hasDynamite || player.isInPrison || player.actionRequired)) {
         setNextTurn(false);
         if (character !== "Pedro Ramirez") {
-          console.log("character ", character);
           setCharacterUsable(false);
         }
         break;
@@ -62,9 +61,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   })
 
   socket.on("update_draw_choices", (characterName) => {
-    console.log("Username", username);
-    console.log("currentRoom", currentRoom);
-    console.log("character", character);
     if (username === "") return;
     if (currentRoom === null) return;
     if (characterName === character) {
@@ -75,7 +71,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
         socket.emit("request_players_in_range", {range: "max", currentRoom, username});
         
       } else if (characterName === "Pedro Ramirez") {
-        console.log("char usable");
         setDeckActive(true);
         setCharacterUsable(true);
 
@@ -86,7 +81,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
   })
 
   socket.on("end_discard", () => {
-    console.log("End discard");
     setDiscarding(false);
   })
 
@@ -170,8 +164,6 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
     setDeckActive(false);
     setNextTurn(true);
   }
-
-  console.log("Next turn", nextTurn);
   
   return (
     <div id='game'>

@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function Card({ socket, card, setActiveCard, setSelectPlayerTarget, setSelectCardTarget, currentRoom, username, currentPlayer, duelActive, indianiActive, discarding, character, onClick }) {
 
-    // TODO: this is not necessary
     const isPlayable = card.isPlayable
     const cardName = card.name;
     const cardDigit = card.digit;
@@ -35,11 +34,9 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
 
         } else if (indianiActive) {
-          console.log("Bang on indiani");
           socket.emit("play_bang_on_indiani", {username, currentRoom, cardDigit, cardType});
 
         } else if (duelActive) {
-          console.log("Bang in duel");
           socket.emit("play_bang_in_duel", {username, currentRoom, cardDigit, cardType});
         }
 
@@ -47,10 +44,8 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         if (username === currentPlayer && !duelActive && character === "Calamity Janet") {
           setActiveCard(card);
           setSelectPlayerTarget(true);
-          console.log("Mancato as bang");
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
         } else if (duelActive && character === "Calamity Janet"){
-          console.log("Mancato in duel");
           socket.emit("play_mancato_in_duel", {username, currentRoom, cardDigit, cardType});
         } else {
           socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
@@ -92,16 +87,14 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
         setActiveCard(card);
         setSelectPlayerTarget(true);
         setSelectCardTarget(true);
-        console.log("panico range");
         socket.emit("request_players_in_range", {range: "one_not_gun", currentRoom, username});
       
-      } else if (card.rimColor === "blue" && card.name !== "Prigione") {
+      } else if (card.rimColor === "blue" && cardName !== "Prigione") {
         socket.emit("place_blue_card_on_table", {username, currentRoom, card});
 
-      } else if (card.name === "Prigione") {
+      } else if (cardName === "Prigione") {
         setActiveCard(card);
         setSelectPlayerTarget(true);
-        console.log("request_players_in_range");
         socket.emit("request_players_in_range", {range: "max_not_sheriff", currentRoom, username});
       }
     }

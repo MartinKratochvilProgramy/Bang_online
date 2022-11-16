@@ -15,7 +15,7 @@ function App() {
 
   const [myCharacterChoice, setMyCharacterChoice] = useState([]);
   const [characterChoiceInProgress, setCharacterChoiceInProgress] = useState(true);
-  const [currentRoom, setCurrentRoom] = useState(null); // TODO: JSON.parse(localStorage.getItem('room-name'))
+  const [currentRoom, setCurrentRoom] = useState(null);
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [consoleOutput, setConsoleOutput] = useState([]);
@@ -79,7 +79,6 @@ function App() {
         socket.emit("get_my_role", {username, currentRoom});
         socket.emit("get_my_hand", {username, currentRoom});
       }
-      console.log("all hands: ", data);
       setAllPlayersInfo(data);
     })
 
@@ -93,7 +92,6 @@ function App() {
     })
 
     socket.on("current_player", playerName => {
-      console.log("Get my hand...");
       if (username === "") return;
       if (currentRoom === null) return;
       setCurrentPlayer(playerName);
