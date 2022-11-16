@@ -515,8 +515,10 @@ class Game {
         const getCardIndex = this.emporio.findIndex(foundCard => (foundCard.name === card.name && foundCard.digit === card.digit && foundCard.type === card.type))
         // return if card not found
         if (getCardIndex < 0) return;
+        const emporioCard = this.emporio[getCardIndex];
+        card.isPlayable = false;
         // place card in player hand
-        this.players[playerName].hand.push(this.emporio[getCardIndex]);
+        this.players[playerName].hand.push(emporioCard);
         // remove from emporio
         this.emporio.splice(getCardIndex, 1); 
 
