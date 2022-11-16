@@ -95,6 +95,7 @@ io.on("connection", (socket) => {
     socket.leave(roomName);
     // remove player from players
     rooms[roomName].players.splice(rooms[roomName].players.indexOf(data.username), 1);
+    io.to(roomName).emit("get_players", rooms[roomName].players);
 
     
     if(rooms[roomName].players.length <= 0) {
@@ -143,6 +144,7 @@ io.on("connection", (socket) => {
 
     rooms[roomName].game = new Game(data.players, deck);
     console.log("Game started in room ", roomName);
+    io.emit("rooms", getRoomsInfo());
 
     io.to(roomName).emit("get_character_choices", rooms[roomName].game.genCharacterChoices());
   });
@@ -433,8 +435,6 @@ io.on("connection", (socket) => {
     const message = rooms[roomName].game.useDynamite(data.username, data.card);
     io.to(roomName).emit("console", message);
 
-    console.log(rooms[roomName].game.players[data.username].hand);
-    
     updateGameState(io, roomName);
 
     if (message[message.length - 1] === "Game ended") {
@@ -620,9 +620,6 @@ return res;
 function startGame(io, roomName) {
   io.to(roomName).emit("console", rooms[roomName].game.startGame());
 
-  // emit so Join Room could not be displayed
-  io.emit("rooms", getRoomsInfo());
-  
   let characters = []
   for (var player of Object.keys(rooms[roomName].game.players)) {
     characters.push({playerName: player, character: rooms[roomName].game.players[player].character.name})

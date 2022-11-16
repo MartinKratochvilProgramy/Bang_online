@@ -12,7 +12,7 @@ export default function Room({ users, messages, sendMessage, roomName, leaveRoom
         <div className='flex space-x-2 flex-col justify-center items-center'>
           {users.map((user) => {
             return (
-              <div className='text-outline font-rye text-4xl text-white my-2'>{user.username}</div>
+              <div key={user.username} className='text-outline font-rye text-4xl text-white my-2'>{user.username}</div>
             )
           })}
         </div>

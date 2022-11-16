@@ -27,7 +27,7 @@ export default function RoomSelect({ setUsername, socket, setCurrentRoom, userna
     };
 
     let gridStyle ;
-    rooms.length >= 6 ? gridStyle = "grid-cols-2" : gridStyle = "grid-cols-1";
+    rooms.length >= 3 ? gridStyle = "grid-cols-2" : gridStyle = "grid-cols-1";
 
     if (username === "") {
         return(

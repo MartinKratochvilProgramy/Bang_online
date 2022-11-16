@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
+        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        // this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
         this.stack = [];
@@ -48,7 +48,7 @@ class Game {
             if (this.deck.length <= 0) this.putStackIntoDeck();
 
             const card = this.deck[0];
-            card.isPlayable = false; // TODO: this was not tested!!!
+            card.isPlayable = false;
             this.players[playerName].hand.push(card);
             this.deck.shift();
         }
@@ -1434,7 +1434,7 @@ class Game {
 
     startGame() {
         // each player draws startingHandSize cards
-        // this.shuffleDeck(); // TODO: REMOVE comment
+        this.shuffleDeck();
         for (var player of Object.keys(this.players)) {
             this.draw(this.players[player].character.startingHandSize, player);
         }
