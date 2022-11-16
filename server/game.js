@@ -148,7 +148,6 @@ class Game {
         } else {
             // not StK
             this.setCardOnTablePlayable("Barilo", target);
-            console.log("Activating barel for ", target);
             this.setPlayable("Mancato!", target);
             if (this.players[target].character.name === "Calamity Janet") {
                 this.setPlayable("Bang!", target);
@@ -839,7 +838,6 @@ class Game {
             }
         }
         
-        console.log("message: ", message);
         if (!this.getPlayerHasDynamite(playerName) && !this.getPlayerIsInPrison(playerName)) {
             const currentPlayerName = this.getNameOfCurrentTurnPlayer();
             if (this.players[currentPlayerName].character.name === "Lucky Duke") {
@@ -1326,18 +1324,6 @@ class Game {
             state.push({
                 name: player,
                 numberOfCards: this.players[player].hand.length})
-        }
-        return state;
-    }
-
-    healthOfEachPlayer() {
-        // returns array [{name, numberOfCards}]
-        // TODO: this is not being used
-        let state = [];
-        for (var player of Object.keys(this.players)) {
-            state.push({
-                name: player,
-                healt: this.players[player].character.health})
         }
         return state;
     }
