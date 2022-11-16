@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["Bart Cassidy", "Calamity Janet", "Pedro Ramirez", "El Gringo"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
         this.stack = [];
@@ -446,7 +446,7 @@ class Game {
             // only one gun card of same class allowed so filter by class
             if (this.players[playerName].table.filter(cardOnTable => cardOnTable.class === card.class).length > 0) {
                 // remove card from table
-                const cardOnTableIndex = this.players[playerName].table.findIndex(foundCard => (foundCard.name === card.name));
+                const cardOnTableIndex = this.players[playerName].table.findIndex(foundCard => (foundCard.class === card.class));
                 const removedCard = this.players[playerName].table.splice(cardOnTableIndex, 1)[0];
                 if (removedCard.name === "Vulcanic") this.bangCanBeUsed = false;
                 this.stack.push(removedCard);
@@ -730,12 +730,14 @@ class Game {
                     // discard Mancato!
                     const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Mancato!"));
                     this.discard("Mancato!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
+                    this.setAllNotPlayable(playerName);
                     this.setIsLosingHealth(false, playerName);
                     return message
                 } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].hand.filter(card => card.name === "Bang!").length >= 1) {
                     // CJ discard Bang!
                     const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Bang!"));
                     this.discard("Bang!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
+                    this.setAllNotPlayable(playerName);
                     this.setIsLosingHealth(false, playerName);
                     return message
                 }
@@ -866,6 +868,8 @@ class Game {
                 this.draw(2, playerName);
                 this.setAllPlayable(playerName);
             }  
+        } else {
+            this.setAllNotPlayable(playerName);
         }
         return message;
     }
@@ -878,13 +882,14 @@ class Game {
 
         // draw card
         const drawnCard = this.deck[0];
+        let secondDrawnCard;
         this.deck.shift();
         this.stack.push(drawnCard)
         let message = [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on prison`];
                 
         if (this.players[playerName].character.name === "Lucky Duke") {
             // Lucky Duke second card
-            const secondDrawnCard = this.deck[0];
+            secondDrawnCard = this.deck[0];
             this.deck.shift();
             this.stack.push(secondDrawnCard);
             message = [`${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Prigione`];
@@ -1194,15 +1199,24 @@ class Game {
         this.deck.shift();
         this.stack.push(drawnCard)
 
+        const playerPlaceholder = this.getNameOfCurrentTurnPlayer();
+
         if (drawnCard.type === "hearts") {
-            this.setIsLosingHealth(false, playerName);
-            this.setNotPlayable("Mancato!", playerName);
-            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-            if (!this.bangCanBeUsed) {
-                this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
-                if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                    // laso disallow Mancato! for CJ
-                    this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer())
+            if (this.players[playerPlaceholder].character.name === "Slab The Killer") {
+                // if barel
+                // TODO: add barel for J
+
+
+            } else {
+                this.setIsLosingHealth(false, playerName);
+                this.setNotPlayable("Mancato!", playerName);
+                this.setAllPlayable(playerPlaceholder);
+                if (!this.bangCanBeUsed) {
+                    this.setNotPlayable("Bang!", playerPlaceholder)
+                    if (this.players[playerPlaceholder].character.name === "Calamity Janet") {
+                        // laso disallow Mancato! for CJ
+                        this.setNotPlayable("Mancato!", playerPlaceholder)
+                    }
                 }
             }
         }

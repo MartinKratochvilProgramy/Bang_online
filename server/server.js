@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const deck = require('./deck')
+const deck = require('./deck.js')
 
 const io = new Server(server, {
   cors: {
@@ -423,6 +423,8 @@ io.on("connection", (socket) => {
     
     const message = rooms[roomName].game.useDynamite(data.username, data.card);
     io.to(roomName).emit("console", message);
+
+    console.log(rooms[roomName].game.players[data.username].hand);
     
     updateGameState(io, roomName);
 
