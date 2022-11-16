@@ -211,6 +211,15 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("indiani_active", rooms[roomName].game.indianiActive);
     updateGameState(io, roomName);
   })
+  
+  socket.on("play_mancato_on_indiani", (data) => {
+    const roomName = data.currentRoom;
+    
+    io.to(roomName).emit("console", rooms[roomName].game.useMancatoOnIndiani(data.cardDigit, data.cardType, data.username));
+    io.to(roomName).emit("update_players_losing_health", rooms[roomName].game.getPlayersLosingHealth());
+    io.to(roomName).emit("indiani_active", rooms[roomName].game.indianiActive);
+    updateGameState(io, roomName);
+  })
 
   socket.on("play_mancato", (data) => {
     const roomName = data.currentRoom;

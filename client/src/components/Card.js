@@ -47,6 +47,8 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
           socket.emit("request_players_in_range", {range: 1, currentRoom, username});
         } else if (duelActive && character === "Calamity Janet"){
           socket.emit("play_mancato_in_duel", {username, currentRoom, cardDigit, cardType});
+        } else if (indianiActive && character === "Calamity Janet"){
+          socket.emit("play_mancato_on_indiani", {username, currentRoom, cardDigit, cardType});
         } else {
           socket.emit("play_mancato", {username, currentRoom, cardDigit, cardType});
         }

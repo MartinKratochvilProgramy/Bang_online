@@ -27,7 +27,7 @@ class Game {
                 hand: [],
                 table: [],
                 isLosingHealth: false,
-                hasDynamite: false,
+                mancatoPool: 0,
                 character: {
                     name: null,
                     role: null
@@ -114,47 +114,21 @@ class Game {
     // ******************* USE CARDS *******************
     useBang(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Bang!", cardDigit, cardType, playerName);
-        
-        if (this.players[playerName].character.name === "Slab the Killer") {
-            // StK
-            if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 2) {
-                // two Mancato! in hand
-                this.setPlayable("Mancato!", target);
-                this.setCardOnTablePlayable("Barilo", target);
-                
-            } else if (this.players[target].hand.filter(card => card.name === "Mancato!").length >= 1 && this.players[target].table.filter(card => card.name === "Barilo").length >= 1) {
-                // Mancato! and Barel in hand
-                this.setPlayable("Mancato!", target);
-                this.setCardOnTablePlayable("Barel", target);
-                this.setCardOnTablePlayable("Barilo", target);
-
-            } else if (this.players[target].character.name === "Calamity Janet") {
-                // target is CJ
-                if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length >= 2) {
-                    this.setPlayable("Bang!", target);
-                    this.setPlayable("Mancato!", target);
-                    if (this.players[target].table.filter(card => (card.name === "Barilo")).length >= 1) {
-                        this.setCardOnTablePlayable("Barilo", target)
-                    }
-                    
-                } else if (this.players[target].hand.filter(card => (card.name === "Mancato!" || card.name === "Bang!")).length === 1 && this.players[target].table.filter(card => (card.name === "Barilo")).length >= 1) {
-                    // CJ has one Barel and one Mancato! or Bang!
-                    this.setPlayable("Bang!", target);
-                    this.setPlayable("Mancato!", target);
-                    this.setCardOnTablePlayable("Barilo", target)
-                
-                }
-            }
-        } else {
-            // not StK
-            this.setCardOnTablePlayable("Barilo", target);
-            this.setPlayable("Mancato!", target);
-            if (this.players[target].character.name === "Calamity Janet") {
-                this.setPlayable("Bang!", target);
-            }
-        }
-
         this.setAllNotPlayable(playerName);
+
+        this.setIsLosingHealth(true, target);
+        this.players[target].mancatoPool = 1;
+        if (this.players[playerName].character.name === "Slab the Killer") {
+            // need 2 Mancato! on StK
+            this.players[target].mancatoPool += 1;
+        }
+        
+        this.setPlayable("Mancato!", target);
+        if (this.players[target].character.name === "Calamity Janet") {
+            this.setPlayable("Bang!", target);
+        }
+        this.setCardOnTablePlayable("Barilo", target);
+        
         if (this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0 || this.players[playerName].character.name === "Willy the Kid") {
             // if player has Volcanic or is Willy the Kid don't block Bang!s
             this.bangCanBeUsed = true;
@@ -162,50 +136,30 @@ class Game {
             this.bangCanBeUsed = false;
         }
 
-        this.setIsLosingHealth(true, target);
-
         return [`${playerName} used Bang! on ${target}`];
     }
     
     useBangAsCJ(playerName, cardDigit, cardType) {
         let message = [];
-        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-            if (!this.gatlingActive) {
-                // Calamity Janet discard 2 Mancato! or Bang!
-                for (let i = 0; i < 2; i++) {
-                    const index = this.players[playerName].hand.findIndex(card => {
-                        return (card.name === 'Mancato!' || card.name === "Bang!");
-                    });
-                    const card = this.players[playerName].hand[index];
-                    this.discard(card.name, card.digit, card.type, playerName);
-                    message.push(`${playerName} discarded 2 ${card.name} on Slab the Killer`);
-                }
-            } else {
-                this.discard("Bang!", cardDigit, cardType, playerName);
-                this.gatlingActive = false;
+        this.players[playerName].mancatoPool -= 1;
+
+        this.discard("Bang!", cardDigit, cardType, playerName);
+        message.push(`${playerName} used Bang! as Mancato!`);
+
+        if (this.players[playerName].mancatoPool === 0) {
+            this.setCardOnTableNotPlayable("Barilo", playerName);
+            this.setAllNotPlayable(playerName);
+            
+            this.setIsLosingHealth(false, playerName);
+
+            // if there is player loosing health, return
+            // if no player is found, set playable for playerPlaceholder
+            for (const player of this.getPlayersLosingHealth()) {
+                if (player.isLosingHealth) return message;
             }
-        } else {
-            // normally discard 1 card
-            this.discard("Bang!", cardDigit, cardType, playerName);
-             message.push(`${playerName} used Bang! as Mancato!`);
-        }
 
-        this.setCardOnTableNotPlayable("Barilo", playerName);
-        this.setNotPlayable("Bang!", playerName);
-        this.setNotPlayable("Mancato!", playerName);
-        
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
         }
-        
-        this.setIsLosingHealth(false, playerName);
-
-        // if there is player loosing health, return
-        // if no player is found, set playable for playerPlaceholder
-        for (const player of this.getPlayersLosingHealth()) {
-            if (player.isLosingHealth) return message;
-        }
-        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
 
         return message;
     }
@@ -227,6 +181,23 @@ class Game {
         return [`${playerName} used Bang!`];
     }
 
+    useMancatoOnIndiani(cardDigit, cardType, playerName) {
+        this.discard("Mancato!", cardDigit, cardType, playerName);
+
+        this.setIsLosingHealth(false, playerName);
+        this.setAllNotPlayable(playerName);
+
+        // if there is player loosing health, return
+        // if no player is found, set playable for playerPlaceholder
+        for (const player of this.getPlayersLosingHealth()) {
+            if (player.isLosingHealth) return [`${playerName} used Mancato! as Bang!`];
+        }
+        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+        this.indianiActive = false;
+
+        return [`${playerName} used Mancato! as Bang!`];
+    }
+
     useBangInDuel(cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         // special case of Bang! use, sets the next turn of the duel state
 
@@ -246,69 +217,32 @@ class Game {
     }
 
     useMancato(playerName, cardDigit, cardType) {
-        let message = [];
+        let message = [`${playerName} used Mancato!`];
 
-        if (!this.gatlingActive) {
-            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-                if (this.players[playerName].character.name === "Calamity Janet") {
-    
-                    // Calamity Janet discard 2 Mancato! or Bang!
-                    for (let i = 0; i < 2; i++) {
-                        const index = this.players[playerName].hand.findIndex(card => {
-                            return (card.name === 'Mancato!' || card.name === "Bang!");
-                        });
-                        const card = this.players[playerName].hand[index];
-                        this.discard(card.name, card.digit, card.type, playerName);
-                        message.push(`${playerName} discarded 2 ${card.name} on Slab the Killer`);
-                    }
-                } else {
-                    // on Slab the Killer, discard two Mancato!
-                    for (let i = 0; i < 2; i++) {
-                        const index = this.players[playerName].hand.findIndex(card => {
-                            return (card.name === 'Mancato!');
-                        });
-                        const card = this.players[playerName].hand[index];
-                        this.discard(card.name, card.digit, card.type, playerName);
-                    }
-                      message.push(`${playerName} discarded 2 Mancato! on Slab the Killer`);
-                }
-            } else {
-                // normally discard one Mancato!
-                this.discard("Mancato!", cardDigit, cardType, playerName);
-                message.push(`${playerName} used Mancato!`);
-            }
-        } else {
-            // on gatling discard one Mancato!
-            this.setAllNotPlayable(playerName);
-            this.discard("Mancato!", cardDigit, cardType, playerName);
-            message.push(`${playerName} used Mancato!`);
-        }
+        this.discard("Mancato!", cardDigit, cardType, playerName);
 
-        this.setMancatoBeerNotPlayable(playerName);
-        this.setCardOnTableNotPlayable("Barilo", playerName);
-        
-        this.setIsLosingHealth(false, playerName);
-        
-        if (this.indianiActive) {
-            // CJ can play Mancato! on Indiani, so disable all cards if this happens
-            this.setAllNotPlayable(playerName);
-        }
-        
-        // if there is player loosing health, return
-        // if no player is found, set playable for playerPlaceholder
-        for (const player of this.getPlayersLosingHealth()) {
-            if (player.isLosingHealth) return message;
-        }
-        this.gatlingActive = false;
-        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-        
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
-            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                // also disable Mancato! for CJ
-                this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
+        this.players[playerName].mancatoPool -=1;
+
+        if (this.players[playerName].mancatoPool === 0) {
+            this.setMancatoBeerNotPlayable(playerName);
+            this.setCardOnTableNotPlayable("Barilo", playerName);
+            this.setIsLosingHealth(false, playerName);
+
+            if (this.indianiActive) {
+                // CJ can play Mancato! on Indiani, so disable all cards if this happens
+                this.setAllNotPlayable(playerName);
             }
+            
+            // if there is player loosing health, return
+            // if no player is found, set playable for playerPlaceholder
+            for (const player of this.getPlayersLosingHealth()) {
+                if (player.isLosingHealth) return message;
+            }
+            this.gatlingActive = false;
+            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+            
         }
+        
         return message;
     }
 
@@ -334,6 +268,8 @@ class Game {
     useMancatoAsCJ(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         this.discard("Mancato!", cardDigit, cardType, playerName);
 
+        this.players[target].mancatoPool = 1;
+
         this.setPlayable("Mancato!", target);
         this.setCardOnTablePlayable("Barilo", target);
 
@@ -347,7 +283,7 @@ class Game {
 
         this.setIsLosingHealth(true, target);
 
-        return [`${playerName} discarded Mancato! as Bang! on ${target}`];
+        return [`${playerName} used Mancato! as Bang! on ${target}`];
     }
 
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
@@ -359,7 +295,7 @@ class Game {
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
 
         this.discard(randomCard.name, randomCard.digit, randomCard.type, target);
-        message.push(`${target} discarded ${randomCard.name}`);
+        message.push(`${target} used ${randomCard.name}`);
         
         return message;
     }
@@ -614,9 +550,6 @@ class Game {
         this.draw(2, playerName);
         
         this.setAllPlayable(playerName);
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", playerName);
-        }
         
         return [`${playerName} used Diligenza`];
     }
@@ -627,9 +560,6 @@ class Game {
         this.draw(3, playerName);
 
         this.setAllPlayable(playerName);
-        if (!this.bangCanBeUsed) {
-            this.setNotPlayable("Bang!", playerName);
-        }
         
         return [`${playerName} used Wells Fargo`];
     }
@@ -664,6 +594,7 @@ class Game {
                 this.setCardOnTablePlayable("Barilo", target);
                 
                 this.setIsLosingHealth(true, target);
+                this.players[target].mancatoPool =1;
             }
         }
         
@@ -709,63 +640,19 @@ class Game {
         this.deck.shift();
         this.stack.push(drawnCard);
         
-        let secondDrawnCard;
-
-        if (this.players[playerName].character.name === "Lucky Duke") {
-            // Lucky Duke second card
-            secondDrawnCard = this.deck[0];
-            this.deck.shift();
-            this.stack.push(secondDrawnCard);
-            message = [`${playerName} as Lucky Duke drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} and ${secondDrawnCard.name} ${secondDrawnCard.digit} ${secondDrawnCard.type} on Barel`];
-        } else {
-            message = [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`];
-        }
+        message = [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on barel`];
 
         this.setCardOnTableNotPlayable("Barilo", playerName);
 
-        if (drawnCard.type === "hearts" || (this.players[playerName].character.name === "Lucky Duke" && secondDrawnCard.type === "hearts")) {
-            if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Slab the Killer") {
-                // attacked by Slab the Killer
-                if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 1) {
-                    // discard Mancato!
-                    const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Mancato!"));
-                    this.discard("Mancato!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
-                    this.setAllNotPlayable(playerName);
-                    this.setIsLosingHealth(false, playerName);
-                    return message
-                } else if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].hand.filter(card => card.name === "Bang!").length >= 1) {
-                    // CJ discard Bang!
-                    const cardIndex = this.players[playerName].hand.findIndex(foundCard => (foundCard.name === "Bang!"));
-                    this.discard("Bang!", this.players[playerName].hand[cardIndex].digit, this.players[playerName].hand[cardIndex].type, playerName);
-                    this.setAllNotPlayable(playerName);
-                    this.setIsLosingHealth(false, playerName);
-                    return message
-                }
-            } else {
-                // not Slab the Killer
+        if (drawnCard.type === "hearts") {
+            this.players[playerName].mancatoPool -= 1;
+
+            if (this.players[playerName].mancatoPool === 0) {
+                this.setAllNotPlayable(playerName);
                 this.setIsLosingHealth(false, playerName);
-                this.setAllNotPlayable(playerName);
-    
+
                 this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-                if (!this.bangCanBeUsed) {
-                    this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer())
-                    if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                        // laso disallow Mancato! for CJ
-                        this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer())
-                    }
-                }
             }
-        } else if (this.players[playerName].character.name === "Calamity Janet") {
-            if (this.players[playerName].hand.filter(card => card.name === "Bang!" || card.name === "Mancato!").length >= 2) {
-                this.setPlayable("Bang!", playerName);
-                this.setPlayable("Mancato!", playerName);
-            } else {
-                this.setAllNotPlayable(playerName);
-            }
-        } else if (this.players[playerName].hand.filter(card => card.name === "Mancato!").length >= 1) {
-            this.setPlayable("Mancato!", playerName);
-        } else {
-            this.setAllNotPlayable(playerName);
         }
 
         return message;
@@ -946,6 +833,8 @@ class Game {
         let message = [`${playerName} lost health`];
 
         this.players[playerName].character.health -= 1;
+        this.players[playerName].mancatoPool = 0;
+
 
         this.setIsLosingHealth(false, playerName);
         this.setNotPlayable("Mancato!", playerName);
@@ -978,9 +867,8 @@ class Game {
             this.duelTurnIndex = 0;
             this.duelPlayers = [];
             if (this.bangCanBeUsed) {
-                const currentPlayer = this.getNameOfCurrentTurnPlayer();
                 this.setNotPlayable("Bang!", playerName);
-                this.setAllPlayable(currentPlayer);
+                this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
             }
         }
         //El Gringo can draw from oponent when hit by Bang! or Gatling
@@ -997,16 +885,10 @@ class Game {
             }
         }
 
+        this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+
         if (!this.gatlingActive && !this.indianiActive) {
             // if no gatling, continue
-            this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-            if (!this.bangCanBeUsed) {
-                this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
-                if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                    // also disable Mancato! for CJ
-                    this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
-                }
-            }
         } else {
             // on gatling, activate playerPlaceholder only when all reactions
             // if there is player losing health, return
@@ -1019,14 +901,6 @@ class Game {
                 this.gatlingActive = false;
                 this.indianiActive = false;
     
-                this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-                if (!this.bangCanBeUsed) {
-                    this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
-                    if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                        // also disable Mancato! for CJ
-                        this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
-                    }
-                }
             }
         }
         
@@ -1038,13 +912,7 @@ class Game {
                     this.useBeer(playerName, card.digit, card.type);
 
                     this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
-                    if (!this.bangCanBeUsed) {
-                        this.setNotPlayable("Bang!", this.getNameOfCurrentTurnPlayer());
-                        if (this.players[this.getNameOfCurrentTurnPlayer()].character.name === "Calamity Janet") {
-                            // also disable Mancato! for CJ
-                            this.setNotPlayable("Mancato!", this.getNameOfCurrentTurnPlayer());
-                        }
-                    }
+
                     message.push(`${playerName} had Beer, so he used it`)
                     return message;
                 }
@@ -1202,23 +1070,15 @@ class Game {
         const playerPlaceholder = this.getNameOfCurrentTurnPlayer();
 
         if (drawnCard.type === "hearts") {
-            if (this.players[playerPlaceholder].character.name === "Slab The Killer") {
-                // if barel
-                // TODO: add barel for J
 
+            this.players[playerName].mancatoPool -= 1;
 
-            } else {
+            if (this.players[playerName].mancatoPool === 0) {
                 this.setIsLosingHealth(false, playerName);
-                this.setNotPlayable("Mancato!", playerName);
+                this.setAllNotPlayable(playerName);
                 this.setAllPlayable(playerPlaceholder);
-                if (!this.bangCanBeUsed) {
-                    this.setNotPlayable("Bang!", playerPlaceholder)
-                    if (this.players[playerPlaceholder].character.name === "Calamity Janet") {
-                        // laso disallow Mancato! for CJ
-                        this.setNotPlayable("Mancato!", playerPlaceholder)
-                    }
-                }
             }
+
         }
 
         return [`${playerName} drew ${drawnCard.name} ${drawnCard.digit} ${drawnCard.type} on Jourdonnais`];
@@ -1230,20 +1090,6 @@ class Game {
         for (var card of this.players[playerName].hand) {
             if (card.name === cardName) {
                 card.isPlayable = true;
-            }
-        }
-        if (cardName === "Bang!" && this.players[playerName].character.name === "Calamity Janet") {
-            for (var card of this.players[playerName].hand) {
-                if (card.name === "Mancato!") {
-                    card.isPlayable = true;
-                }
-            }
-        }
-        if (cardName === "Mancato!" && this.players[playerName].character.name === "Calamity Janet") {
-            for (var card of this.players[playerName].hand) {
-                if (card.name === "Bang!") {
-                    card.isPlayable = true;
-                }
             }
         }
     }
@@ -1262,10 +1108,17 @@ class Game {
         for (var card of this.players[playerName].hand) {
             card.isPlayable = true;
         }
-        if (!this.bangCanBeUsed) {
+
+        this.setMancatoBeerNotPlayable(playerName);
+
+        if (this.bangCanBeUsed) {
+            if (this.players[playerName].character.name === "Calamity Janet") {
+                // allow Mancato! for CJ
+                this.setPlayable("Mancato!", playerName)
+            }
+        } else {
             this.setNotPlayable("Bang!", playerName);
         }
-        this.setMancatoBeerNotPlayable(playerName);
     }
 
     setAllNotPlayable(playerName) {
@@ -1304,10 +1157,9 @@ class Game {
         if (this.players[playerName].character.health >= this.players[playerName].character.maxHealth) {
             this.setNotPlayable("Beer", playerName) // let player play beer if not max HP
         }
-        if (this.players[playerName].character.name !== "Calamity Janet") {
-            this.setNotPlayable("Mancato!", playerName);
-        }
-        if (this.players[playerName].character.name !== "Calamity Janet" && this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0) {
+        this.setNotPlayable("Mancato!", playerName) // let player play beer if not max HP
+        
+        if (this.players[playerName].character.name === "Calamity Janet" && this.players[playerName].table.filter(item => item.name === 'Vulcanic').length > 0) {
             this.setPlayable("Mancato!", playerName);
         }
     }
@@ -1582,7 +1434,7 @@ class Game {
 
     startGame() {
         // each player draws startingHandSize cards
-        this.shuffleDeck();
+        // this.shuffleDeck(); // TODO: REMOVE comment
         for (var player of Object.keys(this.players)) {
             this.draw(this.players[player].character.startingHandSize, player);
         }
@@ -1674,7 +1526,6 @@ class Game {
         this.setAllNotPlayable(previousPlayerName);
 
         if (this.getPlayerHasDynamite(currentPlayerName) && this.getPlayerIsInPrison(currentPlayerName)) {
-            this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
             
             this.players[currentPlayerName].isInPrison = true;
@@ -1683,7 +1534,6 @@ class Game {
         }
         
         if (this.getPlayerHasDynamite(currentPlayerName)) {
-            this.players[currentPlayerName].hasDynamite = true;
             this.setCardOnTablePlayable("Dynamite", currentPlayerName);
             return message;
             
