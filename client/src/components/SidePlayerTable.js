@@ -78,14 +78,16 @@ export default function SidePlayerTable({ socket, cardsInHand, table, oponentNam
           <div className='max-h-full w-[272px] flex relative'>
             {cardsInHand.map((card, index) => {
                 let translate = 0;
-                if (cardsInHand.length >= 3) {
-                  let magicConstant = 72;
-                  let cardWidth = 60;
-                  const cardsElement = document.getElementById('cards')
-                  if (cardsElement !== null) {
-                    cardsElement.offsetWidth > 260 ? magicConstant = 292 : magicConstant = 112;
-                    cardsElement.offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
-                  }
+                let magicConstant = 72;
+                let cardWidth = 60;
+                let cardClamp = 3; // how many cards in hand before it gets squished
+                const cardsElement = document.getElementById('cards')
+                if (cardsElement !== null) {
+                  cardsElement.offsetWidth > 260 ? magicConstant = 292 : magicConstant = 112;
+                  cardsElement.offsetWidth > 260 ? cardWidth = 90 : cardWidth = 60;
+                  cardsElement.offsetWidth > 260 ? cardClamp = 4 : cardClamp = 3;
+                }
+                if (cardsInHand.length >= cardClamp) {
                     translate = - ((cardsInHand.length) * cardWidth - magicConstant) / (cardsInHand.length - 1) * index;
                 }
                 return(

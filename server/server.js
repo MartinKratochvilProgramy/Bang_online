@@ -6,7 +6,7 @@ const server = http.createServer(app);
 var uuid = require('uuid');
 const cors = require("cors");
 const Game = require('./game.js');
-const deck = require('./deck.js')
+const deck = require('./deck')
 
 const io = new Server(server, {
   cors: {
@@ -425,7 +425,7 @@ io.on("connection", (socket) => {
     io.to(roomName).emit("console", message);
     
     updateGameState(io, roomName);
-    
+
     if (message[message.length - 1] === "Game ended") {
       // game over      
       // emit who won

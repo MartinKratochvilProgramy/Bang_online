@@ -812,10 +812,10 @@ class Game {
                 message.push("Dynamite exploded!");
                 for (let i = 0; i < 3; i++) {
                     message.push(...this.loseHealth(playerName));
-                }
-                if (this.players[playerName].character.health <= 0) {
-                    this.setAllNotPlayable(playerName);
-                    this.setAllCardsOnTableNotPlayable(playerName);
+                    if (this.players[playerName].character.health <= 0) {
+                        this.setAllNotPlayable(playerName);
+                        this.setAllCardsOnTableNotPlayable(playerName);
+                    }
                 }
             }
         } else {
@@ -1047,7 +1047,7 @@ class Game {
             this.setAllCardsOnTableNotPlayable(playerName);
 
             for (const player of Object.keys(this.players)) {
-                if (this.players[player].character.name === "Vulture Sam" && player !== playerName) {
+                if (this.players[player].character.name === "Vulture Sam" && this.players[player].character.health > 0 && player !== playerName) {
                     // if there is Vulture Sam, put dead player's hand to his hand
                     message.push(`Vulture Sam received the hand of ${playerName}`);
                     for (const card of this.players[playerName].hand) {
@@ -1090,6 +1090,13 @@ class Game {
                 message.push("Sheriff killed Vice!");
             }
 
+            // Bandit death, draw 3
+            // also outside player turn, so would not activate on Dynamite
+            if (this.players[playerName].character.role === "Bandit" && playerName !== this.getNameOfCurrentTurnPlayer()) {
+                this.draw(3, this.getNameOfCurrentTurnPlayer());
+                this.setAllPlayable(this.getNameOfCurrentTurnPlayer());
+            }
+
             this.knownRoles[playerName] = this.players[playerName].character.role;
             
             message.push(`${playerName} has died!`);
@@ -1104,6 +1111,7 @@ class Game {
                     deadRoles.push(this.players[player].character.role);
                 }
             }
+
             if (aliveRoles.includes("Sheriff") && (!aliveRoles.includes("Bandit") && !aliveRoles.includes("Renegade"))){
                 // SHERIFF AND VICE WIN
                 if (aliveRoles.includes("Vice") || deadRoles.includes("Vice")) {
@@ -1136,7 +1144,7 @@ class Game {
 
                 this.endGame();
                 
-            } else if (aliveRoles.includes("Renegade") && (!aliveRoles.includes("Sheriff") && !aliveRoles.includes("Vice") && !aliveRoles.includes("Renegade"))) {
+            } else if (aliveRoles.includes("Renegade") && (!aliveRoles.includes("Sheriff") && !aliveRoles.includes("Vice") && !aliveRoles.includes("Bandit"))) {
                 // RENEGADE WIN
                 message.push(`Renegade (${this.getNameOfPlayersByRole("Renegade")[0]}) wictory!`);
                 message.push("Game ended");

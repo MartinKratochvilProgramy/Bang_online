@@ -36,7 +36,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                 health={oponentsInfo[0].health}
                 playersInRange={playersInRange}
                 confirmPlayerTarget={confirmPlayerTarget}
-                largeMagicConstant={342}
+                largeMagicConstant={352}
                 smallMagicConstant={222}
                 cardClampLimit={4}
               />
@@ -89,7 +89,7 @@ export default function Oponents({ socket, allPlayersInfo, knownRoles, currentRo
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
-                            largeMagicConstant={342}
+                            largeMagicConstant={352}
                             smallMagicConstant={222}
                             cardClampLimit={4}
                         />
