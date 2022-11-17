@@ -54,36 +54,46 @@ io.on("connection", (socket) => {
     for (var room of Object.keys(rooms)) {
       // iterate throught players inside room
       for (let i = 0; i < rooms[room].players.length; i++) {
-        // if player === player who disconnected, splice him
-        if(rooms[room].players[i].id === socket.id) {
-  
-          io.to(room).emit("console", [`${rooms[room].players[i].username} disconnected`]);
-          rooms[room].game.removePlayer(rooms[room].players[i].username);
-          io.to(room).emit("known_roles", rooms[room].game.knownRoles);
-          
-          rooms[room].players.splice(i, 1);
+        if (rooms[room].game === null) {
+          // game not yet started in game -> simple splice
+          rooms[room].players.splice(rooms[room].players.indexOf(rooms[room].players[i].username), 1);
+          io.to(room).emit("get_players", rooms[room].players);
           io.emit("rooms", getRoomsInfo());
 
-          // tell game a player left if room exists
-          if (rooms[room].game && rooms[room].players.length >= 2) {
-            // if game exists, remove player from game
-            // send info to client
-            updateGameState(io, room);
-            nextTurn(io, room);
+        } else {
+          // game exists
+          // if player === player who disconnected, splice him
+          if(rooms[room].players[i].id === socket.id) {
+    
+            io.to(room).emit("console", [`${rooms[room].players[i].username} disconnected`]);
+            rooms[room].game.removePlayer(rooms[room].players[i].username);
+            io.to(room).emit("known_roles", rooms[room].game.knownRoles);
+            
+            rooms[room].players.splice(i, 1);
+            io.emit("rooms", getRoomsInfo());
+  
+            // tell game a player left if room exists
+            if (rooms[room].game && rooms[room].players.length >= 2) {
+              // if game exists, remove player from game
+              // send info to client
+              updateGameState(io, room);
+              nextTurn(io, room);
+            }
+            socket.emit("room_left");
+            
+  
+            if(rooms[room].players.length <= 0) {
+              // if room empty, delete it
+              delete rooms[room];
+              console.log("Room ", room, " deleted")
+            } else {
+              // if players left in game, emit to them
+              io.to(room).emit("get_players", rooms[room].players);
+              updateGameState(io, room);
+            }
+            break;
           }
-          socket.emit("room_left");
-          
-
-          if(rooms[room].players.length <= 0) {
-            // if room empty, delete it
-            delete rooms[room];
-            console.log("Room ", room, " deleted")
-          } else {
-            // if players left in game, emit to them
-            io.to(room).emit("get_players", rooms[room].players);
-            updateGameState(io, room);
-          }
-          break;
+  
         }
       }
     }
