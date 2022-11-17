@@ -5,6 +5,8 @@ import OponentCardOnTable from './OponentCardOnTable';
 export default function TopPlayerTable({ socket, cardsInHand, table, oponentName, currentRoom, selectCardTarget, selectPlayerTarget, username, currentPlayer, 
      character, role, health, confirmCardTarget, playersInRange, confirmPlayerTarget, largeMagicConstant, smallMagicConstant, cardClampLimit }) {
 
+      console.log("character ", character);
+
 
   const characterSource = require("../img/gfx/characters/" + character.replace(/\s/g, '') + ".png");
 

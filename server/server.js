@@ -651,5 +651,5 @@ function startGame(io, roomName) {
 
   }
 
-  io.to(roomName).emit("game_started", rooms[roomName].game.getAllPlayersInfo());
+  io.to(roomName).emit("game_started", {allPlayersInfo: rooms[roomName].game.getAllPlayersInfo(), allCharactersInfo: rooms[roomName].game.getCharacters()});
 }

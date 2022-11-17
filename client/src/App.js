@@ -31,6 +31,7 @@ function App() {
   const [myHand, setMyHand] = useState([]);
   const [myDrawChoice, setMyDrawChoice] = useState([]);
   const [allPlayersInfo, setAllPlayersInfo] = useState([]);
+  const [allCharactersInfo, setAllCharactersInfo] = useState([]);
   const [playersLosingHealth, setPlayersLosingHealth] = useState([]);
   const [playersActionRequiredOnStart, setPlayersActionRequiredOnStart] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState("");
@@ -79,7 +80,8 @@ function App() {
         socket.emit("get_my_role", {username, currentRoom});
         socket.emit("get_my_hand", {username, currentRoom});
       }
-      setAllPlayersInfo(data);
+      setAllPlayersInfo(data.allPlayersInfo);       // info about health, hands...
+      setAllCharactersInfo(data.allCharactersInfo); // info about character names
     })
 
     socket.on("characters", characters => {
@@ -228,6 +230,7 @@ function App() {
             myHand={myHand}
             allPlayersInfo={allPlayersInfo}
             setAllPlayersInfo={setAllPlayersInfo}
+            allCharactersInfo={allCharactersInfo}
             username={username}
             character={character}
             characterUsable={characterUsable}

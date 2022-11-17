@@ -6,7 +6,7 @@ import Console from './Console';
 import StackDeck from './StackDeck';
 import CharacterChoice from './CharacterChoice';
 
-export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, username, character, characterUsable, setCharacterUsable, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
+export default function Game({ myCharacterChoice, characterChoiceInProgress, setCharacter, myHand, allPlayersInfo, allCharactersInfo, username, character, characterUsable, setCharacterUsable, role, knownRoles, socket, currentRoom, currentPlayer, playersLosingHealth, playersActionRequiredOnStart, topStackCard, duelActive, 
   indianiActive, emporioState, myDrawChoice, sendMessage, messages, consoleOutput }) { 
   
   const [nextTurn, setNextTurn] = useState(true);
@@ -187,6 +187,7 @@ export default function Game({ myCharacterChoice, characterChoiceInProgress, set
             socket={socket}
             myHand={myHand}
             allPlayersInfo={allPlayersInfo}
+            allCharactersInfo={allCharactersInfo}
             knownRoles={knownRoles}
             currentRoom={currentRoom}
             activateCharacter={activateCharacter}
