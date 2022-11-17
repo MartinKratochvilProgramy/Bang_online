@@ -198,6 +198,7 @@ function App() {
       {currentRoom === null ? 
         <>
           <img className="w-[300px] xs:w-max mt-2 xs:mt-12" src={require('./img/bang-logo.png')} alt="Bang! logo" />
+          <a href="/about" className="text-white hover:text-black text-2xl underline font-rye">About</a>
           <RoomSelect 
             newRoomRef={newRoomRef} 
             setUsername={setUsername} 
