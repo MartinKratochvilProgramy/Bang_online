@@ -141,7 +141,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                         confirmCardTarget={confirmCardTarget}
                         currentPlayer={currentPlayer}
                         username={username}
-                        character={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].character}
+                        character={charactersInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].character}
                         role={knownRoles[oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].name]}
                         characterUsable={characterUsable}
                         health={oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].health}
@@ -164,7 +164,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             confirmCardTarget={confirmCardTarget}
                             currentPlayer={currentPlayer}
                             username={username}
-                            character={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
+                            character={charactersInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].character}
                             role={knownRoles[oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].name]}
                             characterUsable={characterUsable}
                             health={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].health}
@@ -188,7 +188,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             confirmCardTarget={confirmCardTarget}
                             currentPlayer={currentPlayer}
                             username={username}
-                            character={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
+                            character={charactersInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].character}
                             role={knownRoles[oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].name]}
                             characterUsable={characterUsable}
                             health={oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].health}
@@ -213,7 +213,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                         confirmCardTarget={confirmCardTarget}
                         currentPlayer={currentPlayer}
                         username={username}
-                        character={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].character}
+                        character={charactersInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].character}
                         role={knownRoles[oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].name]}
                         characterUsable={characterUsable}
                         health={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].health}
