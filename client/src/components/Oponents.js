@@ -273,7 +273,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
-                            cardClampLimit={3}
+                            cardClampLimit={4}
                         />
                     </div>
                     <div className='w-[320px] xs:w-[620px] z-[10]'>                        
@@ -297,7 +297,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
-                            cardClampLimit={3}
+                            cardClampLimit={4}
                         />
                     </div>
                     <div className='w-[320px] xs:w-[620px] z-[11]'>                        
@@ -321,7 +321,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
                             smallMagicConstant={122}
-                            cardClampLimit={3}
+                            cardClampLimit={4}
                         />
                     </div>
                 </div>
