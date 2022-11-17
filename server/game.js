@@ -1610,8 +1610,14 @@ class Game {
             // next turn
             this.endTurn()
         }
-        this.players[playerName].character.health = 0;
+        const numberOfBeersInHand = this.players[playerName].hand.filter(item => item.name === 'Beer').length;
+        this.players[playerName].character.health = 0 + numberOfBeersInHand;
+        let message;
+        for (let i = 0; i < numberOfBeersInHand + 1; i++) {
+            message = this.loseHealth(playerName);
+        }
         this.knownRoles[playerName] = this.players[playerName].character.role;
+        return message;
     }
 
     genCharacterChoices() {

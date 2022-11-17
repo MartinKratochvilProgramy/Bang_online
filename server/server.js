@@ -68,7 +68,14 @@ io.on("connection", (socket) => {
           if(rooms[room].players[i].id === socket.id) {
     
             io.to(room).emit("console", [`${rooms[room].players[i].username} disconnected`]);
-            rooms[room].game.removePlayer(rooms[room].players[i].username);
+            const message = rooms[room].game.removePlayer(rooms[room].players[i].username);
+            // player dies when disconnecting, check game-end
+            if (message[message.length - 1] === "Game ended") {
+              // game over      
+              // emit who won
+              io.to(room).emit("game_ended", message[message.length - 2]);
+              io.to(room).emit("console", [message[message.length - 2], message[message.length - 1]]);
+            }
             io.to(room).emit("known_roles", rooms[room].game.knownRoles);
             
             rooms[room].players.splice(i, 1);
