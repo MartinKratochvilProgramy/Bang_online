@@ -1210,7 +1210,7 @@ class Game {
         for (var player of Object.keys(this.players)) {
             state.push({
                 name: player,
-                character: this.players[player].character.name, // TODO: this could be sent once at the start of game
+                character: this.players[player].character.name,
             })
         }
         return state;
