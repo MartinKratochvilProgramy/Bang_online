@@ -1,5 +1,7 @@
 import React from 'react';
 import TopPlayerTable from './TopPlayerTable';
+import TopLeftPlayerTable from './TopLeftPlayerTable';
+import TopRightPlayerTable from './TopRightPlayerTable';
 import SidePlayerTable from './SidePlayerTable';
 import clamp from '../utils/clamp';
 
@@ -253,7 +255,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                 </div>
                 <div className='fixed top-0 left-0 right-0 flex justify-center space-x-2 z-5'>
                     <div className='w-[320px] xs:w-[620px] z-1'>                        
-                    <TopPlayerTable
+                    <TopLeftPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
                             table={oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].table}
@@ -301,7 +303,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                         />
                     </div>
                     <div className='w-[320px] xs:w-[620px] z-[11]'>                        
-                     <TopPlayerTable
+                     <TopRightPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
                             table={oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].table}
