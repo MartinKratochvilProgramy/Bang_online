@@ -1,11 +1,6 @@
-dynamite death
-
 sid ketchum should probably have separate discard from ability
 není potřeba posílat celej chat naráz
     -ale když se přidá hráč pozdě, neuvidí stávající chat
-
-this.playerPlaceholder is not necessary as playerName returns name 
-of current player anyway
 
 
 DEPLOY TO DIGITALOCEAN

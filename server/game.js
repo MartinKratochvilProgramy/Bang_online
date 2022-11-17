@@ -1,8 +1,8 @@
 class Game {
     constructor(playerNames, deck) {
         this.numOfPlayers = playerNames.length;
-        this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
-        // this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
+        // this.namesOfCharacters = ["Bart Cassidy", "Black Jack", "Calamity Janet", "El Gringo", "Jesse Jones", "Jourdonnais", "Kit Carlson", "Lucky Duke", "Paul Regret", "Pedro Ramirez", "Rose Doolan", "Sid Ketchum", "Slab the Killer", "Suzy Lafayette", "Vulture Sam", "Willy the Kid"] 
+        this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
         this.stack = [];
@@ -211,6 +211,9 @@ class Game {
         this.duelTurnIndex = (this.duelTurnIndex + 1) % 2;
         // set next players Ban!g cards playable
         this.setPlayable("Bang!", this.duelPlayers[this.duelTurnIndex]);
+        if (this.players[this.duelPlayers[this.duelTurnIndex]].character.name === "Calamity Janet") {
+            this.setPlayable("Mancato!", this.duelPlayers[this.duelTurnIndex]);
+        }
         this.setIsLosingHealth(true, this.duelPlayers[this.duelTurnIndex]);
         
         return [`${playerName} used Bang! in duel`];
@@ -224,7 +227,7 @@ class Game {
         this.players[playerName].mancatoPool -=1;
 
         if (this.players[playerName].mancatoPool === 0) {
-            this.setMancatoBeerNotPlayable(playerName);
+            this.setAllNotPlayable(playerName);
             this.setCardOnTableNotPlayable("Barilo", playerName);
             this.setIsLosingHealth(false, playerName);
 
@@ -571,6 +574,9 @@ class Game {
         this.duelTurnIndex = 0;
         
         this.setPlayable("Bang!", target);
+        if (this.players[target].character.name === "Calamity Janet") {
+            this.setPlayable("Mancato!", this.duelPlayers[this.duelTurnIndex]);
+        }
         this.setIsLosingHealth(true, target);
         
         this.setAllNotPlayable(playerName);
@@ -591,6 +597,9 @@ class Game {
             // put hit on all players, except playerName and dead players
             if (target !== playerName && this.players[target].character.health > 0) {
                 this.setPlayable("Mancato!", target);
+                if (this.players[target].character.name === "Calamity Janet") {
+                    this.setPlayable("Bang!", target);
+                }
                 this.setCardOnTablePlayable("Barilo", target);
                 
                 this.setIsLosingHealth(true, target);
@@ -610,6 +619,9 @@ class Game {
             // put hit on all players, except playerName
             if (target !== playerName && this.players[target].character.health > 0) {
                 this.setPlayable("Bang!", target);
+                if (this.players[target].character.name === "Calamity Janet") {
+                    this.setPlayable("Mancato!", target);
+                }
                 
                 this.setIsLosingHealth(true, target);
             }

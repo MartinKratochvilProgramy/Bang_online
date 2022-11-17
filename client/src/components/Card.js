@@ -25,7 +25,7 @@ export default function Card({ socket, card, setActiveCard, setSelectPlayerTarge
       setSelectCardTarget(false);
         
       if (cardName === "Bang!") {
-        if (username !== currentPlayer && character === "Calamity Janet") {
+        if (username !== currentPlayer && !indianiActive && !duelActive && character === "Calamity Janet") {
           socket.emit("play_bang_as_CJ", {username, currentRoom, cardDigit, cardType});
 
         } else if (!duelActive && !indianiActive) {
