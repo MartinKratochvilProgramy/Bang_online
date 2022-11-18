@@ -21,6 +21,7 @@ export default function UsernameSelect({ setUsername }) {
             <input
                 className='shadow appearance-none font-rye text-xl rounded bg-beige m-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                 placeholder="Username..."
+                maxLength={21}
                 onChange={(e) => {
                     setUsernameInput(e.target.value)
                 }}
