@@ -256,7 +256,7 @@ function App() {
             messages={messages}
             consoleOutput={consoleOutput}
           />
-          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1000] m-auto'>
+          <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1100] m-auto'>
               {winner && <GameEnd winner={winner} setCurrentRoom={setCurrentRoom} />}
           </div>
           <div className='fixed flex justify-center items-center top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[1000] m-auto'>
