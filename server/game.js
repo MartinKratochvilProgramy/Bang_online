@@ -293,7 +293,7 @@ class Game {
     useCatBallou(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
         let message = [];
         this.discard("Cat Balou", cardDigit, cardType, playerName);
-        message.push(`${playerName} used Cat Balou`);
+        message.push(`${playerName} used Cat Balou on ${target}`);
 
         // get random card from target hand
         const randomCard = this.getPlayerHand(target)[Math.floor(Math.random()*this.getPlayerHand(target).length)]
@@ -316,7 +316,7 @@ class Game {
                 }
             }
         }
-        return [`${playerName} used Cat Balou on ${activeCard.name}`];
+        return [`${playerName} used Cat Balou on ${target}`];
     }
 
     usePanico(target, cardDigit, cardType, playerName = this.getNameOfCurrentTurnPlayer()) {
