@@ -69,6 +69,8 @@ io.on("connection", (socket) => {
     
             io.to(room).emit("console", [`${rooms[room].players[i].username} disconnected`]);
             const message = rooms[room].game.removePlayer(rooms[room].players[i].username);
+            
+            // if game still active, check game-end
             // player dies when disconnecting, check game-end
             if (message[message.length - 1] === "Game ended") {
               // game over      

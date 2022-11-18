@@ -5,6 +5,7 @@ class Game {
         // this.namesOfCharacters = ["Slab the Killer", "Calamity Janet", "Jourdonnais", "El Gringo"] 
         this.knownRoles = {}
         this.deck = [...deck];  // create new copy of deck
+        this.gameEnded = false;
         this.stack = [];
         this.emporio = [];
         this.drawChoice = [];
@@ -988,61 +989,65 @@ class Game {
             
             message.push(`${playerName} has died!`);
 
-            // ********* GAME END *********
-            let aliveRoles = [];
-            let deadRoles = [];
-            for (const player of Object.keys(this.players)) {
-                if (this.players[player].character.health > 0) {
-                    aliveRoles.push(this.players[player].character.role);
-                } else {
-                    deadRoles.push(this.players[player].character.role);
+            if (!this.gameEnded) {
+                // if not game ended, check for winner
+                // ********* GAME END *********
+                let aliveRoles = [];
+                let deadRoles = [];
+                for (const player of Object.keys(this.players)) {
+                    if (this.players[player].character.health > 0) {
+                        aliveRoles.push(this.players[player].character.role);
+                    } else {
+                        deadRoles.push(this.players[player].character.role);
+                    }
+                }
+    
+                if (aliveRoles.includes("Sheriff") && (!aliveRoles.includes("Bandit") && !aliveRoles.includes("Renegade"))){
+                    // SHERIFF AND VICE WIN
+                    if (aliveRoles.includes("Vice") || deadRoles.includes("Vice")) {
+                        // Vice in game
+                        message.push(`Sheriff (${this.getNameOfPlayersByRole("Sheriff")[0]}) and Vice (${this.getNameOfPlayersByRole("Vice")[0]}) wictory!`);
+                        message.push("Game ended");
+                        this.endGame();
+                    } else {
+                        // Vice not in game
+                        message.push(`Sheriff (${this.getNameOfPlayersByRole("Sheriff")[0]}) wictory!`);
+                        message.push("Game ended");
+                        this.endGame();
+                    }
+                    
+                } else if (aliveRoles.includes("Bandit") && deadRoles.includes("Sheriff")) {
+                    // BANDITS WIN
+                    const bandits = this.getNameOfPlayersByRole("Bandit")
+                    if (bandits.length === 1) {
+                        message.push(`Bandit (${bandits[0]}) wictory!`);
+                        message.push("Game ended");
+                        
+                    } else if (bandits.length === 2) {
+                        message.push(`Bandits (${bandits[0]}, ${bandits[1]}) wictory!`);
+                        message.push("Game ended");
+                        
+                    } else if (bandits.length === 3) {
+                        message.push(`Bandits (${bandits[0]}, ${bandits[1]}, ${bandits[2]}) wictory!`);
+                        message.push("Game ended");
+                    }
+    
+                    this.endGame();
+                    
+                } else if (aliveRoles.includes("Renegade") && (!aliveRoles.includes("Sheriff") && !aliveRoles.includes("Vice") && !aliveRoles.includes("Bandit"))) {
+                    // RENEGADE WIN
+                    message.push(`Renegade (${this.getNameOfPlayersByRole("Renegade")[0]}) wictory!`);
+                    message.push("Game ended");
+                    this.endGame();
+    
+                } else if (this.numOfPlayers === 2) {
+                    // 1v1 WIN
+                    message.push(`${this.getNameOfCurrentTurnPlayer()} is winner!`);
+                    message.push("Game ended");
+                    this.endGame();
                 }
             }
 
-            if (aliveRoles.includes("Sheriff") && (!aliveRoles.includes("Bandit") && !aliveRoles.includes("Renegade"))){
-                // SHERIFF AND VICE WIN
-                if (aliveRoles.includes("Vice") || deadRoles.includes("Vice")) {
-                    // Vice in game
-                    message.push(`Sheriff (${this.getNameOfPlayersByRole("Sheriff")[0]}) and Vice (${this.getNameOfPlayersByRole("Vice")[0]}) wictory!`);
-                    message.push("Game ended");
-                    this.endGame();
-                } else {
-                    // Vice not in game
-                    message.push(`Sheriff (${this.getNameOfPlayersByRole("Sheriff")[0]}) wictory!`);
-                    message.push("Game ended");
-                    this.endGame();
-                }
-                
-            } else if (aliveRoles.includes("Bandit") && deadRoles.includes("Sheriff")) {
-                // BANDITS WIN
-                const bandits = this.getNameOfPlayersByRole("Bandit")
-                if (bandits.length === 1) {
-                    message.push(`Bandit (${bandits[0]}) wictory!`);
-                    message.push("Game ended");
-                    
-                } else if (bandits.length === 2) {
-                    message.push(`Bandits (${bandits[0]}, ${bandits[1]}) wictory!`);
-                    message.push("Game ended");
-                    
-                } else if (bandits.length === 3) {
-                    message.push(`Bandits (${bandits[0]}, ${bandits[1]}, ${bandits[2]}) wictory!`);
-                    message.push("Game ended");
-                }
-
-                this.endGame();
-                
-            } else if (aliveRoles.includes("Renegade") && (!aliveRoles.includes("Sheriff") && !aliveRoles.includes("Vice") && !aliveRoles.includes("Bandit"))) {
-                // RENEGADE WIN
-                message.push(`Renegade (${this.getNameOfPlayersByRole("Renegade")[0]}) wictory!`);
-                message.push("Game ended");
-                this.endGame();
-
-            } else if (this.numOfPlayers === 2) {
-                // 1v1 WIN
-                message.push(`${this.getNameOfCurrentTurnPlayer()} is winner!`);
-                message.push("Game ended");
-                this.endGame();
-            }
         }
 
         return message;
@@ -1674,6 +1679,7 @@ class Game {
     }
 
     endGame() {
+        this.gameEnded = true;
         for (const player of Object.keys(this.players)) {
             // turns off all playable cards
             this.setAllNotPlayable(player);
