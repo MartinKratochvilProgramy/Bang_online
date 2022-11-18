@@ -231,7 +231,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
     if (oponentsInfo.length === 5) {
         return (
             <div className=''>
-                <div className='fixed flex items-end justify-start w-[490px] left-[-158px] xs:left-[-158px]top-[288px] xs:top-[360px] rotate-90 '>
+                <div className='fixed flex items-end justify-start w-[490px] left-[-172px] xs:left-[-158px] top-[294px] xs:top-[360px] rotate-90 '>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 0, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -254,7 +254,7 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                     />
                 </div>
                 <div className='fixed top-0 left-0 right-0 flex justify-center space-x-2 z-5'>
-                    <div className='w-[320px] xs:w-[620px] z-1'>                        
+                    <div className='w-[350px] xs:w-[620px] z-1'>                        
                     <TopLeftPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 1, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -274,11 +274,11 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
-                            smallMagicConstant={122}
+                            smallMagicConstant={152}
                             cardClampLimit={4}
                         />
                     </div>
-                    <div className='w-[320px] xs:w-[620px] z-[10]'>                        
+                    <div className='w-[350px] xs:w-[620px] z-[10]'>                        
                      <TopPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 2, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -298,11 +298,11 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
-                            smallMagicConstant={122}
+                            smallMagicConstant={152}
                             cardClampLimit={4}
                         />
                     </div>
-                    <div className='w-[320px] xs:w-[620px] z-[11]'>                        
+                    <div className='w-[350px] xs:w-[620px] z-[11]'>                        
                      <TopRightPlayerTable
                             socket={socket}
                             cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 3, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
@@ -322,12 +322,12 @@ export default function Oponents({ socket, allPlayersInfo, allCharactersInfo, kn
                             playersInRange={playersInRange}
                             confirmPlayerTarget={confirmPlayerTarget}
                             largeMagicConstant={362}
-                            smallMagicConstant={122}
+                            smallMagicConstant={152}
                             cardClampLimit={4}
                         />
                     </div>
                 </div>
-                <div className='fixed flex items-end justify-end w-[490px] right-[-158px] xs:right-[-158px] top-[288px] xs:top-[360px] rotate-[270deg]'>
+                <div className='fixed flex items-end justify-end w-[490px] right-[-172px] xs:right-[-158px] top-[294px] xs:top-[360px] rotate-[270deg]'>
                     <SidePlayerTable
                         socket={socket}
                         cardsInHand={new Array(oponentsInfo[clamp(playerIndex + 4, allPlayersInfo.length - 1)].numberOfCards).fill(0)}
