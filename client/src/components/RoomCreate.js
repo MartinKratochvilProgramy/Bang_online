@@ -21,6 +21,7 @@ export default function RoomCreate({ createRoom }) {
             className='shadow appearance-none h-[43px] font-rye text-xl rounded bg-beige m-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             placeholder="Room name..."
             onChange={(e) => setRoomInput(e.target.value)}
+            maxLength={21}
             value={roomInput}
         />
         <Button 

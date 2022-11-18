@@ -8,13 +8,14 @@ const cors = require("cors");
 const Game = require('./game.js');
 const deck = require('./deck.js')
 
+const PORT = process.env.PORT || 3001;
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
-const PORT = 3001;
 app.use(cors());
 
 let rooms = {}

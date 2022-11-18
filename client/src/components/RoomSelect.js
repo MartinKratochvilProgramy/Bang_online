@@ -36,7 +36,7 @@ export default function RoomSelect({ setUsername, socket, setCurrentRoom, userna
     } else {
         return (
           <div>
-              <h2 className='text-outline font-rye text-4xl xs:text-8xl text-white mt-3 mb-6'>
+              <h2 className='text-outline font-rye text-3xl text-white mt-3 mb-6'>
                   {username}
               </h2>
       
